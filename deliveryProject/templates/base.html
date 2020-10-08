@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title %}{% endblock title %}
+    {% block css %}
+    {% endblock css %}
+
+    {% block scripts %}
+    {% endblock scripts %}
+</head>
+
+<body>
+
+    {% if user.is_authenticated %}
+    {{user.username}}
+    <form name="logout" method="POST" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <input type="submit" value="로그아웃">
+    </form>
+    {% else %}
+    <div>
+        <a href="{% url 'signup' %}">회원가입</a>
+        <a href="{% url 'login' %}">로그인</a>
+    </div>
+    {% endif %}
+
+    {% block content %}
+    <!-- 들어갈 내용-->
+    {% endblock content %}
+</body>
+
+</html>
