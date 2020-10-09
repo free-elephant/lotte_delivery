@@ -80,82 +80,49 @@
 
 {% block content %}
 <p>===== deliver 페이지 접속시 -> 버튼 3개가 있음 -> 1.현재위치기반 , 2. 네비게이션, 3. 반경 조절 select box</p>
-<p>1. 현재위치기반으로 반경 x km 안에 있는 마크 확인 + 반경 조절 <span style="color :red; bold;"><strong>(완료)</strong></span></p>
+<p>1. 현재위치기반으로 반경 x km 안에 있는 마크 확인 + 반경 조절 <span style="color :red;"><strong>(완료)</strong></span></p>
 <p>2. 네비게이션? 출발위치와 도착위치의 반경 x km 안에 있는 마크 확인</p>
 -> deliver 페이지에 들어
 <p>3. 반경조절 select box</p>
-<div>
-    <fieldset>
-        <legend>출발 주소</legend>
 
-        <input type="text" id="sample6_postcode" placeholder="우편번호" readonly>
-        <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호찾기"><br>
-        <input type="text" id="sample6_address" placeholder="주소" style="width:352px;" readonly><br>
 
-        <input type="text" id="sample6_detailAddress" placeholder="상세주소">
-        <input type="text" id="sample6_extraAddress" placeholder="참고주소" readonly><br>
-        <input type="text" placeholder="휴대전화">
-    </fieldset>
+<input type="radio" onclick="menu_selector('current_location');" name="chk_info" value="current_location" checked/>현재위치
+<input type="radio" onclick="menu_selector('navigator');" name="chk_info" value="navigator"/>네비게이터
+<script>
+    function menu_selector(id){
+        if(id=="current_location"){
+            document.querySelector('#navigator_container').style.display='none';
+        }
+        else{
+            document.querySelector('#navigator_container').style.display='block';
 
-</div>
+        }
+    }
+    
+</script>
 
-<div>
-    <p>도착지</p>
-    도착지 주소: <input type="text" id="destination" placeholder="주소">
-    <input type="button" onclick="my_Stuff_Map(this.id)" value="주소 검색" id="map_destination"><br>
-    도착지 상세주소 : <input type="text">
-    <br>
-    수취인 번호 : <input type="text">
+<div id = "navigator_container" name="navigator_container" class="navigator_container" style="display:none;">
+    <div>
+        <fieldset>
+            <legend>출발지</legend>
+            <input type="text" id="sample6_address" placeholder="주소" style="width:250px;" readonly>
+            <input type="button" onclick="my_Stuff_Map(this.id)" value="주소 검색" id="map_deparature"><br>
+            <input type="text" id="sample6_detailAddress" placeholder="상세주소">
+        </fieldset>
+    </div>
+    
+    <div>
+        <fieldset>
+            <legend>도착지</legend>
+            <input type="text" id="sample6_address" placeholder="주소" style="width:250px;" readonly>
+            <input type="button" onclick="my_Stuff_Map(this.id)" value="주소 검색" id="map_destination"><br>
+            <input type="text" id="sample6_detailAddress" placeholder="상세주소">
+        </fieldset>
+    </div>
 </div>
 
 <script>
-    function sample6_execDaumPostcode() {
-        new daum.Postcode({
-            oncomplete: function (data) {
-                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-
-                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
-                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-                var addr = ''; // 주소 변수
-                var extraAddr = ''; // 참고항목 변수
-
-                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
-                    addr = data.roadAddress;
-                } else { // 사용자가 지번 주소를 선택했을 경우(J)
-                    addr = data.jibunAddress;
-                }
-
-                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
-                if (data.userSelectedType === 'R') {
-                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
-                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
-                    if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
-                        extraAddr += data.bname;
-                    }
-                    // 건물명이 있고, 공동주택일 경우 추가한다.
-                    if (data.buildingName !== '' && data.apartment === 'Y') {
-                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-                    }
-                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-                    if (extraAddr !== '') {
-                        extraAddr = ' (' + extraAddr + ')';
-                    }
-                    // 조합된 참고항목을 해당 필드에 넣는다.
-                    document.getElementById("sample6_extraAddress").value = extraAddr;
-
-                } else {
-                    document.getElementById("sample6_extraAddress").value = '';
-                }
-
-                // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                document.getElementById('sample6_postcode').value = data.zonecode;
-                document.getElementById("sample6_address").value = addr;
-                // 커서를 상세주소 필드로 이동한다.
-                document.getElementById("sample6_detailAddress").focus();
-            }
-        }).open();
-    }
+    
 </script>
 
 <select name="select_radius" id="select_radius">
@@ -166,7 +133,15 @@
     <option value="5000">5km</option>
 </select>
 <div id="map" style="width:500px;height:400px;"></div>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f92e2590928afb34663522ac2201a7be">
+<div id="map2" style="width:500px;height:400px;"></div>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f92e2590928afb34663522ac2201a7be"></script>
+<script>
+    var container = document.getElementById('map2');
+    var options = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667),
+        level: 6
+    };
+    var map2 = new kakao.maps.Map(container, options)
 </script>
 <script>
     var container = document.getElementById('map');

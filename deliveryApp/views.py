@@ -24,8 +24,8 @@ def request2(request):
     return render(request, 'request2.html')
 
 
-def request3(request):
-    return render(request, 'request3.html')
+def request_candidate(request):
+    return render(request, 'request_candidate.html')
 
 
 def changeradius(request):

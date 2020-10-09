@@ -16,7 +16,6 @@
             left: 50%;
             margin: -250px 0 0 -250px;
             background: #eee;
-            border: 3px soild;
             z-index: 2;
         }
 
@@ -56,7 +55,7 @@
     <div>
         <p>신청인</p>
         <input type="text" id="deparature" placeholder="주소" readonly>
-        <input type="button" onclick="my_Stuff_Map(this.id)" value="주소 검색"id="map_deparature"><br>
+        <input type="button" onclick="my_Stuff_Map(this.id)" value="주소 검색" id="map_deparature"><br>
         <input type="text"id="detail_deparature"   placeholder="상세주소">
         <br>
         <input type="text" placeholder="신청인 전화번호">
@@ -66,19 +65,17 @@
     <div>
         <p>도착지</p>
         <input type="text" id="destination" placeholder="주소" readonly>
-        <input type="button" onclick="my_Stuff_Map(this.id)" value="주소 검색"id="map_destination"><br>
+        <input type="button" onclick="my_Stuff_Map(this.id)" value="주소 검색" id="map_destination"><br>
         <input type="text" placeholder="상세주소">
         <br>
         <input type="text" placeholder="수취인 전화번호">
     </div>
     <div id="map" style="width:300px;height:300px;margin-top:10px;"></div>
     <br>
-    거리<input type="text" name="distance" id="distance">
-    <br>
     물건 카테고리
     <input type="button" onclick="goods_category()" value="카테고리">
     <div class="modal_wrap">
-        <div class="modal_close" onclick="close_goods_category()"><a href="#">close</a></div>
+        <div class="modal_close"><a href="#">close</a></div>
         <div>
             모달창 내용
         </div>
@@ -97,6 +94,8 @@
         <option value="3">3시간이내</option>
     </select>
     <br>
+    거리<input type="text" name="distance" id="distance">
+    <br>
     가격<input type="text" name="price">
     전달사항<input type="text" name="comment">
 
@@ -109,13 +108,8 @@
 
         function goods_category() {
             document.querySelector('.modal_wrap').style.display = 'block';
-            document.querySelector('.black_bg').style.display = 'block';
-
-        }
-
-        function close_goods_category(){
-            document.querySelector('.modal_wrap').style.display = 'none';
             document.querySelector('.black_bg').style.display = 'none';
+
         }
 
         ///////////////////////////
@@ -233,7 +227,7 @@
 
                                     //거리정보
                                     var dis=document.getElementById("distance");
-                                    dis.value=distance+'m';  
+                                    dis.value=distance;  
 
                             }
 
