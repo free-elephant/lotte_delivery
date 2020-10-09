@@ -1,4 +1,5 @@
-# lotte_delivery
+## lotte_delivery
 
-pip install django
-pip install django-sslserver
+#pip install django
+<br>
+#pip install django-sslserver
