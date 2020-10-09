@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'accountApp',
     'storeApp',
     'deliveryApp',
-
+    'sslserver',
 ]
 
 MIDDLEWARE = [

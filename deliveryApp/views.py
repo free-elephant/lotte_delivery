@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib import auth
 # Create your views here.
 
@@ -17,3 +18,20 @@ def deliver(request):
 
 def request(request):
     return render(request, 'request.html')
+
+
+def request2(request):
+    return render(request, 'request2.html')
+
+
+def request3(request):
+    return render(request, 'request3.html')
+
+
+def changeradius(request):
+    radius = request.GET['select_radius']
+    result = {
+        'result': 'success',
+        'radius': radius
+    }
+    return JsonResponse(result)

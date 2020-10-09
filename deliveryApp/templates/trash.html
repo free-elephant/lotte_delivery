@@ -1,0 +1,110 @@
+<script>
+    /*
+    kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
+        if (i < 3) {
+            addMarker(mouseEvent.latLng);
+
+            var clickPosition = mouseEvent.latLng;
+
+            if (!drawingFlag) {
+                drawingFlag = true;
+                deleteClickLine();
+
+                deleteDistance();
+
+                deleteCircleDot();
+
+                clickLine = new kakao.maps.Polyline({
+                    map: map,
+                    path: [clickPosition],
+                    strokeWeight: 3,
+                    strokeColor: '#db4040', 
+                    strokeOpacity: 1,
+                    strokeStyle: 'solid' 
+                });
+
+                displayCircleDot(clickPosition, 0);
+            } else {
+                var path = clickLine.getPath();
+                path.push(clickPosition);
+                clickLine.setPath(path);
+
+                var distance = Math.round(clickLine.getLength());
+                displayCircleDot(clickPosition, distance);
+            }
+            i++;
+        }
+    });
+
+    kakao.maps.event.addListener(map, 'rightclick', function (mouseEvent) {
+        i = 0;
+        if (drawingFlag) {
+            var path = clickLine.getPath();
+            if (path.length > 1) {
+                if (dots[dots.length - 1].distance) {
+                    dots[dots.length - 1].distance.setMap(null);
+                    dots[dots.length - 1].distance = null;
+                }
+
+                var distance = Math.round(clickLine.getLength()),
+                    content = getTimeHTML(distance);
+                showDistance(content, path[path.length - 1]);
+
+            } else {
+                deleteClickLine();
+                deleteCircleDot();
+                deleteDistnce();
+            }
+            drawingFlag = false;
+        }
+    });*/
+
+    /*
+    function deleteClickLine() {
+        if (clickLine) {
+            clickLine.setMap(null);
+            clickLine = null;
+        }
+    }
+    */
+    /*
+    function deleteDistance() {
+        if (distanceOverlay) {
+            distanceOverlay.setMap(null);
+            distanceOverlay = null;
+        }
+    }
+    */
+    /*
+    function deleteCircleDot() { 
+        var i;
+
+        for (i = 0; i < dots.length; i++) {
+            if (dots[i].circle) {
+                dots[i].circle.setMap(null);
+            }
+
+            if (dots[i].distance) {
+                dots[i].distance.setMap(null);
+            }
+        }
+
+        dots = [];
+    }
+    */
+    /*
+    function setMarkers(map) {
+        for (var i = 0; i < markers.length; i++) {
+            markers[i].setMap(map);
+        }
+    }
+
+    function showMarkers() {
+        setMarkers(map)
+    }
+
+    function hideMarkers() {
+        setMarkers(null);
+    }
+    */
+</script>

@@ -55,7 +55,7 @@
     <div>
         <p>신청인</p>
         신청인 주소: <input type="text" id="deparature" placeholder="주소">
-        <input type="button" onclick="my_Stuff_Map(this.id)" value="주소 검색"id="map_deparature"><br>
+        <input type="button" onclick="my_deparature_Map(this.id)" value="주소 검색"id="map_deparature"><br>
         신청인 상세주소 : <input type="text">
         <br>
 
@@ -65,7 +65,7 @@
     <div>
         <p>도착지</p>
         도착지 주소: <input type="text" id="destination" placeholder="주소">
-        <input type="button" onclick="my_Stuff_Map(this.id)" value="주소 검색"id="map_destination"><br>
+        <input type="button" onclick="my_destination_Map(this.id)" value="주소 검색"id="map_destination"><br>
         도착지 상세주소 : <input type="text">
         <br>
         수취인 번호 : <input type="text">
@@ -126,52 +126,89 @@
         //주소-좌표 변환 객체를 생성
         var geocoder = new daum.maps.services.Geocoder();
         
-        var position= new Array();
-        var coords= new Array();
-        var content={};
 
         var marker = new daum.maps.Marker({
             position: new daum.maps.LatLng(),
             map: map
         });
-        function my_Stuff_Map(id) {
+
+        var coords = new Array();
+        function my_deparature_Map(id) {
             new daum.Postcode({
                 oncomplete: function (data) {
                     var addr = data.address; // 최종 주소 변수
 
-                    if(id=="map_deparature"){
-                        // 주소 정보를 해당 필드에 넣는다.
-                    document.getElementById("deparature").value = addr;
-                    }
-                    if(id=="map_destination"){
-                        // 주소 정보를 해당 필드에 넣는다.
-                    document.getElementById("destination").value = addr;
-                    }
-                    
+                    // 주소 정보를 해당 필드에 넣는다.
+                    document.getElementById("deparature").value = addr;           
 
                     // 주소로 상세 정보를 검색
                     geocoder.addressSearch(data.address, function(results, status) {
                         // 정상적으로 검색이 완료됐으면
                         if (status === daum.maps.services.Status.OK) { 
-                            console.log(results)
+                            
                             var result = results[0]; //첫번째 결과의 값을 활용
-                            console.log(result.x)
-                            if(id=="map_deparature"){
-                            // 해당 주소에 대한 좌표를 받아서
-                                coords['map_deparature'] = new daum.maps.LatLng(result.y, result.x); 
-                                
-                            }
-                            if(id=="map_destination"){
-                                // 해당 주소에 대한 좌표를 받아서
-                                    coords['map_destination'] = new daum.maps.LatLng(result.y, result.x);    
-                                    
-                                }
+                        
+                            coords['map_deparature'] = new daum.maps.LatLng(result.y, result.x); 
+                        
                             // 지도를 보여준다.
                             mapContainer.style.display = "block";
                             map.relayout();
                             
-                            
+                            //지도 중심 변경
+                            if(coords['map_deparature']!=null & coords['map_destination']!=null){
+                                console.log("둥 다")
+                                var map_Lat=(coords['map_deparature'].getLat()+coords['map_destination'].getLat())/2; 
+                                var map_Lng=(coords['map_deparature'].getLng()+coords['map_destination'].getLng())/2;
+                                var setmarker = new daum.maps.LatLng(map_Lat, map_Lng); 
+                                map.setCenter(setmarker);
                                 
+                            }
+                            else{
+                                map.setCenter(coords['map_deparature']);
+                            
+                            }
+
+                            if(coords!=null){
+                                marker.setMap(null);   
+                            }
+                            for (var i in coords){        
+                                marker = new kakao.maps.Marker({
+                                    map: map, // 마커를 표시할 지도
+                                    position: coords[i], // 마커를 표시할 위치
+                                    
+                                });        
+                                
+                            }
+
+                        }
+                    });
+                    window.close();
+                }
+            }).open();
+        }
+
+
+        function my_destination_Map(id) {
+            new daum.Postcode({
+                oncomplete: function (data) {
+                    var addr = data.address; // 최종 주소 변수
+
+                    // 주소 정보를 해당 필드에 넣는다.
+                    document.getElementById("destination").value = addr;           
+
+                    // 주소로 상세 정보를 검색
+                    geocoder.addressSearch(data.address, function(results, status) {
+                        // 정상적으로 검색이 완료됐으면
+                        if (status === daum.maps.services.Status.OK) { 
+                            
+                            var result = results[0]; //첫번째 결과의 값을 활용
+                        
+                            coords['map_destination'] = new daum.maps.LatLng(result.y, result.x); 
+                        
+                            // 지도를 보여준다.
+                            mapContainer.style.display = "block";
+                            map.relayout();
+                            
                             if(coords['map_deparature']!=null & coords['map_destination']!=null){
                                 console.log("둥 다")
                                 var map_Lat=(coords['map_deparature'].getLat()+coords['map_destination'].getLat())/2; 
@@ -181,18 +218,16 @@
                                 map.setCenter(setmarker);
                                 
                             }
-                            else if(coords['map_destination']==null){
-                                map.setCenter(coords['map_deparature']);
-                            }
                             else{
                                 map.setCenter(coords['map_destination']);
                             
                             }
-                            console.log(coords)
+
+                          //  marker.setPosition(coords['map_destination'])
                             if(coords!=null){
                                 marker.setMap(null);   
-                            }    
-                            for (var i in coords){       
+                            }
+                            for (var i in coords){        
                                 marker = new kakao.maps.Marker({
                                     map: map, // 마커를 표시할 지도
                                     position: coords[i], // 마커를 표시할 위치
@@ -200,8 +235,6 @@
                                 });        
                                 
                             }
-
-                        
 
                         }
                     });
