@@ -12,6 +12,9 @@ class Store(models.Model):
 
 
 class Good(models.Model):
-    good_name = models.CharField(max_length=30)
+    good_name = models.CharField(max_length=30, null=True)
     good_price = models.IntegerField()
     good_weight = models.FloatField()
+
+    def __str__(self):
+        return self.good_name  # 함수는 문제없는듯

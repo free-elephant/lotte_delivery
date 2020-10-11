@@ -8,6 +8,7 @@
 
     <style>
         .modal_wrap {
+            border: 10px soild rgb(255, 38, 38);
             display: none;
             width: 400px;
             height: 400px;
@@ -15,18 +16,18 @@
             top: 50%;
             left: 50%;
             margin: -250px 0 0 -250px;
-            background: #eee;
-            border: 3px soild;
+            background: rgb(249, 244, 244);
+
             z-index: 2;
         }
 
-        .black_bg {
+        .modal_close {
             display: none;
             position: absolute;
             content: "";
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(252, 252, 252, 0.5);
             top: 0;
             left: 0;
             z-index: 1;
@@ -49,96 +50,148 @@
         }
     </style>
 </head>
+
 <body>
     <span>내 물건 배송</span>
-    <!-- <span>마켓 물건 배송</span> -->
+    <span>마켓 물건 배송</span>
     <br>
-    <div>
-        <p>신청인</p>
-        <input type="text" id="deparature" placeholder="주소" readonly>
-        <input type="button" onclick="my_Stuff_Map(this.id)" value="주소 검색"id="map_deparature"><br>
-        <input type="text"id="detail_deparature"   placeholder="상세주소">
-        <br>
-        <input type="text" placeholder="신청인 전화번호">
+    <form action="{% url 'request' %}" method="POST">
+        {%csrf_token%}
 
-    </div>
-
-    <div>
-        <p>도착지</p>
-        <input type="text" id="destination" placeholder="주소" readonly>
-        <input type="button" onclick="my_Stuff_Map(this.id)" value="주소 검색"id="map_destination"><br>
-        <input type="text" placeholder="상세주소">
-        <br>
-        <input type="text" placeholder="수취인 전화번호">
-    </div>
-    <div id="map" style="width:300px;height:300px;margin-top:10px;"></div>
-    <br>
-    거리<input type="text" name="distance" id="distance">
-    <br>
-    물건 카테고리
-    <input type="button" onclick="goods_category()" value="카테고리">
-    <div class="modal_wrap">
-        <div class="modal_close" onclick="close_goods_category()"><a href="#">close</a></div>
         <div>
-            모달창 내용
+            <p>신청인</p>
+            <span>
+                <input type="text" name="deparature" id="deparature" placeholder="주소" readonly>
+                <input type="button" onclick="my_Stuff_Map(this.id)" value="주소 검색" id="map_deparature">
+                <input type="hidden" name="deparature_lat" id="deparature_lat" value="">
+                <input type="hidden" name="deparature_long" id="deparature_long" value="">
+            </span>
+            <br>
+            <input type="text" name="deparature_detail" id="deparature_detail" placeholder="상세주소">
+            <br>
+            <input type="text" name="deparature_phone" placeholder="신청인 전화번호">
+
         </div>
-    </div>
-    <input type="text" name="goods">
-    <br>
-    물건 상세정보
-    <input type="text" name="goods_detail">
-    <br>
-    제한시간
 
-    <select name="time">
-        <option value="">시간 선택</option>
-        <option value="1">1시간 이내</option>
-        <option value="2">2시간 이내</option>
-        <option value="3">3시간이내</option>
-    </select>
-    <br>
-    가격<input type="text" name="price">
-    전달사항<input type="text" name="comment">
+        <div>
+            <p>도착지</p>
+            <span>
+                <input type="text" name="destination" id="destination" placeholder="주소" readonly>
+                <input type="hidden" name="destination_lat" id="destination_lat" value="">
+                <input type="hidden" name="destination_long" id="destination_long" value="">
+                <input type="button" onclick="my_Stuff_Map(this.id)" value="주소 검색" id="map_destination">
+            </span>
+            <br>
+            <input type="text" name="destination_detail" placeholder="상세주소">
+            <br>
+            <input type="text" name="destination_phone" placeholder="수취인 전화번호">
+        </div>
+        <div id="map" style="width:300px;height:300px;margin-top:10px;"></div>
+        <br>
+        거리<input type="text" name="distance" id="distance">m
+        <br>
+        물건 카테고리
+        <input type="button" onclick="goods_category()" value="카테고리">
+        <div class="modal_wrap">
+            <div class="modal_close" onclick="close_goods_category()"><a href="#">close</a></div>
+            <div id="goods_radio">
+                <input type="radio" name="goods" class="goods" value="문서" /> 문서
+                <input type="radio" name="goods" class="goods" value="유리류" /> 유리류
+                <input type="radio" name="goods" class="goods" value="식품(약)" /> 식품(약)
+                <input type="radio" name="goods" class="goods" value="소박스" /> 소박스
+                <input type="radio" name="goods" class="goods" value="대박스" /> 대박스
+            </div>
+            <div onclick="goods_confirm()"><a href="#">확인</a></div>
+            <!-- <input type="button" onclick="goods_confirm()" value="확인"> -->
 
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f92e2590928afb34663522ac2201a7be&libraries=services, drawing"></script>
+        </div>
+        <input type="text" name="goods_category_one" id="goods_category_one" value="" readonly>
+        <br>
+        물건 상세정보
+        <input type="text" name="goods_detail">
+        <br>
+        제한시간
+
+        <select name="time" id="time" onclick="price_function()">
+            <option value="">시간 선택</option>
+            <option value="1">1시간 이내</option>
+            <option value="2">2시간 이내</option>
+            <option value="3">3시간이내</option>
+        </select>
+        <br>
+        무게
+        <select name="weight" id="weight" onclick="price_function()">
+            <option value="">무게 선택</option>
+            <option value="1">1kg 이내</option>
+            <option value="2">1~2kg 이내</option>
+            <option value="3">2~3kg 이내</option>
+        </select>
+        <br>
+        가격<input type="text" name="price" id="price_sum" value="">
+        <br>
+        전달사항<input type="text" name="comment">
+
+        <input type="submit" value="확인">
+    </form>
+    <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript"
+        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f92e2590928afb34663522ac2201a7be&libraries=services, drawing"></script>
     <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    
+
     <script>
+        function goods_confirm() {
+            // goods_pick = $('.goods').val(); // 
+            goods_radio = document.getElementById('goods_radio');
+            goods_radio = goods_radio.children
+            console.log(goods_radio)
+            for (var n in goods_radio) {
+                goods_pick = document.getElementsByClassName('goods')[n]
+                console.log("in")
+                console.log(document.getElementsByClassName('goods')[n].value)
+                console.log(goods_pick)
+                if (goods_pick.checked == true) {
+                    document.getElementById('goods_category_one').value = goods_pick.value;
+                    break
+                }
 
-
-
-        function goods_category() {
-            document.querySelector('.modal_wrap').style.display = 'block';
-            document.querySelector('.black_bg').style.display = 'block';
+            }
+            //$('.goods_one').val(goods_pick);
+            document.querySelector('.modal_wrap').style.display = 'none';
+            document.querySelector('.modal_close').style.display = 'none';
 
         }
 
-        function close_goods_category(){
+        function goods_category() {
+            document.querySelector('.modal_wrap').style.display = 'block';
+            document.querySelector('.modal_close').style.display = 'block';
+
+        }
+
+        function close_goods_category() {
             document.querySelector('.modal_wrap').style.display = 'none';
-            document.querySelector('.black_bg').style.display = 'none';
+            document.querySelector('.modal_close').style.display = 'none';
         }
 
         ///////////////////////////
         //주소 + 지도 켤 준비
         var mapContainer = document.getElementById('map'), // 지도를 표시할 div
-        mapOption = {
-            center: new daum.maps.LatLng(37.537187, 127.005476), // 지도의 중심좌표
-            level: 5 // 지도의 확대 레벨
-        };
-        
+            mapOption = {
+                center: new daum.maps.LatLng(37.537187, 127.005476), // 지도의 중심좌표
+                level: 5 // 지도의 확대 레벨
+            };
 
-         //지도를 미리 생성  
+
+        //지도를 미리 생성  
         var map = new daum.maps.Map(mapContainer, mapOption);
         //주소-좌표 변환 객체를 생성
         var geocoder = new daum.maps.services.Geocoder();
-        
-        var position= new Array();
-        var coords= new Array();
-        var content={};
+
+        var position = new Array();
+        var coords = new Array();
+        var content = {};
 
         var marker = new daum.maps.Marker({
-            position: new daum.maps.LatLng(),
-            map: map
+
         });
         var infowindow = new kakao.maps.InfoWindow({
 
@@ -152,88 +205,111 @@
                 oncomplete: function (data) {
                     var addr = data.address; // 최종 주소 변수
 
-                    if(id=="map_deparature"){
+                    if (id == "map_deparature") {
                         // 주소 정보를 해당 필드에 넣는다.
-                    document.getElementById("deparature").value = addr;
+                        document.getElementById("deparature").value = addr;
                     }
-                    if(id=="map_destination"){
+                    if (id == "map_destination") {
                         // 주소 정보를 해당 필드에 넣는다.
-                    document.getElementById("destination").value = addr;
+                        document.getElementById("destination").value = addr;
                     }
-                    
+
 
                     // 주소로 상세 정보를 검색
-                    geocoder.addressSearch(data.address, function(results, status) {
+                    geocoder.addressSearch(data.address, function (results, status) {
                         // 정상적으로 검색이 완료됐으면
-                        if (status === daum.maps.services.Status.OK) { 
-                            console.log(results)
+                        if (status === daum.maps.services.Status.OK) {
+                            console.log('0')
+
+                            //지도 다 지우기
+                            console.log('1')
+                            polyline.setMap(null);
+
+                            console.log('2')
+                            infowindow.setMap(null);
+
+                            console.log('3')
+
+                            marker.setMap(null);
+
+
                             var result = results[0]; //첫번째 결과의 값을 활용
-                            console.log(result.x)
-                            if(id=="map_deparature"){
-                            // 해당 주소에 대한 좌표를 받아서
-                                coords['map_deparature'] = new daum.maps.LatLng(result.y, result.x); 
-                                
-                            }
-                            if(id=="map_destination"){
-                                // 해당 주소에 대한 좌표를 받아서
-                                    coords['map_destination'] = new daum.maps.LatLng(result.y, result.x);    
-                                    
-                                }
-                            // 지도를 보여준다.
+
+                            // 지도를 보여준다. 
+                            console.log('4')
                             mapContainer.style.display = "block";
                             map.relayout();
-                            
 
-                            if(coords!=null){
-                                console.log("들어옴") 
-                                infowindow.setMap(null);  
-                                polyline.setMap(null);
-                                marker.setMap(null); 
-                                
-                            }    
-                            for (var i in coords){  
-                                if(i=='map_deparature'){
-                                    map.setCenter(coords['map_deparature']);
+                            if (id == "map_deparature") {
+                                // 해당 주소에 대한 좌표를 받아서
+                                coords['map_deparature'] = new daum.maps.LatLng(result.y, result.x);
+                                map.setCenter(coords['map_deparature']);
+
+                                document.getElementById("deparature_lat").value = coords['map_deparature'].getLat();
+                                document.getElementById("deparature_long").value = coords['map_deparature'].getLng();
+
+
+                            }
+                            if (id == "map_destination") {
+                                // 해당 주소에 대한 좌표를 받아서
+                                coords['map_destination'] = new daum.maps.LatLng(result.y, result.x);
+                                map.setCenter(coords['map_destination']);
+
+                                document.getElementById("destination_lat").value = coords['map_destination'].getLat();
+                                document.getElementById("destination_long").value = coords['map_destination'].getLng();
+
+                            }
+                            console.log(coords)
+
+
+
+
+                            //출발 및 도착 부분 값 다시 표시하기
+                            for (var i in coords) {
+                                if (i == 'map_deparature') {
+                                    console.log("시작")
+
                                     marker = new kakao.maps.Marker({
                                         map: map, // 마커를 표시할 지도
                                         position: coords[i] // 마커를 표시할 위치
-                                    });  
-                                    infowindow = new kakao.maps.InfoWindow({
-                                        position : coords[i], 
-                                        content : "<div>시작점</div>"
                                     });
-                                    infowindow.open(map, marker); 
-                                        
-                                }    
-                                else if(i=='map_destination'){
-                                    map.setCenter(coords['map_destination']);
+                                    infowindow = new kakao.maps.InfoWindow({
+                                        position: coords[i],
+                                        content: "<div>시작점</div>"
+                                    });
+                                    infowindow.open(map, marker);
+
+                                }
+                                else if (i == 'map_destination') {
+                                    console.log("도착")
+
                                     marker = new kakao.maps.Marker({
                                         map: map, // 마커를 표시할 지도
                                         position: coords[i] // 마커를 표시할 위치
-                                        
-                                    });  
+
+                                    });
                                     infowindow = new kakao.maps.InfoWindow({
-                                        position : coords[i], 
-                                        content : "<div>도착점</div>"
+                                        position: coords[i],
+                                        content: "<div>도착점</div>"
                                     });
                                     infowindow.open(map, marker);
                                 }
                             }
-                            if(coords['map_deparature']!=null & coords['map_destination']!=null){
-                                polyline=new kakao.maps.Polyline({
-                                    map:map,
-                                    path:[coords['map_deparature'],coords['map_destination']],
+                            if (coords['map_deparature'] != null & coords['map_destination'] != null) {
+                                polyline = new kakao.maps.Polyline({
+                                    map: map,
+                                    path: [coords['map_deparature'], coords['map_destination']],
                                     strokeWeight: 3, // 선의 두께입니다 
                                     strokeColor: '#db4040', // 선의 색깔입니다
                                     strokeOpacity: 1, // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
                                     strokeStyle: 'solid' // 선의 스타일입니다
                                 });
                                 var distance = Math.round(polyline.getLength()),
-                                    content='<div>'+distance+'</div>'
+                                    content = '<div>' + distance + '</div>'
 
-                                    //거리정보
-                                    var dis=document.getElementById("distance");
-                                    dis.value=distance+'m';  
+                                //거리정보
+                                var dis = document.getElementById("distance");
+                                dis.value = distance;
 
                             }
 
@@ -242,6 +318,22 @@
                     window.close();
                 }
             }).open();
+        }
+
+        function price_function() {
+            console.log("hi")
+            weight = document.getElementById("weight").value;
+            time = document.getElementById("time").value;
+
+            console.log(time)
+            console.log(weight)
+            if (time != "" & weight != "") {
+                var sum = weight * time * 4000;
+                document.getElementById("price_sum").value = sum;
+
+            }
+
+
         }
     </script>
 
