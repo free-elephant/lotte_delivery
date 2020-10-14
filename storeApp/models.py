@@ -17,4 +17,4 @@ class Good(models.Model):
     good_weight = models.FloatField()
 
     def __str__(self):
-        return self.good_name  # 함수는 문제없는듯
+        return self.good_name  # 함수는 문제없는0

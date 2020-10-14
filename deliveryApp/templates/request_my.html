@@ -52,10 +52,9 @@
 </head>
 
 <body>
-    <span>내 물건 배송</span>
-    <span>마켓 물건 배송</span>
+    내 물건 배송
     <br>
-    <form action="{% url 'request' %}" method="POST">
+    <form action="{% url 'request_my' %}" method="POST">
         {%csrf_token%}
 
         <div>
@@ -219,24 +218,15 @@
                     geocoder.addressSearch(data.address, function (results, status) {
                         // 정상적으로 검색이 완료됐으면
                         if (status === daum.maps.services.Status.OK) {
-                            console.log('0')
-
                             //지도 다 지우기
-                            console.log('1')
                             polyline.setMap(null);
-
-                            console.log('2')
                             infowindow.setMap(null);
-
-                            console.log('3')
-
                             marker.setMap(null);
 
 
                             var result = results[0]; //첫번째 결과의 값을 활용
 
                             // 지도를 보여준다. 
-                            console.log('4')
                             mapContainer.style.display = "block";
                             map.relayout();
 
