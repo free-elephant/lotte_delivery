@@ -1,9 +1,13 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect, JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404, redirect
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.contrib import auth
 
 from django.utils import timezone
 from .models import Delivery_my_stuff
+
+from storeApp.models import Goods, Store
+
+import json
 
 
 def main(request):
@@ -18,9 +22,9 @@ def deliver(request):
     return render(request, 'deliver.html')
 
 
-def request(request):
+def request_my(request):
     if request.method == "GET":
-        return render(request, 'request.html')
+        return render(request, 'request_my.html')
     elif request.method == "POST":
         d_stuff = Delivery_my_stuff()
         d_stuff.my_departure_lat = request.POST['deparature_lat']  # 위도
@@ -44,6 +48,61 @@ def request(request):
         d_stuff.my_content = request.POST['comment']
         d_stuff.save()
         return redirect('/')
+
+
+def request_market(request):
+    store = Store.objects.all()
+    goods_checked = []
+    print("in")
+    if request.method == "POST":
+        #     print("in")
+        #     market = request.POST['store']
+        #     goods_checked = request.POST['goods_checked']
+        #     print(goods_checked)
+        #     context={'market':market,'goods_checked':goods_checked}
+        return render(request, 'request_market.html')
+    # if request.is_ajax():
+    #     result_store_name=[]
+    #     search_word = request.GET['search_word']
+    #     print(search_word)
+    #     if search_word:
+    #         print('inininin')
+    #         result_store = Store.objects.filter(
+    #             store_name__icontains=search_word)
+    #         print(result_store)
+    #         result_store=list(result_store.values())
+
+    #         for i in range(0,len(result_store)):
+    #             result_store_name.append(result_store[i]['store_name'])
+
+    #         print(result_store_name)
+
+    #         if(len(result_store_name) == 0):
+    #             result_store_name = "등록된 카멧이 없습니다."
+    #             context = {'result_store': result_store}
+    #         else:
+
+    #             context = {'result_store': result_store_name}
+
+    #     return HttpResponse(json.dumps(context), content_type='application/json')
+    return render(request, 'request_market.html', {'store': store})
+
+
+def market(request):
+    store = Store.objects.all()
+    if request.method == "POST":
+        market_search_word = request.POST['market_search_q']
+        if market_search_word:
+            result_store = Store.objects.filter(
+                store_name__icontains=market_search_word)
+            return render(request, 'market.html', {'store': store, 'result_store': result_store})
+    return render(request, 'market.html', {'store': store})
+
+
+def market_detail(request, store_id):
+    store = get_object_or_404(Store, pk=store_id)
+    context = {'store': store}
+    return render(request, 'market_detail.html', context)
 
 
 def request2(request):

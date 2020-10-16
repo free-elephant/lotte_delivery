@@ -1,0 +1,49 @@
+<head>
+
+</head>
+
+
+
+<body>
+    <form action="{%url 'request_market'%}" method="post">
+        <input type="hidden" name="store" value="{{store.store_name}}">{{store.store_name}}
+
+
+        <br>
+        {%for stuff in store.store_goods.all%}
+        <input type="checkbox" name="goods_all" class="{{stuff.id}}" value="{{stuff.id}}" onclick="select_stuff()">
+        {{stuff.good_name}}
+        {{stuff.good_price}}
+        {{stuff.good_weight}}
+        <br>
+        {%endfor%}
+
+        <input type="hidden" name="goods_checked" id="goods_checked">
+
+
+
+        <input type="submit" onclick="select_finish()">
+    </form>
+
+
+    <a href="{%url 'market'%}">마켓 재설정</a>
+    <script>
+        function select_stuff() {
+            var goods_length = document.getElementsByName('goods_all').length;
+            var goods_input = []
+            goods_input = document.getElementById('goods_checked').value;
+            for (var i = 0; i < goods_length; i++) {
+                if (document.getElementsByName('goods_all')[i].checked == true) {
+                    console.log("in")
+                    var goods_check = document.getElementsByName('goods_all')[i].value
+                    goods_input = goods_input + goods_check + '/';
+                    console.log(goods_input);
+                }
+            }
+        }
+        function select_finish() {
+            window.close();
+
+        }
+    </script>
+</body>

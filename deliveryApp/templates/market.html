@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <form action="{%url 'market' %}" method="post">
+        {%csrf_token%}
+        <p>마켓이름을 검색해주세요:D</p>
+        <input type="text" name="market_search_q" id="market_search_one" placeholder="검색어를 입력하세요." value="">
+        <input type="submit" id="btn_search" value="검색">
+    </form>
+    <!-- {%if not result_store%}
+    <p>검색하신 마켓은 아직 등록되지 않았습니다.</p>
+    {%else%} -->
+    {%for s in result_store%}
+    <a href="{%url 'market_detail' s.id %}">{{s.store_name}}</a>
+    {%endfor%}
+    {%endif%}
+</body>
+
+</html>
