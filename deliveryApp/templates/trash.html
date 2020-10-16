@@ -1,4 +1,62 @@
 <script>
+    //#################################################################마크 표시부분 시작##############################################################
+    pos1 = new kakao.maps.LatLng(36.36024443564978, 127.39317209119733);
+    pos2 = new kakao.maps.LatLng(36.36235638929254, 127.40833590649049);
+    pos3 = new kakao.maps.LatLng(36.35485724173146, 127.40874237467911);
+    //pos1 = new kakao.maps.LatLng(35.85664412729865, 128.71591409783503);
+    //pos2 = new kakao.maps.LatLng(35.84343906780063, 128.7492747430529);
+    //pos3 = new kakao.maps.LatLng(35.84822862919346, 128.76190906797555);
+    addMarker(pos1);
+    addMarker(pos2);
+    addMarker(pos3);
+
+    markers.forEach(function (m) {
+        console.log("markers 확인 : " + m.getPosition())
+        console.log("==")
+    })
+
+    clickLine = new kakao.maps.Polyline({ //마크에 점표시 (첫번쨰마크)
+        map: map,
+        path: [pos1],
+        strokeWeight: 3,
+        strokeColor: '#db4040',
+        strokeOpacity: 1,
+        strokeStyle: 'solid'
+    });
+
+    displayCircleDot(pos1, 0);
+
+    //경유지점
+    var path = clickLine.getPath(); //두번째 마크
+    path.push(pos2);
+    clickLine.setPath(path);
+    var distance = Math.round(clickLine.getLength());
+    displayCircleDot(pos2, distance);
+
+
+    //도착지점
+    var path = clickLine.getPath(); // 세번째 마크
+    path.push(pos3);
+    clickLine.setPath(path);
+    var distance = Math.round(clickLine.getLength());
+    displayCircleDot(pos3, distance);
+
+    //마무리 (총 거리, 도보, 자전거표시해줌 )
+    if (dots[dots.length - 1].distance) {
+        dots[dots.length - 1].distance.setMap(null);
+        dots[dots.length - 1].distance = null;
+    }
+
+    var distance = Math.round(clickLine.getLength()),
+        content = getTimeHTML(distance);
+
+    showDistance(content, path[path.length - 1]);
+    //#################################################################마크 표시부분 끝##############################################################
+</script>
+
+<script>
+
+
     /*
     kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
         if (i < 3) {
@@ -18,9 +76,9 @@
                     map: map,
                     path: [clickPosition],
                     strokeWeight: 3,
-                    strokeColor: '#db4040', 
+                    strokeColor: '#db4040',
                     strokeOpacity: 1,
-                    strokeStyle: 'solid' 
+                    strokeStyle: 'solid'
                 });
 
                 displayCircleDot(clickPosition, 0);
@@ -76,7 +134,7 @@
     }
     */
     /*
-    function deleteCircleDot() { 
+    function deleteCircleDot() {
         var i;
 
         for (i = 0; i < dots.length; i++) {
