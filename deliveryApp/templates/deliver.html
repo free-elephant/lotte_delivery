@@ -120,14 +120,33 @@
     <option value="5000">5km</option>
 </select>
 
+{% for stuff in stuffs %}
+<h5>물건 : {{stuff.my_goods}} / {{stuff.my_price}}</h5>
+{% endfor %}
 
-<p>===== deliver 페이지 접속시 -> 버튼 3개가 있음 -> 1.현재위치기반 , 2. 네비게이션, 3. 반경 조절 select box</p>
-<p>1. 현재위치기반으로 반경 x km 안에 있는 마크 확인 + 반경 조절 <span style="color :red;"><strong>(완료)</strong></span></p>
-<p>2. 네비게이션? 출발위치와 도착위치의 반경 x km 안에 있는 마크 확인</p>
--> deliver 페이지에 들어
-<p>3. 반경조절 select box</p>
+<div id="stuff_dep_lat">
+    {% for stuff in stuffs.all %}
+    {{stuff.my_departure_lat}},
+    {% endfor %}
+</div>
 
+<div id="stuff_dep_lng">
+    {% for stuff in stuffs.all %}
+    {{stuff.my_departure_long}},
+    {% endfor %}
+</div>
 
+<div id="stuff_des_lat">
+    {% for stuff in stuffs.all %}
+    {{stuff.my_destination_lat}},
+    {% endfor %}
+</div>
+
+<div id="stuff_des_lng">
+    {% for stuff in stuffs.all %}
+    {{stuff.my_destination_long}},
+    {% endfor %}
+</div>
 
 <!-- 메뉴 selector-->
 <script>
@@ -262,13 +281,23 @@
         map.setCenter(locPosition);
     }
     // ----------------------------------------------------------gps끝----------------------------------------------------------
-</script>
 
-<script>
+    //지도에 DB 정보 넣는 부분 시작
+    var list_dep_lat = document.getElementById("stuff_dep_lat").innerText.split(',');
+    var list_dep_lng = document.getElementById("stuff_dep_lng").innerText.split(',');
+    var list_des_lat = document.getElementById("stuff_des_lat").innerText.split(',');
+    var list_des_lng = document.getElementById("stuff_des_lng").innerText.split(',');
 
 
-
-
+    for (var idx = 0; idx < list_dep_lat.length; idx++) {
+        var data_lat1 = list_dep_lat[idx];
+        var data_lng1 = list_dep_lng[idx];
+        var data_lat2 = list_des_lat[idx];
+        var data_lng2 = list_des_lng[idx];
+        addMarker(new kakao.maps.LatLng(data_lat1, data_lng1));
+        addMarker(new kakao.maps.LatLng(data_lat2, data_lng2));
+    }
+    //DB 정보 넣는 부분 끝
     //###################################반경 변경###################################
     $('#select_radius').click(function () {
         var select_radius = $('#select_radius').val()
@@ -280,7 +309,7 @@
             type: 'GET',
             dataType: 'json',
             success: function (response) { //ajax써서 값을 변경함
-                if (coords['map_deparature'] == null && coords['map_destination'] == null) {
+                if (coords['map_deparature'] == null && coords['map_destination'] == null && $("select_radius").val() == "0") {
                     alert("출발지/도착지/ 현재위치 선택 필요");
                     $("#select_radius").val("0");
                     return false;
@@ -362,7 +391,7 @@
         var marker = new kakao.maps.Marker({
             position: position
         });
-        marker.setMap(map);
+        //marker.setMap(map);
 
         // 생성된 마커를 배열에 추가합니다
         markers.push(marker);
@@ -410,7 +439,8 @@
             line.setPath(path);
             var dist = line.getLength();
             if (dist < ra) {
-                //console.log("시작 반경 안의 마크 : (" + marker.getPosition().getLat() + ", " + marker.getPosition().getLng() + ")");
+                marker.setMap(map);
+                console.log("시작 반경 안의 마크 : (" + marker.getPosition().getLat() + ", " + marker.getPosition().getLng() + ")");
                 markersInCircle.push(marker);
             }
         });
@@ -469,6 +499,8 @@
             line.setPath(path);
             var dist = line.getLength();
             if (dist < ra) {
+                marker.setMap(map);
+                console.log("시작 반경 안의 마크 : (" + marker.getPosition().getLat() + ", " + marker.getPosition().getLng() + ")");
                 markersInCircle.push(marker);
             }
         });
@@ -582,7 +614,7 @@
     function deleteCircle(position) {
         var ce;
         var ra;
-        var deleteMarkers = [];
+        var deleteMarkers = []; //삭제할 마커들을 담을 배열
         circles.forEach(function (circle) {
             var cLat = circle.getPosition().getLat().toFixed(7); // 위치가 같은데 위도 경도가 소수점 1,2 자리로 달라서 고정시켜버림
             var cLng = circle.getPosition().getLng().toFixed(7);
