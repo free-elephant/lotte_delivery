@@ -252,6 +252,7 @@
                 lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
             currentPosition = locPosition;
             map.setCenter(locPosition); //gps 위치로 이동
+            console.log("현재위치 : " + locPosition);
         });
 
     }
