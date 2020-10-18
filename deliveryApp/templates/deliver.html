@@ -85,11 +85,6 @@
 {% endblock scripts %}
 
 {% block content %}
-<p>===== deliver 페이지 접속시 -> 버튼 3개가 있음 -> 1.현재위치기반 , 2. 네비게이션, 3. 반경 조절 select box</p>
-<p>1. 현재위치기반으로 반경 x km 안에 있는 마크 확인 + 반경 조절 <span style="color :red;"><strong>(완료)</strong></span></p>
-<p>2. 네비게이션? 출발위치와 도착위치의 반경 x km 안에 있는 마크 확인</p>
--> deliver 페이지에 들어
-<p>3. 반경조절 select box</p>
 
 
 <input type="checkbox" onclick="current_location();" id="current_location" name="current_location" />현재위치
@@ -126,6 +121,11 @@
 </select>
 
 
+<p>===== deliver 페이지 접속시 -> 버튼 3개가 있음 -> 1.현재위치기반 , 2. 네비게이션, 3. 반경 조절 select box</p>
+<p>1. 현재위치기반으로 반경 x km 안에 있는 마크 확인 + 반경 조절 <span style="color :red;"><strong>(완료)</strong></span></p>
+<p>2. 네비게이션? 출발위치와 도착위치의 반경 x km 안에 있는 마크 확인</p>
+-> deliver 페이지에 들어
+<p>3. 반경조절 select box</p>
 
 
 
@@ -147,6 +147,8 @@
 <script>
     var geocoder = new daum.maps.services.Geocoder();
     var coords = new Array();
+    var destination_Bool = false;
+    var deparature_Bool = false;
     function my_Stuff_Map(id) {
         new daum.Postcode({
             oncomplete: function (data) {
@@ -162,36 +164,41 @@
                 //주소로 상세 정보를 검색
                 geocoder.addressSearch(data.address, function (results, status) {
                     if (status === daum.maps.services.Status.OK) {
+                        var result = results[0]; // 첫번쨰 결과값 활용
+
+                        if (id == "map_deparature") { // 시작점 저장
+                            coords['map_deparature'] = new daum.maps.LatLng(result.y, result.x);
+                            map.setCenter(coords['map_deparature']);
+                            deparature_Bool = true;
+                        }
+                        else {  //도착점 저장
+                            coords['map_destination'] = new daum.maps.LatLng(result.y, result.x);
+                            map.setCenter(coords['map_destination']);
+                            destination_Bool = true;
+                        }
                         deleteClickLine();
                         deleteInfoWindow();
                         deleteMarker();
                         deleteCircleDot();
                         deleteCircles();
                         deleteDistance();
-
-                        var result = results[0]; // 첫번쨰 결과값 활용
-
-                        if (id == "map_deparature") { // 시작점 저장
-                            coords['map_deparature'] = new daum.maps.LatLng(result.y, result.x);
-                            map.setCenter(coords['map_deparature']);
-                        }
-                        else {  //도착점 저장
-                            coords['map_destination'] = new daum.maps.LatLng(result.y, result.x);
-                            map.setCenter(coords['map_destination']);
-                        }
-
                         for (var i in coords) {
                             if (i == 'map_deparature') {
                                 addInfoWindow(coords[i], "시작점"); //인포윈도우 + 마커생성
-                                addCircle(coords['map_deparature']); //반경 원 생성
+                                changeCircle(coords['map_deparature'], 1000); //반경 원 생성
+                                console.log("시작점 생성");
+                                deparature_Bool = false;
                             }
-                            else if (i == 'map_destination') {
+                            if (i == 'map_destination') {
                                 addInfoWindow(coords[i], "도착점");
-                                addCircle(coords['map_destination']);
+                                changeCircle(coords['map_destination'], 1000);
+                                console.log("도착점 생성");
+                                destination_Bool = false;
                             }
                         }
 
                         if (coords['map_deparature'] != null & coords['map_destination'] != null) {
+                            $('#select_radius').val("0");
                             clickLine = new kakao.maps.Polyline({
                                 map: map,
                                 path: [coords['map_deparature'], coords['map_destination']],
@@ -272,19 +279,22 @@
             type: 'GET',
             dataType: 'json',
             success: function (response) { //ajax써서 값을 변경함
-                if ($('#current_location').is(':checked')) {
+                if (coords['map_deparature'] == null && coords['map_destination'] == null) {
+                    alert("출발지/도착지/ 현재위치 선택 필요");
+                    $("#select_radius").val("0");
+                    return false;
+                }
+                if (coords['map_deparature']) { //출발지 반경 변경
+                    console.log("출발지 반경 변경");
+                    changeCircle(coords['map_deparature'], response.radius);
+                }
+                if (coords['map_destination']) { //도착지 반경 변경
+                    console.log("도착지 반경 변경");
+                    changeCircle(coords['map_destination'], response.radius);
+                }
+                if ($('#current_location').is(':checked')) { // 현재위치 체크되있을때
                     console.log("현재위치에서 반경 바꿀떄");
                     changeCircle(currentPosition, response.radius);
-                }
-                else {
-                    deleteCircles();
-                    if (circles[0] == null) {
-                        alert("출발지/도착지/현재위치 선택필요");
-                        $('#select_radius').val("0");
-                        return;
-                    }
-                    changeCircle(circles[0].getPosition(), response.radius);
-                    changeCircle(circles[1].getPosition(), response.radius);
                 }
 
             },
@@ -358,16 +368,17 @@
     }
 
 
+
+
     function addInfoWindow(position, content) { // 마커와 그에 따른 인포윈도우 생성함
         var marker = new kakao.maps.Marker({
             position: position
         });
         marker.setMap(map);
         markers.push(marker);
-
         var infowindow = new kakao.maps.InfoWindow({
             position: position,
-            content: "<div>" + content + "</div>"
+            content: content
         });
         infowindows.push(infowindow);
         infowindow.open(map, marker);
