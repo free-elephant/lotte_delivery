@@ -19,7 +19,11 @@ def main(request):
 
 
 def deliver(request):
-    return render(request, 'deliver.html')
+    stuffs = Delivery_my_stuff.objects.all()
+    context={
+        "stuffs" : stuffs,
+    }
+    return render(request, 'deliver.html', context)
 
 
 def request_my(request):
