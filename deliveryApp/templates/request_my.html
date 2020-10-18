@@ -109,9 +109,40 @@
         물건 상세정보
         <input type="text" name="goods_detail">
         <br>
+        원하는 배송 날짜<input type="date" name="want_date">
+        <br>
+        원하는 배송 시간
+        <select id="want_time" name="want_time">
+            <option value="">시간 선택</option>
+            <option value="1">00~01</option>
+            <option value="2">01~02</option>
+            <option value="3">02~03</option>
+            <option value="4">03~04</option>
+            <option value="5">04~05</option>
+            <option value="6">05~06</option>
+            <option value="7">06~07</option>
+            <option value="8">07~08</option>
+            <option value="9">08~09</option>
+            <option value="10">09~10</option>
+            <option value="11">10~11</option>
+            <option value="12">11~12</option>
+            <option value="13">12~13</option>
+            <option value="14">13~14</option>
+            <option value="15">14~15</option>
+            <option value="16">15~16</option>
+            <option value="17">16~17</option>
+            <option value="18">17~18</option>
+            <option value="19">18~19</option>
+            <option value="20">19~20</option>
+            <option value="21">20~21</option>
+            <option value="22">21~22</option>
+            <option value="23">22~23</option>
+            <option value="24">23~24</option>
+        </select>
+        <br>
         제한시간
 
-        <select name="time" id="time" onclick="price_function()">
+        <select name="limited_time" id="limited_time" onclick="price_function()">
             <option value="">시간 선택</option>
             <option value="1">1시간 이내</option>
             <option value="2">2시간 이내</option>
@@ -313,7 +344,7 @@
         function price_function() {
             console.log("hi")
             weight = document.getElementById("weight").value;
-            time = document.getElementById("time").value;
+            time = document.getElementById("limited_time").value;
 
             console.log(time)
             console.log(weight)
