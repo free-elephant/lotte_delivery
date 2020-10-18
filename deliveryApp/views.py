@@ -37,8 +37,10 @@ def request_my(request):
         d_stuff.my_destination_addr = request.POST['destination_detail']
         d_stuff.my_destination_phone = request.POST['destination_phone']
 
+        d_stuff.my_date = request.POST['want_date']
+        d_stuff.my_time = request.POST['want_time']
         d_stuff.my_created = timezone.datetime.now()
-        d_stuff.my_limit_time = request.POST['time']
+        d_stuff.my_limit_time = request.POST['limited_time']
         d_stuff.my_goods = request.POST['goods_category_one']
         d_stuff.my_goodsinfo = request.POST['goods_detail']
 
@@ -48,6 +50,10 @@ def request_my(request):
         d_stuff.my_content = request.POST['comment']
         d_stuff.save()
         return redirect('/')
+
+
+def request_market2(request):
+    return render(request, 'request_market2.html')
 
 
 def request_market(request):
