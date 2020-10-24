@@ -4,6 +4,7 @@ from django.contrib import auth
 
 from django.utils import timezone
 from .models import Delivery_my_stuff
+from .models import Delivery_market
 
 from storeApp.models import Goods, Store
 
@@ -21,8 +22,10 @@ def main(request):
 
 def deliver(request):
     stuffs = Delivery_my_stuff.objects.all()
+    markets = Delivery_market.objects.all()
     context = {
         "stuffs": stuffs,
+        "markets":markets
     }
     return render(request, 'deliver.html', context)
 
@@ -33,7 +36,7 @@ def request_my(request):
     elif request.method == "POST":
         d_stuff = Delivery_my_stuff()
         d_stuff.my_departure_lat = request.POST['deparature_lat']  # 위도
-        d_stuff.my_departure_lng = request.POST['deparature_long']
+        d_stuff.my_departure_long = request.POST['deparature_long']
         d_stuff.my_departure_addr = request.POST['deparature_detail']
         d_stuff.my_departure_phone = request.POST['deparature_phone']
 
@@ -45,7 +48,6 @@ def request_my(request):
         d_stuff.my_date = request.POST['want_date']
         d_stuff.my_time = request.POST['want_time']
         d_stuff.my_created = timezone.datetime.now()
-        d_stuff.my_limit_time = request.POST['limited_time']
         d_stuff.my_goods = request.POST['goods_category_one']
         d_stuff.my_goodsinfo = request.POST['goods_detail']
 
