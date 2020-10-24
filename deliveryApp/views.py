@@ -59,22 +59,22 @@ def request_my(request):
 
 def request_market2(request):
     stores = Store.objects.all()
-    context = {'stores': stores}
+    print
     store_name_list = []
     storeLat_in_total = []
     if request.is_ajax():
         storeLat_in_radius = request.GET.getlist('storeLat_in_radius[]')
+        print(storeLat_in_radius)
         storeLang_in_radius = request.GET.getlist('storeLang_in_radius[]')
-        # for (0 in range(0, len(storeLat_in_radius))):
 
-        # storeLat_in_total = [storeLat_in_radius, storeLang_in_radius]
         print(storeLat_in_total)
         print(storeLat_in_radius)
         if(storeLat_in_radius):
             print("----")
             for storeLat, storeLang in zip(storeLat_in_radius, storeLang_in_radius):
+
                 result_store_lat = (Store.objects.filter(
-                    store_lat=storeLat, store_long=storeLang))
+                    store_lat=storeLat, store_lng=storeLang))
                 result_store_lat = list(result_store_lat.values())
                 store_name_list.append(result_store_lat[0]['store_name'])
             print(store_name_list)
@@ -82,12 +82,11 @@ def request_market2(request):
                 store_name_list = "등록된 가게가 없습니다."
                 context = {'store_name_list': store_name_list}
             else:
-
                 context = {'store_name_list': store_name_list}
 
             return HttpResponse(json.dumps(context), content_type='application/json')
 
-    return render(request, 'request_market2.html', context)
+    return render(request, 'request_market2.html', {'stores': stores})
 
 
 def request_market_stuff(request):
@@ -117,46 +116,60 @@ def request_market_stuff(request):
 
 def request_market_purchase(request):
     order = []
-    order_specific = []
-    order_all_market = []
-    order_all_stuff = []
-    order_all_count = []
-    order_stuff = []
-    order_market = []
+    order_lst = []
+    total_price = 0
+    total_weigth = 0
     if request.method == "POST":
         order_total = request.POST['order_total']
-        order = order_total.split(',')
-        for i in range(0, len(order)):
-            order_specific = order[i].split('-')
-            # store_goods.goods_name
-            # print(order_specific)
-            order_all_market.append(order_specific[0])
-            order_all_stuff.append(order_specific[1])
-            order_all_count.append(order_specific[2])
-            order_market_one = Store.objects.filter(
-                store_name=order_specific[0])
-            order_market.append(order_market_one)
-            print(order_market[0][0].store_name)
+        orders = order_total.split(',')
+        print(orders)
+        for order in orders:
+            market, stuff, count = order.split('-')
+            temp_lst = [market, stuff, count]
+            order_lst.append(temp_lst)
 
-            order_stuff_one = Goods.objects.filter(
-                goods_name=order_specific[1])
-            order_stuff.append(order_stuff_one)
-            print(order_stuff[0][0].goods_name)
+            specific_stuff = Goods.objects.filter(
+                goods_name=stuff)
+            for i in specific_stuff:
+                i.goods_price = i.goods_price * count
+                i.goods_weight = aint(i.goods_weight) * count
+                total_price += i.goods_price
+                total_weigth += i.goods_weight
 
-            # order_stuff.append(order_stuff_one)
-            # print(order_stuff)
-            # print("-------------")
+                # stuff 값에 접근해서 알아내기
+            # 가격 계산
+            # 무게 계산
+        print(total_price)
+        print(total_weigth)
+        # for i in range(0, len(order)):
+        #     order_specific = order[i].split('-')
+
+        #     order_all_market.append(order_specific[0])
+        #     order_all_stuff.append(order_specific[1])
+        #     order_all_count.append(order_specific[2])
+
+        #     order_market_one = Store.objects.filter(
+        #         store_name=order_specific[0])
+        #     order_market.append(order_market_one)
+        #     order_stuff_one = Goods.objects.filter(
+        #         goods_name=order_specific[1])
+        # for stuff in order_stuff_one:
+        #     stuff.id
+        # print("-------------")
         # print(order[0])
-        print("--------------------")
-        print(order_market[0][0].store_name)
-        print(order_market[1][0].store_name)
 
         context = {
-            'order_market': order_market,
-            'order_stuff': order_stuff
+            #     'order_all_market': order_all_market,
+            #     'order_all_stuff': order_all_stuff
+            'order_lst': order_lst
         }
         return render(request, 'request_market_purchase.html', context)
     return render(request, 'request_market2.html')
+
+
+def request_market_complete(request):
+    # purchase_total
+    return render(request, 'request_market_complete.html')
 
 
 def request_market(request):

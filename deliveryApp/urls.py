@@ -13,6 +13,8 @@ urlpatterns = [
 
     path('request_market_purchase/', views.request_market_purchase,
          name="request_market_purchase"),
+    path('request_market_complete/', views.request_market_complete,
+         name="request_market_complete"),
 
     path('request2/', views.request2, name="request2"),
     path('request_candidate/', views.request_candidate, name="request_candidate"),

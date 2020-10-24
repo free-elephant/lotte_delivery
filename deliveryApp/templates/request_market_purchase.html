@@ -1,18 +1,19 @@
 <p>구매내역</p>
 
-{%for i in order_market%}
-{%for n in i.all%}
-<div>
-    {{n.store_name}}
-    {{n.store_phone}}
-    {%for s in order_stuff%}
-    {{s.goods_name}}
-    {%endfor%}
-</div>
-{%endfor%}
-{%endfor%}
-<br>
 
+<form action="{%url 'request_market_complete'%}" method="POST">
+    {%csrf_token%}
+    {%for order in order_lst%}
+    {%for o in order%}
+    <p>{{o}}</p>
+    {%endfor%}
+    {%endfor%}
+
+
+
+    <input name="purchase_total" id="purchase_total" value="{{order_lst}}" display="hidden">
+    <input type="submit" value="제출">
+</form>
 
 <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -22,4 +23,5 @@
 
 
 <script>
+
 </script>

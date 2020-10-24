@@ -28,15 +28,15 @@
     <form action="{% url 'request_market_purchase' %}" method="POST">
         {%csrf_token%}
 
-        <div id="store_lat" style="display:none">
+        <div id="store_lat">
             {% for store in stores %}
             {{store.store_lat}},
             {%endfor%}
         </div>
 
-        <div id="store_lang" style="display:none">
+        <div id="store_lng">
             {% for store in stores %}
-            {{store.store_long}},
+            {{store.store_lng}},
             {%endfor%}
         </div>
 
@@ -127,9 +127,9 @@
         var list_store_lang = []; //가게 경도 리스트
 
         var list_store_lat = document.getElementById("store_lat").innerText.split(',');
-        var list_store_lang = document.getElementById("store_lang").innerText.split(',');
+        var list_store_lang = document.getElementById("store_lng").innerText.split(',');
 
-        console.log(list_store_lang.length)
+        console.log(list_store_lang)
         for (var num = 0; num < list_store_lat.length - 1; num++) {
             var one_store_lat = list_store_lat[num].replace(" ", "");
             var one_store_lang = list_store_lang[num].replace(" ", "");
@@ -184,6 +184,8 @@
             });
 
         }
+
+
         //---------물품 선택시바 바구니 넣기 -----
 
         var exist_check = []; // 들어있던 상품인지 알기 위한 리스트
@@ -204,9 +206,7 @@
                 var selected_stuff_of_market = selected_stuffOfMarket.split(',');
                 var stuff = selected_stuff_of_market[0];
                 var market = selected_stuff_of_market[1];
-                var selected_stuff_list = [];
-                selected_stuff_list.push(stuff);
-                selected_stuff_list.push(market);
+
 
                 var ul = document.createElement('ul');
                 var li_market = document.createElement('li');
@@ -220,7 +220,7 @@
 
                 ul.className = "ul_select_total"; // 향후 css를 위함
                 li_stuff.innerHTML = stuff;
-                li_stuff.className = "stuff";
+
                 li_price.innerHTML = selected_stuffOfMarket_price;
                 li_market.innerHTML = market;
                 li_delete.innerHTML = "X";
@@ -279,6 +279,10 @@
 
         function delete_selected_stuff(select_total_delete) {
             var selected_delete = select_total_delete.parentNode;
+            var count_id = selected_delete.childNodes[3].id
+            const delete_count_id = exist_check.indexOf(count_id)
+            exist_check.splice(delete_count_id, 1);
+            console.log(selected_delete.childNodes[3].id)
             while (selected_delete.hasChildNodes()) {
                 selected_delete.removeChild(selected_delete.firstChild);
             }
@@ -374,7 +378,7 @@
 
 
                             var line = new kakao.maps.Polyline();
-                            console.log(selected_store_markers[1].getPosition())
+                            //console.log(selected_store_markers[0].getPosition())
                             selected_store_markers.forEach(function (markers) { // 시작원의 반경과 원의중심점과 마커의 거리를 구함. 반경>마커 : 원의 내부 / 반경<마커 : 원의 외부
                                 console.log(markers)
                                 var path = [markers.getPosition(), ce];
