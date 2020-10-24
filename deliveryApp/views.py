@@ -116,9 +116,12 @@ def request_market_stuff(request):
 
 def request_market_purchase(request):
     order = []
-    order_lst = []
-    total_price = 0
-    total_weigth = 0
+    order_lst = []  # market, stuff, count 분리된 것을 list에 넣어주기
+
+    # store_lat_list = []  # 위도
+    # store_lng_list = []  # 경도
+    total_price = 0  # 전체 가격
+    total_weigth = 0  # 전체 무게
     if request.method == "POST":
         order_total = request.POST['order_total']
         orders = order_total.split(',')
@@ -128,47 +131,44 @@ def request_market_purchase(request):
             temp_lst = [market, stuff, count]
             order_lst.append(temp_lst)
 
+            # 마켓 위도 경도 구하기
+            # order_market_one = Store.objects.filter(
+            #     store_name=market)
+            # for m in order_market_one:
+            #     store_lat_list.append(m.store_lat)
+            #     store_lng_list.append(m.store_lng)
+
+            # stuff 값에 접근해서 알아내기 - 가격, 무게 계산
             specific_stuff = Goods.objects.filter(
                 goods_name=stuff)
             for i in specific_stuff:
-                i.goods_price = i.goods_price * count
-                i.goods_weight = aint(i.goods_weight) * count
+                i.goods_price = i.goods_price * int(count)
+                i.goods_weight = i.goods_weight * int(count)
                 total_price += i.goods_price
                 total_weigth += i.goods_weight
 
-                # stuff 값에 접근해서 알아내기
-            # 가격 계산
             # 무게 계산
         print(total_price)
         print(total_weigth)
-        # for i in range(0, len(order)):
-        #     order_specific = order[i].split('-')
-
-        #     order_all_market.append(order_specific[0])
-        #     order_all_stuff.append(order_specific[1])
-        #     order_all_count.append(order_specific[2])
-
-        #     order_market_one = Store.objects.filter(
-        #         store_name=order_specific[0])
-        #     order_market.append(order_market_one)
-        #     order_stuff_one = Goods.objects.filter(
-        #         goods_name=order_specific[1])
-        # for stuff in order_stuff_one:
-        #     stuff.id
-        # print("-------------")
-        # print(order[0])
 
         context = {
-            #     'order_all_market': order_all_market,
-            #     'order_all_stuff': order_all_stuff
-            'order_lst': order_lst
+            'order_lst': order_lst,
+            'total_price': total_price,
+            'total_weigth': total_weigth
+
         }
         return render(request, 'request_market_purchase.html', context)
     return render(request, 'request_market2.html')
 
 
 def request_market_complete(request):
-    # purchase_total
+    if request.method == "POST":
+        purchase_total = request.POST['purchase_total']
+        purchase_things = purchase_total.split(',')
+
+        for thing in purchase_things:
+            market, stuff, count = thing.split('-')
+
     return render(request, 'request_market_complete.html')
 
 
