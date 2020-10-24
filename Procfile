@@ -1,1 +1,1 @@
-web: gunicorn lotte_delivery.wsgi --log-file -
+web: gunicorn deliveryProject.wsgi --log-file -
