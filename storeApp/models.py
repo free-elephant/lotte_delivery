@@ -11,6 +11,9 @@ class Store(models.Model):
     store_goods = models.ManyToManyField(
         'Goods', related_name='goods', blank=True)
 
+    def __str__(self):
+        return self.store_name
+
 
 class Goods(models.Model):
     goods_name = models.CharField(max_length=30, null=True)

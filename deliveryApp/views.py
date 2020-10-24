@@ -33,7 +33,7 @@ def request_my(request):
     elif request.method == "POST":
         d_stuff = Delivery_my_stuff()
         d_stuff.my_departure_lat = request.POST['deparature_lat']  # 위도
-        d_stuff.my_departure_long = request.POST['deparature_long']
+        d_stuff.my_departure_lng = request.POST['deparature_long']
         d_stuff.my_departure_addr = request.POST['deparature_detail']
         d_stuff.my_departure_phone = request.POST['deparature_phone']
 

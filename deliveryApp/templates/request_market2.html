@@ -332,9 +332,11 @@
 
         function mart_radius() {
             new daum.Postcode({
-                oncomplete: function (data) {
-                    var addr = data.address; // 최종 주소 변수
 
+                oncomplete: function (data) {
+                    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1")
+                    var addr = data.address; // 최종 주소 변수
+                    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1")
                     // 주소 정보를 해당 필드에 넣는다.
                     document.getElementById("selected_mart_address").value = addr;
                     // 주소로 상세 정보를 검색

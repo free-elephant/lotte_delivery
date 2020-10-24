@@ -24,6 +24,7 @@ class Delivery_my_stuff(models.Model):  # 내 물건 배송
     my_weigth = models.FloatField()  # 상품 무게
     my_distance = models.IntegerField()  # 상품 거리
     my_price = models.IntegerField()  # 상품 가격
+
     my_content = models.CharField(max_length=30)  # 상품
 
 
@@ -67,15 +68,12 @@ class Delivery_market(models.Model):  # 가게물건 배송
     mar_destination_addr = models.CharField(max_length=100)  # 도착지 상세주소
     mar_destination_phone = models.IntegerField()  # 도착지 전화번호
 
-    mar_item = models.CharField(max_length=100)  # 아이템
-
-    mar_date = models.DateField()  # 날짜 설정
+    mar_date = models.DateField(blank=True, null=True)  # 날짜 설정
     mar_time = models.CharField(max_length=20)  # 시간 설정
 
     mar_created = models.DateTimeField(
         auto_now_add=True, blank=True, null=True)  # 현재 시간
-    mar_limit_time = models.CharField(
-        max_length=100, blank=True, null=True)  # 제한 시간
+
     mar_weight = models.FloatField()  # 물건 무게
     mar_distance = models.IntegerField()  # 출발지-도착지 거리
     mar_price = models.IntegerField()  # 배송비
