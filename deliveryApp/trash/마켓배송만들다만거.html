@@ -161,38 +161,111 @@
     {{stuff.my_goods}},
     {% endfor %}
 </div>
-<div id="stuff_date">
-    {% for stuff in stuffs.all %}
-    {{stuff.my_date}},
+<!-- 위 : 내물건배송 // 아래 : 마켓물건배송 -->
+<!-- <div id="market_dep_lat">
+    {% for market in markets.all %}
+    {{market.mar_departure_lat}}
     {% endfor %}
 </div>
-<div id="stuff_time">
-    {% for stuff in stuffs.all %}
-    {{stuff.my_time}},
+
+<div id="market_dep_long">
+    {% for market in markets.all %}
+    {{market.mar_departure_long}}
     {% endfor %}
 </div>
-<div id="stuff_weigth">
-    {% for stuff in stuffs.all %}
-    {{stuff.my_weigth}},
+
+<div id="market_dep_addr">
+    {% for market in markets.all %}
+    {{market.mar_departure_addr}}
     {% endfor %}
 </div>
-<div id="stuff_price">
-    {% for stuff in stuffs.all %}
-    {{stuff.my_price}},
+
+<div id="market1_dep_lat">
+    {% for market in markets.all %}
+    {{market.mar1_departure_lat}}
     {% endfor %}
 </div>
+
+<div id="market1_dep_long">
+    {% for market in markets.all %}
+    {{market.mar1_departure_long}}
+    {% endfor %}
+</div>
+
+<div id="market1_dep_addr">
+    {% for market in markets.all %}
+    {{market.mar1_departure_addr}}
+    {% endfor %}
+</div>
+
+<div id="market2_dep_lat">
+    {% for market in markets.all %}
+    {{market.mar2_departure_lat}}
+    {% endfor %}
+</div>
+
+<div id="market2_dep_long">
+    {% for market in markets.all %}
+    {{market.mar2_departure_long}}
+    {% endfor %}
+</div>
+
+<div id="market2_dep_addr">
+    {% for market in markets.all %}
+    {{market.mar2_departure_addr}}
+    {% endfor %}
+</div>
+
+
+<div id="market3_dep_lat">
+    {% for market in markets.all %}
+    {{market.mar3_departure_lat}}
+    {% endfor %}
+</div>
+
+<div id="market3_dep_long">
+    {% for market in markets.all %}
+    {{market.mar3_departure_long}}
+    {% endfor %}
+</div>
+
+<div id="market3_dep_addr">
+    {% for market in markets.all %}
+    {{market.mar3_departure_addr}}
+    {% endfor %}
+</div>
+
+<div id="market_des_lat">
+    {% for market in markets.all %}
+    {{market.mar_destination_lat}}
+    {% endfor %}
+</div>
+
+<div id="market_des_long">
+    {% for market in markets.all %}
+    {{market.mar_destination_long}}
+    {% endfor %}
+</div>
+
+<div id="market_des_addr">
+    {% for market in markets.all %}
+    {{market.mar_destination_addr}}
+    {% endfor %}
+</div> -->
 <br>
 내용이 들어갈 div 티그
 <div id="current_div"></div>
 <div id="start_div"></div>
 <div id="end_div"></div>
 -----------------------------------------------------------
+<!-- <div id="dep_div"></div>
+<div id="dep1_div"></div>
+<div id="dep2_div"></div>
+<div id="dep3_div"></div>
+<div id="des_div"></div> -->
 <!----------------------------------------------------------- 지도 script ----------------------------------------------------------------------->
 
 <script>
-    //  var startAddr;
-    //  var endAddr;
-
     var container = document.getElementById('map');
     var options = {
         center: new kakao.maps.LatLng(33.450701, 126.570667),
@@ -208,6 +281,14 @@
 
     let start_markers = [];
     let end_markers = [];
+
+
+    /* 마켓배송
+    let dep_markers = []; // 각 의뢰마다 첫번째 가게 마커들
+    let dep1_markers = [];// 각 의뢰마다 두번째 가게 마커들
+    let dep2_markers = [];// 각 의뢰마다 세번째 가게 마커들
+    let dep3_markers = [];// 각 의뢰마다 네번째 가게 마커들
+    let des_markers = [];// 각 의뢰마다 도착지 가게 마커들*/
 
     let deparature_markers = []; // 출발지 안에 있는 마커들
     let destination_markers = []; // 도착지 안에 있는 마커들
@@ -253,42 +334,80 @@
     var list_dep_lat = document.getElementById("stuff_dep_lat").innerText.split(',');
     var list_dep_lng = document.getElementById("stuff_dep_lng").innerText.split(',');
     var list_dep_addr = document.getElementById("stuff_dep_addr").innerText.split(',');
-
     var list_des_lat = document.getElementById("stuff_des_lat").innerText.split(',');
     var list_des_lng = document.getElementById("stuff_des_lng").innerText.split(',');
     var list_des_addr = document.getElementById("stuff_des_addr").innerText.split(',');
-
     var list_goods = document.getElementById("stuff_goods").innerText.split(',');
-    var list_date = document.getElementById("stuff_date").innerText.split(',');
-    var list_time = document.getElementById("stuff_time").innerText.split(',');
-    var list_weigth = document.getElementById("stuff_weigth").innerText.split(',');
-    var list_price = document.getElementById("stuff_price").innerText.split(',');
+
+    /* var list_mar1_lat = document.getElementById("market_dep_lat").innerText.split(','); 마켓배송
+    var list_mar1_lng = document.getElementById("market_dep_long").innerText.split(',');
+    var list_mar1_addr = document.getElementById("market_dep_addr").innerText.split(',');
+
+    var list_mar2_lat = document.getElementById("market1_dep_lat").innerText.split(',');
+    var list_mar2_lng = document.getElementById("market1_dep_long").innerText.split(',');
+    var list_mar2_addr = document.getElementById("market1_dep_addr").innerText.split(',');
+
+    var list_mar3_lat = document.getElementById("market2_dep_lat").innerText.split(',');
+    var list_mar3_lng = document.getElementById("market2_dep_long").innerText.split(',');
+    var list_mar3_addr = document.getElementById("market2_dep_addr").innerText.split(',');
+
+    var list_mar4_lat = document.getElementById("market3_dep_lat").innerText.split(',');
+    var list_mar4_lng = document.getElementById("market3_dep_long").innerText.split(',');
+    var list_mar4_addr = document.getElementById("market3_dep_addr").innerText.split(',');
+
+    var list_mar5_lat = document.getElementById("market_des_lat").innerText.split(',');
+    var list_mar5_lng = document.getElementById("market_des_long").innerText.split(',');
+    var list_mar5_addr = document.getElementById("market_des_addr").innerText.split(',');
+
+    for (var idx = 0; idx < list_mar1_lat.length; idx++) {
+        var data_lat1 = list_mar1_lat[idx];
+        var data_lng1 = list_mar1_lng[idx];
+        var data_addr1 = list_mar1_addr[idx];
+
+        var data_lat2 = list_mar2_lat[idx];
+        var data_lng2 = list_mar2_lng[idx];
+        var data_addr2 = list_mar2_addr[idx];
+
+        var data_lat3 = list_mar3_lat[idx];
+        var data_lng3 = list_mar3_lng[idx];
+        var data_addr3 = list_mar3_addr[idx];
+
+        var data_lat4 = list_mar4_lat[idx];
+        var data_lng4 = list_mar4_lng[idx];
+        var data_addr4 = list_mar4_addr[idx];
+
+        var data_lat4 = list_mar5_lat[idx];
+        var data_lng4 = list_mar5_lng[idx];
+        var data_addr4 = list_mar5_addr[idx];
+
+        var market1 = new kakao.maps.LatLng(data_lat1, data_lng1);
+        var market2 = new kakao.maps.LatLng(data_lat2, data_lng2);
+        var market3 = new kakao.maps.LatLng(data_lat3, data_lng3);
+        var market4 = new kakao.maps.LatLng(data_lat4, data_lng4);
+        var market5 = new kakao.maps.LatLng(data_lat5, data_lng5);
+
+        addMarker(market1, data_addr)
+    } */
+
 
     for (var idx = 0; idx < list_dep_lat.length; idx++) {
         var data_lat1 = list_dep_lat[idx];
         var data_lng1 = list_dep_lng[idx];
-        var data_addr1 = list_dep_addr[idx];
-
         var data_lat2 = list_des_lat[idx];
         var data_lng2 = list_des_lng[idx];
-        var data_addr2 = list_des_addr[idx];
-
         var data_goods = list_goods[idx];
-        var data_date = list_date[idx];
-        var data_time = list_time[idx];
-        var data_weigth = list_weigth[idx];
-        var data_price = list_price[idx];
-
+        var data_addr1 = list_dep_addr[idx];
+        var data_addr2 = list_des_addr[idx];
         var start = new kakao.maps.LatLng(data_lat1, data_lng1);
         var end = new kakao.maps.LatLng(data_lat2, data_lng2);
-        addMarker(start, data_addr1, data_goods, data_date, data_time, data_weigth, data_price); //위도경도 ㅡ 
-        addMarker(end, data_addr2, data_goods, data_date, data_time, data_weigth, data_price);
+        addMarker(start, data_goods, data_addr1); //위도경도 ㅡ 
+        addMarker(end, data_goods, data_addr2);
         start_markers.push(start);
         end_markers.push(end);
     }
     //DB 정보 넣는 부분 끝
-    function addMarker(position, addr, goods, date, time, weigth, price) { // position의 마커 정보를 markers 안에 넣어줌
-        var arr = new Array(addr, goods, date, time, weigth, price);
+    function addMarker(position, goods, addr) { // position의 마커 정보를 markers 안에 넣어줌
+        var arr = new Array(goods, addr);]
         var marker = new kakao.maps.Marker({
             position: position,
             title: arr
@@ -574,7 +693,7 @@
 
         ////////
         if (location == "current") {
-            current_inner.innerHTML = "<br>" + "===========현재위치 반경 안의 마크============ " + "<br>";
+            current_inner.innerHTML = "<br>" + "현재위치 반경 안의 마크 : " + "<br>";
             var line1 = new kakao.maps.Polyline();
             var line2 = new kakao.maps.Polyline();
             for (var i = 0; i < end_markers.length - 1; i++) {
@@ -606,47 +725,14 @@
                             e_title = marker.getTitle();
                         }
                     });
-                    var start_list = s_title.split(',')
-                    var end_list = e_title.split(',')
 
-                    function fetchItems(result) {
-                        return new Promise(function (resolve, reject) {
-                            var items = result[0].address.address_name;
-                            resolve(items)
-                        });
-                    }
-
-                    var callback1 = async function (result, status) {
-                        if (status === kakao.maps.services.Status.OK) {
-                            var startAddr = await fetchItems(result)
-                            current_inner.innerHTML = current_inner.innerHTML + " " + startAddr + " ";
-
-                            start_list.forEach(function (start) {
-                                current_inner.innerHTML = current_inner.innerHTML + start + " / ";
-                            });
-                            current_inner.innerHTML = current_inner.innerHTML + "<br>" + "(" + s.getPosition().getLat() + ", " + s.getPosition().getLng() + ")" + "<br>";
-                        }
-                    };
-
-                    var callback2 = async function (result, status) {
-                        if (status === kakao.maps.services.Status.OK) {
-                            var endAddr = await fetchItems(result)
-                            current_inner.innerHTML = current_inner.innerHTML + " " + endAddr + " ";
-
-                            end_list.forEach(function (end) {
-                                current_inner.innerHTML = current_inner.innerHTML + end + " / ";
-                            });
-                            current_inner.innerHTML = current_inner.innerHTML + "<br>" + "(" + e.getPosition().getLat() + ", " + e.getPosition().getLng() + ")" + "<br>";
-                        }
-                    };
-
-                    geocoder.coord2Address(s.getPosition().getLng(), s.getPosition().getLat(), callback1);
-                    geocoder.coord2Address(e.getPosition().getLng(), e.getPosition().getLat(), callback2);
+                    current_inner.innerHTML = current_inner.innerHTML + s_title + "<br>" + "(" + s.getPosition().getLat() + ", " + s.getPosition().getLng() + ")" + "<br>";
+                    current_inner.innerHTML = current_inner.innerHTML + e_title + "<br>" + "(" + e.getPosition().getLat() + ", " + e.getPosition().getLng() + ")" + "<br>";
                 }
             }
         }
         else if (location == "deparature") {
-            start_inner.innerHTML = "<br>" + "============출발지 반경 안의 마크==========" + "<br>";
+            start_inner.innerHTML = "<br>" + "출발지 반경 안의 마크 : ";
             var line1 = new kakao.maps.Polyline();
             var line2 = new kakao.maps.Polyline();
             for (var i = 0; i < start_markers.length - 1; i++) {
@@ -678,47 +764,13 @@
                         }
                     });
 
-                    var start_list = s_title.split(',')
-                    var end_list = e_title.split(',')
-
-                    function fetchItems(result) {
-                        return new Promise(function (resolve, reject) {
-                            var items = result[0].address.address_name;
-                            resolve(items)
-                        });
-                    }
-
-                    var callback1 = async function (result, status) {
-                        if (status === kakao.maps.services.Status.OK) {
-                            var startAddr = await fetchItems(result)
-                            start_inner.innerHTML = start_inner.innerHTML + " " + startAddr + " ";
-
-                            start_list.forEach(function (start) {
-                                start_inner.innerHTML = start_inner.innerHTML + start + " / ";
-                            });
-                            start_inner.innerHTML = start_inner.innerHTML + "<br>" + "(" + s.getPosition().getLat() + ", " + s.getPosition().getLng() + ")" + "<br>";
-                        }
-                    };
-
-                    var callback2 = async function (result, status) {
-                        if (status === kakao.maps.services.Status.OK) {
-                            var endAddr = await fetchItems(result)
-                            start_inner.innerHTML = start_inner.innerHTML + " " + endAddr + " ";
-
-                            end_list.forEach(function (end) {
-                                start_inner.innerHTML = start_inner.innerHTML + end + " / ";
-                            });
-                            start_inner.innerHTML = start_inner.innerHTML + "<br>" + "(" + e.getPosition().getLat() + ", " + e.getPosition().getLng() + ")" + "<br>";
-                        }
-                    };
-
-                    geocoder.coord2Address(s.getPosition().getLng(), s.getPosition().getLat(), callback1);
-                    geocoder.coord2Address(e.getPosition().getLng(), e.getPosition().getLat(), callback2);
+                    start_inner.innerHTML = start_inner.innerHTML + s_title + "<br>" + "(" + s.getPosition().getLat() + ", " + s.getPosition().getLng() + ")" + "<br>";
+                    start_inner.innerHTML = start_inner.innerHTML + e_title + "<br>" + "(" + e.getPosition().getLat() + ", " + e.getPosition().getLng() + ")" + "<br>";
                 }
             }
         }
         else if (location == "destination") {
-            end_inner.innerHTML = "<br>" + "========도착지 반경 안의 마크=============" + "<br>";
+            end_inner.innerHTML = "<br>" + "도착지 반경 안의 마크 : ";
             var line1 = new kakao.maps.Polyline();
             var line2 = new kakao.maps.Polyline();
             for (var i = 0; i < end_markers.length - 1; i++) {
@@ -752,42 +804,8 @@
                         }
                     });
 
-                    var start_list = s_title.split(',')
-                    var end_list = e_title.split(',')
-
-                    function fetchItems(result) {
-                        return new Promise(function (resolve, reject) {
-                            var items = result[0].address.address_name;
-                            resolve(items)
-                        });
-                    }
-
-                    var callback1 = async function (result, status) {
-                        if (status === kakao.maps.services.Status.OK) {
-                            var startAddr = await fetchItems(result)
-                            end_inner.innerHTML = end_inner.innerHTML + " " + startAddr + " ";
-
-                            start_list.forEach(function (start) {
-                                end_inner.innerHTML = end_inner.innerHTML + start + " / ";
-                            });
-                            end_inner.innerHTML = end_inner.innerHTML + "<br>" + "(" + s.getPosition().getLat() + ", " + s.getPosition().getLng() + ")" + "<br>";
-                        }
-                    };
-
-                    var callback2 = async function (result, status) {
-                        if (status === kakao.maps.services.Status.OK) {
-                            var endAddr = await fetchItems(result)
-                            end_inner.innerHTML = end_inner.innerHTML + " " + endAddr + " ";
-
-                            end_list.forEach(function (end) {
-                                end_inner.innerHTML = end_inner.innerHTML + end + " / ";
-                            });
-                            end_inner.innerHTML = end_inner.innerHTML + "<br>" + "(" + e.getPosition().getLat() + ", " + e.getPosition().getLng() + ")" + "<br>";
-                        }
-                    };
-
-                    geocoder.coord2Address(s.getPosition().getLng(), s.getPosition().getLat(), callback1);
-                    geocoder.coord2Address(e.getPosition().getLng(), e.getPosition().getLat(), callback2);
+                    end_inner.innerHTML = end_inner.innerHTML + s_title + "<br>" + "(" + s.getPosition().getLat() + ", " + s.getPosition().getLng() + ")" + "<br>";
+                    end_inner.innerHTML = end_inner.innerHTML + e_title + "<br>" + "(" + e.getPosition().getLat() + ", " + e.getPosition().getLng() + ")" + "<br>";
                 }
             }
         }
