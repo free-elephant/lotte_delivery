@@ -5,6 +5,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        #layout_of_marketStuff {
+            display: flex;
+            width: 100%;
+
+        }
+
+        #category_all {
+
+            flex: 30%;
+        }
+
+        #stuff_all {
+            flex: 70%;
+        }
+    </style>
 </head>
 
 <body>
@@ -12,20 +28,198 @@
     <form action="{% url 'request_market2' %}" method="POST">
         {%csrf_token%}
 
-        <input type="text" id="sample5_address" placeholder="주소">
-        <input type="button" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
-        <div id="map" style="width:300px;height:300px;margin-top:10px;"></div>
+        <div id="store_lat" style="display:none">
+            {% for store in stores %}
+            {{store.store_lat}},
+            {%endfor%}
+        </div>
+
+        <div id="store_lang" style="display:none">
+            {% for store in stores %}
+            {{store.store_long}},
+            {%endfor%}
+        </div>
+
+
+
+        <input type="text" id="selected_mart_address" placeholder="주소">
+        <input type="button" onclick="mart_radius()" value="주소 검색"><br>
+        <div id="map" style="width:100%;height:300px;margin-top:10px;"></div>
+
+        <p>받아오기</p>
+
+        <div id="store_all">
+            <span id="store0" class="store" onclick="specific_mart(this.value)"></span>
+            <span id="store1" class="store" onclick="specific_mart(this.value)"></span>
+            <span id="store2" class="store" onclick="specific_mart(this.value)"></span>
+            <span id="store3"></span>
+        </div>
+        <br>
+        <br>
+        <div id="layout_of_marketStuff">
+            <div id="stuff_all">
+
+                <!-- <button type="button" onclick="" style="width:30px"> -->
+                <div onclick="selected_stuff(this.id)" id="0">
+                    <div id="stuff0" class="stuff"></div>
+                    <div id="stuff_price0" class="stuff"></div>
+                </div>
+                <!-- </button> -->
+                <div id="stuff1" class="stuff"></div>
+                <div id="stuff_price1" class="stuff"></div>
+
+                <div id="stuff2" class="stuff"></div>
+                <div id="stuff_price2" class="stuff"></div>
+
+                <div id="stuff3"></div>
+                <div id="stuff_price3"></div>
+
+                <div id="stuff4"></div>
+                <div id="stuff_price4"></div>
+
+                <div id="stuff5"></div>
+                <div id="stuff_price5"></div>
+            </div>
+            <br>
+            <div id="category_all">
+                <div id="category0" class="category"></div>
+                <div id="category1" class="category"></div>
+                <div id="category2" class="category"></div>
+                <div id="category3" class="category"></div>
+                <div id="category4" class="category"></div>
+                <div id="category5" class="category"></div>
+            </div>
+
+
+
+        </div>
+
+        <div>
+            선택된 물건
+            <div id="select_total">
+
+                <!-- <div id="selected_market0"></div>
+                <div id="selected_stuff0"></div> -->
+                <!-- <div onclick="delete_selected_stuff(this.id)" id="0" class="button0">
+                </div> -->
+            </div>
+        </div>
     </form>
 
-    <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script type="text/javascript"
-        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f92e2590928afb34663522ac2201a7be&libraries=services, drawing"></script>
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
     <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script type="text/javascript"
+        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f92e2590928afb34663522ac2201a7be&libraries=services,drawing"></script>
+
+
+
     <script>
+        //------------마트 가게 정보---------------
+
+        let selected_store_markers = [];
+        let selected_store_lat = [];
+        let selected_store_lang = [];
+        let selected_store_LatLang = [];
+        var storeLat_in_radius = []; // 반경 안에 들어온 가게 lat
+        var storeLang_in_radius = []; // 반경 안에 들어온 가게 lang
+
+        var list_store_lat = []; //가게 위도 리스트
+        var list_store_lang = []; //가게 경도 리스트
+
+        var list_store_lat = document.getElementById("store_lat").innerText.split(',');
+        var list_store_lang = document.getElementById("store_lang").innerText.split(',');
+
+        console.log(list_store_lang.length)
+        for (var num = 0; num < list_store_lat.length - 1; num++) {
+            var one_store_lat = list_store_lat[num].replace(" ", "");
+            var one_store_lang = list_store_lang[num].replace(" ", "");
+            var selected_store = new kakao.maps.LatLng(one_store_lat, one_store_lang)
+            console.log(selected_store)
+            addMarker(selected_store);
+            console.log("dddd")
+            console.log(selected_store)
+        }
+
+
+        function addMarker(position) { // position의 마커 정보를 markers 안에 넣어줌 
+            var marker = new kakao.maps.Marker({
+                position: position
+            });
+            selected_store_markers.push(marker);
+
+        }
+
+
+        //---------특정 마트 선택시 해당 물품 등장-----------
+        function specific_mart(value) {
+            $('.stuff').html(" ");
+            $('.category').html(" ");
+            console.log(value)
+            $.ajax({
+                url: "{% url 'request_market_stuff' %}",
+                data: {
+                    'specific_store_name': value
+                },
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) { //ajax써서 값을 변경함
+                    for (var i = 0; i < response.specific_good.length; i++) {
+                        $('#stuff' + i).html(response.specific_good[i]);
+                        $('#stuff_price' + i).html(response.specific_price[i]);
+
+                        var store_stuff_val = document.getElementById('stuff' + i);
+                        store_stuff_val.value = response.specific_good[i] + ',' + response.specific_store_one;
+                        console.log(store_stuff_val.value)
+
+                    }
+                    for (var n = 0; n < response.specific_category.length; n++) {
+                        $('#category' + n).html(response.specific_category[n]);
+
+                    }
+
+                }
+
+            });
+
+        }
+        //---------물품 선택시 항목 -----
+        //var num = 0
+        var selected_stuff_list = [];
+        var div = document.createElement('div');
+        function selected_stuff(id) {
+            var selected_stuffOfMarket = $('#stuff' + id).val();
+            var selected_stuff_of_market = selected_stuffOfMarket.split(',');
+            var stuff = selected_stuff_of_market[0];
+            var market = selected_stuff_of_market[1];
+            var selected_stuff_list = [];
+            selected_stuff_list.push(stuff);
+            selected_stuff_list.push(market);
+
+
+
+            for (var i = 0; i < selected_stuff_list; i++) {
+
+            }
+            //document.getElementById('select_total').append(stuff);
+            // $('#selected_market' + id).html(market);
+            //$('#selected_stuff' + id).html(stuff);
+            //$('.button' + num).html("X");
+            //console.log(selected_stuff_of_market[0]);
+            //num++
+        }
+
+        function delete_selected_stuff(id) {
+            $('#selected_market' + id).html(" ");
+            $('#selected_stuff' + id).html(" ");
+            $('.button' + num).html(" ");
+
+        }
+
+        //--------------------지도---------------------
         var mapContainer = document.getElementById('map'), // 지도를 표시할 div
             mapOption = {
                 center: new daum.maps.LatLng(37.537187, 127.005476), // 지도의 중심좌표
-                level: 5 // 지도의 확대 레벨
+                level: 8// 지도의 확대 레벨
             };
 
         //지도를 미리 생성
@@ -37,15 +231,18 @@
             position: new daum.maps.LatLng(37.537187, 127.005476),
             map: map
         });
+        var circle = new kakao.maps.Circle({});
 
 
-        function sample5_execDaumPostcode() {
+
+
+        function mart_radius() {
             new daum.Postcode({
                 oncomplete: function (data) {
                     var addr = data.address; // 최종 주소 변수
 
                     // 주소 정보를 해당 필드에 넣는다.
-                    document.getElementById("sample5_address").value = addr;
+                    document.getElementById("selected_mart_address").value = addr;
                     // 주소로 상세 정보를 검색
                     geocoder.addressSearch(data.address, function (results, status) {
                         // 정상적으로 검색이 완료됐으면
@@ -61,7 +258,81 @@
                             // 지도 중심을 변경한다.
                             map.setCenter(coords);
                             // 마커를 결과값으로 받은 위치로 옮긴다.
-                            marker.setPosition(coords)
+                            marker.setPosition(coords);
+
+                            circle = new kakao.maps.Circle({
+                                center: coords, // 원의 중심좌표입니다
+                                radius: 5000, // 원의 반지름입니다 m 단위 이며 선 객체를 이용해서 얻어옵니다
+                                strokeWeight: 1, // 선의 두께입니다
+                                strokeOpacity: 0.1, // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
+                                strokeStyle: 'solid', // 선의 스타일입니다
+                                fillColor: '#00a0e9', // 채우기 색깔입니다
+                                fillOpacity: 0.2  // 채우기 불투명도입니다 
+                            });
+
+                            // 원을 지도에 표시합니다
+                            circle.setMap(map);
+
+                            var ce = circle.getPosition(); //시작 원의 중심 좌표
+                            var ra = circle.getRadius(); //시작 원의 반경
+
+
+                            var line = new kakao.maps.Polyline();
+                            console.log(selected_store_markers[1].getPosition())
+                            selected_store_markers.forEach(function (markers) { // 시작원의 반경과 원의중심점과 마커의 거리를 구함. 반경>마커 : 원의 내부 / 반경<마커 : 원의 외부
+                                console.log(markers)
+                                var path = [markers.getPosition(), ce];
+                                line.setPath(path);
+                                var dist = line.getLength();
+                                if (dist < ra) { // 반경 안의 값
+                                    markers.setMap(map);
+                                    console.log("현재위치 반경 안의 마크 : (" + markers.getPosition().getLat() + ", " + markers.getPosition().getLng() + ")");
+                                    var markers_lat = markers.getPosition().getLat()
+                                    markers_lat = Math.round(markers_lat * 1000000) / 1000000
+                                    console.log(markers_lat)
+                                    var markers_lang = markers.getPosition().getLng()
+                                    markers_lang = Math.round(markers_lang * 1000000) / 1000000
+                                    console.log(markers_lang)
+                                    storeLat_in_radius.push(markers_lat);
+                                    storeLang_in_radius.push(markers_lang);
+                                }
+                                console.log(storeLat_in_radius)
+
+                            });
+
+
+
+
+                            $.ajax({
+                                url: "{% url 'request_market2' %}",
+                                data: {
+                                    'storeLat_in_radius': storeLat_in_radius,
+                                    'storeLang_in_radius': storeLang_in_radius
+                                },
+                                type: 'GET',
+                                dataType: 'json',
+                                success: function (response) { //ajax써서 값을 변경함
+
+                                    console.log(response.store_name_list.length)
+                                    for (var i = 0; i < response.store_name_list.length; i++) {
+                                        $('#store' + i).html(response.store_name_list[i]);
+                                        var store_val = document.getElementById('store' + i);
+                                        console.log("---")
+                                        store_val.value = response.store_name_list[i];
+                                        console.log(store_val)
+                                        console.log(store_val.value)
+
+                                    }
+
+                                }
+
+                            });
+
+
+
+
+
+
                         }
                     });
                 }

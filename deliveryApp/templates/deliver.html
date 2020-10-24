@@ -212,12 +212,12 @@
     var list_des_lat = document.getElementById("stuff_des_lat").innerText.split(',');
     var list_des_lng = document.getElementById("stuff_des_lng").innerText.split(',');
 
-
     for (var idx = 0; idx < list_dep_lat.length; idx++) {
         var data_lat1 = list_dep_lat[idx];
         var data_lng1 = list_dep_lng[idx];
         var data_lat2 = list_des_lat[idx];
         var data_lng2 = list_des_lng[idx];
+        console.log(list_des_lng[idx])
         var start = new kakao.maps.LatLng(data_lat1, data_lng1);
         var end = new kakao.maps.LatLng(data_lat2, data_lng2);
         addMarker(start);
@@ -507,7 +507,7 @@
                 var path = [marker.getPosition(), ce];
                 line.setPath(path);
                 var dist = line.getLength();
-                if (dist < ra) {
+                if (dist < ra) { // 반경 안의 값
                     marker.setMap(map);
                     console.log("현재위치 반경 안의 마크 : (" + marker.getPosition().getLat() + ", " + marker.getPosition().getLng() + ")");
                     current_markers.push(marker);

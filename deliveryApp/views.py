@@ -15,13 +15,20 @@ def main(request):
         auth.logout(request)
         print("관리자계정이면 로그아웃")
         return redirect('/')
+    # specific_store = "씨유신사드림점"
+    # specific_store = (Store.objects.filter(
+    #     store_name=specific_store))
+    # print(specific_store[0].store_goods.all)  # store_goods
+    # for s in specific_store[0].store_goods.all:
+    #     print(s.goods_name)
+
     return render(request, 'main.html')
 
 
 def deliver(request):
     stuffs = Delivery_my_stuff.objects.all()
-    context={
-        "stuffs" : stuffs,
+    context = {
+        "stuffs": stuffs,
     }
     return render(request, 'deliver.html', context)
 
@@ -57,7 +64,61 @@ def request_my(request):
 
 
 def request_market2(request):
-    return render(request, 'request_market2.html')
+    stores = Store.objects.all()
+    context = {'stores': stores}
+    store_name_list = []
+    storeLat_in_total = []
+    if request.is_ajax():
+        storeLat_in_radius = request.GET.getlist('storeLat_in_radius[]')
+        storeLang_in_radius = request.GET.getlist('storeLang_in_radius[]')
+        # for (0 in range(0, len(storeLat_in_radius))):
+
+        # storeLat_in_total = [storeLat_in_radius, storeLang_in_radius]
+        print(storeLat_in_total)
+        print(storeLat_in_radius)
+        if(storeLat_in_radius):
+            print("----")
+            for storeLat, storeLang in zip(storeLat_in_radius, storeLang_in_radius):
+                result_store_lat = (Store.objects.filter(
+                    store_lat=storeLat, store_long=storeLang))
+                result_store_lat = list(result_store_lat.values())
+                store_name_list.append(result_store_lat[0]['store_name'])
+            print(store_name_list)
+            if(len(store_name_list) == 0):
+                store_name_list = "등록된 가게가 없습니다."
+                context = {'store_name_list': store_name_list}
+            else:
+
+                context = {'store_name_list': store_name_list}
+
+            return HttpResponse(json.dumps(context), content_type='application/json')
+
+    return render(request, 'request_market2.html', context)
+
+
+def request_market_stuff(request):
+    specific_good = []
+    specific_price = []
+    specific_category = []
+    if request.is_ajax():
+        specific_store_one = request.GET['specific_store_name']
+        specific_store = (Store.objects.filter(
+            store_name=specific_store_one))
+        print(specific_store_one)
+        specific_goods = specific_store[0].store_goods.all()
+        print(specific_goods)
+        for s in specific_goods:
+            specific_good.append(s.goods_name)
+            specific_price.append(s.goods_price)
+            if(len(specific_category) == 0 or s.goods_category not in specific_category):
+                specific_category.append(s.goods_category)
+        print(specific_category)
+        context = {'specific_good': specific_good,
+                   'specific_price': specific_price,
+                   'specific_category': specific_category,
+                   'specific_store_one': specific_store_one}
+
+        return HttpResponse(json.dumps(context), content_type='application/json')
 
 
 def request_market(request):
