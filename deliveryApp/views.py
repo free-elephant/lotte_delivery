@@ -15,12 +15,6 @@ def main(request):
         auth.logout(request)
         print("관리자계정이면 로그아웃")
         return redirect('/')
-    # specific_store = "씨유신사드림점"
-    # specific_store = (Store.objects.filter(
-    #     store_name=specific_store))
-    # print(specific_store[0].store_goods.all)  # store_goods
-    # for s in specific_store[0].store_goods.all:
-    #     print(s.goods_name)
 
     return render(request, 'main.html')
 
@@ -119,6 +113,50 @@ def request_market_stuff(request):
                    'specific_store_one': specific_store_one}
 
         return HttpResponse(json.dumps(context), content_type='application/json')
+
+
+def request_market_purchase(request):
+    order = []
+    order_specific = []
+    order_all_market = []
+    order_all_stuff = []
+    order_all_count = []
+    order_stuff = []
+    order_market = []
+    if request.method == "POST":
+        order_total = request.POST['order_total']
+        order = order_total.split(',')
+        for i in range(0, len(order)):
+            order_specific = order[i].split('-')
+            # store_goods.goods_name
+            # print(order_specific)
+            order_all_market.append(order_specific[0])
+            order_all_stuff.append(order_specific[1])
+            order_all_count.append(order_specific[2])
+            order_market_one = Store.objects.filter(
+                store_name=order_specific[0])
+            order_market.append(order_market_one)
+            print(order_market[0][0].store_name)
+
+            order_stuff_one = Goods.objects.filter(
+                goods_name=order_specific[1])
+            order_stuff.append(order_stuff_one)
+            print(order_stuff[0][0].goods_name)
+
+            # order_stuff.append(order_stuff_one)
+            # print(order_stuff)
+            # print("-------------")
+        # print(order[0])
+        print("--------------------")
+        print(order_market[0][0].store_name)
+        print(order_market[1][0].store_name)
+
+        context = {
+            'order_market': order_market,
+            'order_stuff': order_stuff
+        }
+        return render(request, 'request_market_purchase.html', context)
+    return render(request, 'request_market2.html')
 
 
 def request_market(request):

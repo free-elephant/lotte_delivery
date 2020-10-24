@@ -1,0 +1,25 @@
+<p>구매내역</p>
+
+{%for i in order_market%}
+{%for n in i.all%}
+<div>
+    {{n.store_name}}
+    {{n.store_phone}}
+    {%for s in order_stuff%}
+    {{s.goods_name}}
+    {%endfor%}
+</div>
+{%endfor%}
+{%endfor%}
+<br>
+
+
+<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script type="text/javascript"
+    src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f92e2590928afb34663522ac2201a7be&libraries=services,drawing"></script>
+
+
+
+<script>
+</script>

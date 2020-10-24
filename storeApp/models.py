@@ -4,9 +4,10 @@ from django.db import models
 class Store(models.Model):
     store_name = models.CharField(max_length=30)
     store_lat = models.FloatField()
-    store_long = models.FloatField()
+    store_image = models.ImageField(blank=True)
+    store_lng = models.FloatField()
     store_addr = models.CharField(max_length=100)
-    store_phone = models.IntegerField()
+    store_phone = models.IntegerField(blank=True, null=True)
     store_goods = models.ManyToManyField(
         'Goods', related_name='goods', blank=True)
 
