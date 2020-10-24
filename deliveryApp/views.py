@@ -25,7 +25,7 @@ def deliver(request):
     markets = Delivery_market.objects.all()
     context = {
         "stuffs": stuffs,
-        "markets":markets
+        "markets": markets
     }
     return render(request, 'deliver.html', context)
 
@@ -164,14 +164,20 @@ def request_market_purchase(request):
 
 
 def request_market_complete(request):
-    if request.method == "POST":
-        purchase_total = request.POST['purchase_total']
-        purchase_things = purchase_total.split(',')
+    # purchase = []
+    # if request.method == "POST":
+    #     purchase_total = request.POST['purchase_total']
+        # for i in range(0, len(purchase_total)):
+        #     print(purchase_total[i][0])
+        # purchase_things = purchase_total.split(',')
+    # print(purchase_total)
+    # for thing in purchase_things:
+    #     market, stuff, count = thing.split('-')
+    #     temp_list = [market, stuff, count]
+    #     purchase.append(temp_list)
+    #     print
 
-        for thing in purchase_things:
-            market, stuff, count = thing.split('-')
-
-    return render(request, 'request_market_complete.html')
+    return redirect('/')
 
 
 def request_market(request):
