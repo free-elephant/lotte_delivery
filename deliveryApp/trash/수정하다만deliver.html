@@ -1,0 +1,594 @@
+{% extends 'base.html' %}
+{%block title %}
+<title>deliver page</title>
+{% endblock title%}
+
+{% block css %}
+<style>
+    .dot {
+        overflow: hidden;
+        float: left;
+        width: 12px;
+        height: 12px;
+        background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/mini_circle.png');
+    }
+
+    .dotOverlay {
+        position: relative;
+        bottom: 10px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        border-bottom: 2px solid #ddd;
+        float: left;
+        font-size: 12px;
+        padding: 5px;
+        background: #fff;
+    }
+
+    .dotOverlay:nth-of-type(n) {
+        border: 0;
+        box-shadow: 0px 1px 2px #888;
+    }
+
+    .number {
+        font-weight: bold;
+        color: #ee6152;
+    }
+
+    .dotOverlay:after {
+        content: '';
+        position: absolute;
+        margin-left: -6px;
+        left: 50%;
+        bottom: -8px;
+        width: 11px;
+        height: 8px;
+        background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white_small.png')
+    }
+
+    .distanceInfo {
+        position: relative;
+        top: 5px;
+        left: 5px;
+        list-style: none;
+        margin: 0;
+    }
+
+    .distanceInfo .label {
+        display: inline-block;
+        width: 50px;
+    }
+
+    .distanceInfo:after {
+        content: none;
+    }
+
+    fieldset {
+        border: 0;
+        padding: 0;
+    }
+
+    fieldset legend {
+        padding: 20px 0 10px;
+        font-weight: bold;
+    }
+</style>
+{% endblock css %}
+
+{% block scripts %}
+<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script type="text/javascript"
+    src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f92e2590928afb34663522ac2201a7be&libraries=services"></script>
+
+
+{% endblock scripts %}
+
+{% block content %}
+
+
+<input type="checkbox" onclick="current_location();" id="current_location" name="current_location" />현재위치
+
+
+<div id="navigator_container" name="navigator_container" class="navigator_container">
+    <div>
+        <fieldset>
+            <legend>출발지</legend>
+            <input type="text" id="deparature_addr" placeholder="주소" style="width:250px;" readonly>
+            <input type="button" onclick="my_Stuff_Map(this.id)" value="주소 검색" id="map_deparature"><br>
+            <input type="text" id="detail_deparature_addr" placeholder="상세주소">
+        </fieldset>
+    </div>
+
+    <div>
+        <fieldset>
+            <legend>도착지</legend>
+            <input type="text" id="destination_addr" placeholder="주소" style="width:250px;" readonly>
+            <input type="button" onclick="my_Stuff_Map(this.id)" value="주소 검색" id="map_destination"><br>
+            <input type="text" id="detail_destination_addr" placeholder="상세주소">
+        </fieldset>
+    </div>
+</div>
+<div id="map" style="width:500px;height:400px;"></div>
+<!--지도 띄우기-->
+<select name="select_radius" id="select_radius">
+    <option value="0">반경 선택</option>
+    <option value="1000">1km</option>
+    <option value="2000">2km</option>
+    <option value="3000">3km</option>
+    <option value="4000">4km</option>
+    <option value="5000">5km</option>
+</select>
+
+<div id="stuff_dep_lat" style="display:none;">
+    {% for stuff in stuffs.all %}
+    {{stuff.my_departure_lat}},
+    {% endfor %}
+</div>
+
+<div id="stuff_dep_lng" style="display:none;">
+    {% for stuff in stuffs.all %}
+    {{stuff.my_departure_long}},
+    {% endfor %}
+</div>
+
+<div id="stuff_dep_addr">
+    {% for stuff in stuffs.all %}
+    {{stuff.my_departure_addr}},
+    {% endfor %}
+</div>
+
+<div id="stuff_des_lat" style="display:none;">
+    {% for stuff in stuffs.all %}
+    {{stuff.my_destination_lat}},
+    {% endfor %}
+</div>
+
+<div id="stuff_des_lng" style="display:none;">
+    {% for stuff in stuffs.all %}
+    {{stuff.my_destination_long}},
+    {% endfor %}
+</div>
+
+<div id="stuff_des_addr">
+    {% for stuff in stuffs.all %}
+    {{stuff.my_destination_addr}},
+    {% endfor %}
+</div>
+
+<div id="stuff_goods">
+    {% for stuff in stuffs.all %}
+    {{stuff.my_goods}},
+    {% endfor %}
+</div>
+<br>
+내용이 들어갈 div 티그
+<div id="current_div"></div>
+<div id="start_div"></div>
+<div id="end_div"></div>
+<!----------------------------------------------------------- 지도 script ----------------------------------------------------------------------->
+
+<script>
+    var container = document.getElementById('map');
+    var options = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667),
+        level: 6
+    };
+    var map = new kakao.maps.Map(container, options);
+
+    let markers = []; //모든 마커들 저장
+    let circles = []; //모든 원 저장
+    let infowindows = []; //모든 인포윈도우 저장 (인포윈도우는 시작지점[0]과 도착지점[1]만 표시함)
+    let dots = []; //모든 점들 저장
+    let polylines = []; //모든 선 저장
+
+    let start_markers = []; // 출발 마커
+    let end_markers = []; // 도착 마커
+
+    let deparature_markers = []; // 출발지 안에 있는 마커들
+    let destination_markers = []; // 도착지 안에 있는 마커들
+    let current_markers = []; //현재위치 안에 있는 마커들
+    let circles_markers = []; // 출발지 or 도착지 or 현재위치의 원 안에 있는 마커들
+
+    let special_marker = []; // 출발지와 도착지를 표시해주는 마커들을 따로 관리(안없어지기위함) (스페셜마커는 시작지점[0]과 도착지점[1]만 표시함)
+    let special_polyline;
+
+    var currentPosition; // 현재 위치를 담을 변수
+
+    var polyLine;
+
+    var distanceOverlay; // 선의 거리정보를 표시할 커스텀오버레이
+
+    var geocoder = new daum.maps.services.Geocoder(); // 주소 정보 할때 사용
+    var coords = new Array(); // 출발지/도착지 할때 사용 
+
+    var current_circle = new kakao.maps.Circle();
+    var deparature_circle = new kakao.maps.Circle();
+    var destination_circle = new kakao.maps.Circle();
+
+    // ----------------------------------------------------------gps----------------------------------------------------------
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            var lat = position.coords.latitude, // 위도
+                lng = position.coords.longitude; // 경도
+
+            currentPosition = new kakao.maps.LatLng(lat, lng);
+            map.setCenter(currentPosition);
+            console.log("현재위치 : " + currentPosition);
+        });
+
+    }
+    else {
+        currentPosition = new kakao.maps.LatLng(33.450701, 126.570667),
+            message = 'geolocation을 사용할수 없어요..'
+        map.setCenter(currentPosition);
+    }
+    // ----------------------------------------------------------gps끝----------------------------------------------------------
+
+    //지도에 DB 정보 넣는 부분 시작
+    var list_dep_lat = document.getElementById("stuff_dep_lat").innerText.split(',');
+    var list_dep_lng = document.getElementById("stuff_dep_lng").innerText.split(',');
+    var list_dep_addr = document.getElementById("stuff_dep_addr").innerText.split(',');
+    var list_des_lat = document.getElementById("stuff_des_lat").innerText.split(',');
+    var list_des_lng = document.getElementById("stuff_des_lng").innerText.split(',');
+    var list_des_addr = document.getElementById("stuff_des_addr").innerText.split(',');
+    var list_goods = document.getElementById("stuff_goods").innerText.split(',');
+
+    for (var idx = 0; idx < list_dep_lat.length; idx++) {
+        var data_lat1 = list_dep_lat[idx];
+        var data_lng1 = list_dep_lng[idx];
+        var data_lat2 = list_des_lat[idx];
+        var data_lng2 = list_des_lng[idx];
+        var data_goods = list_goods[idx];
+        var data_addr1 = list_dep_addr[idx];
+        var data_addr2 = list_des_addr[idx];
+        var start = new kakao.maps.LatLng(data_lat1, data_lng1);
+        var end = new kakao.maps.LatLng(data_lat2, data_lng2);
+        addMarker(start, data_goods, data_addr1);
+        addMarker(end, data_goods, data_addr2);
+        start_markers.push(start);
+        end_markers.push(end);
+    }
+    //DB 정보 넣는 부분 끝
+    console.log("시작 마커 : " + start_markers);
+    console.log("끝 마커 : " + end_markers);
+    function addMarker(position, goods, addr) { // position의 마커 정보를 markers 안에 넣어줌
+        var arr = new Array(goods, addr);
+        var marker = new kakao.maps.Marker({
+            position: position,
+            title: arr
+        });
+        markers.push(marker);
+        console.log("내용 : " + marker.getTitle());
+    }
+
+    function my_Stuff_Map(id) {
+        new daum.Postcode({
+            oncomplete: function (data) {
+                var addr = data.address;
+                //어디에 값을 넣을지
+                if (id == "map_deparature") {
+                    document.getElementById("deparature_addr").value = addr;
+                }
+                if (id == "map_destination") {
+                    document.getElementById("destination_addr").value = addr;
+                }
+
+                //주소로 상세 정보를 검색
+                geocoder.addressSearch(data.address, function (results, status) {
+                    if (status === daum.maps.services.Status.OK) {
+                        var result = results[0]; // 첫번쨰 결과값 활용
+
+                        if (id == "map_deparature") { // 시작점 저장
+                            coords['map_deparature'] = new daum.maps.LatLng(result.y, result.x);
+                            map.setCenter(coords['map_deparature']);
+                        }
+                        else {  //도착점 저장
+                            coords['map_destination'] = new daum.maps.LatLng(result.y, result.x);
+                            map.setCenter(coords['map_destination']);
+                        }
+                        deletepolyLine();
+                        deleteInfoWindow();
+                        deleteCircleDot();
+                        deleteCircles();
+                        deleteDistance();
+                        deleteSpecialMarker();
+                        for (var i in coords) {
+                            if (i == 'map_deparature') {
+                                addInfoWindow(coords[i], "시작점"); //인포윈도우 + 마커생성
+                                setCircle(coords['map_deparature'], $('#select_radius').val(), "deparature"); //반경 원 생성
+                                console.log("시작점 생성");
+                            }
+                            if (i == 'map_destination') {
+                                addInfoWindow(coords[i], "도착점", destination_markers);
+                                setCircle(coords['map_destination'], $('#select_radius').val(), "destination");
+                                console.log("도착점 생성");
+                            }
+                        }
+
+                        if (coords['map_deparature'] != null & coords['map_destination'] != null) {
+                            deleteSpelcialPolyLine();
+                            special_polyline = new kakao.maps.Polyline({
+                                map: map,
+                                path: [coords['map_deparature'], coords['map_destination']],
+                                strokeWeight: 3, // 선의 두께입니다 
+                                strokeColor: '#db4040', // 선의 색깔입니다
+                                strokeOpacity: 1, // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
+                                strokeStyle: 'solid' // 선의 스타일입니다
+                            });
+                            var distance = Math.round(polyLine.getLength()) //거리 계산
+                        }
+                    }
+                });
+            }
+        }).open();
+    }
+
+    function drawPolyLine(deparature, destination) {
+        var polyLine = new kakao.maps.Polyline({
+            map: map,
+            path: [deparature, destination],
+            strokeWeight: 3, // 선의 두께입니다 
+            strokeColor: '#db4040', // 선의 색깔입니다
+            strokeOpacity: 1, // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
+            strokeStyle: 'solid' // 선의 스타일입니다
+        });
+        var distance = Math.round(polyLine.getLength()) // 거리 계산해둠
+        polylines.push(polyLine); // polylines에 넣어둠
+    }
+
+
+    //###################################반경 변경###################################
+    $('#select_radius').click(function () {
+        var select_radius = $('#select_radius').val()
+        $.ajax({
+            url: "{% url 'changeradius' %}",
+            data: {
+                'select_radius': select_radius
+            },
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) { //ajax써서 값을 변경함
+                if (coords['map_deparature'] == null && coords['map_destination'] == null && $("select_radius").val() == "0") {
+                    alert("출발지/도착지/ 현재위치 선택 필요");
+                    $("#select_radius").val("0");
+                    return false;
+                }
+                if (coords['map_deparature']) { //출발지 반경 변경
+                    console.log("출발지 반경 변경");
+                    setCircle(coords['map_deparature'], response.radius, "deparature");
+                }
+                if (coords['map_destination']) { //도착지 반경 변경
+                    console.log("도착지 반경 변경");
+                    setCircle(coords['map_destination'], response.radius, "destination");
+                }
+                if ($('#current_location').is(':checked')) { // 현재위치 체크되있을때
+                    console.log("현재위치에서 반경 바꿀떄");
+                    setCircle(currentPosition, response.radius, "current");
+                }
+
+            },
+            error: function (xhr, error) {
+                alert("서버와의 통신에서 문제가 발생했습니다.");
+                console.error("error : " + error);
+            }
+        })
+
+
+    });
+    //###################################반경 변경###################################
+
+    function addInfoWindow(position, content) { // 마커와 그에 따른 인포윈도우 생성함
+        var marker = new kakao.maps.Marker({
+            position: position
+        });
+        var infowindow = new kakao.maps.InfoWindow({
+            position: position,
+            content: content
+        });
+        marker.setMap(map);
+        if (content == "시작점") {
+            special_marker[0] = marker;
+            infowindows[0] = infowindow;
+        }
+        else if (content == "도착점") {
+            special_marker[1] = marker;
+            infowindows[1] = infowindow;
+        }
+        infowindow.open(map, marker);
+    }
+
+    function setCircle(position, radius, location) {
+        console.log("setCircle 실행");
+
+        deletePolyLines(); // 일단 모든 선들 삭제함
+        if (location == "current") {
+            console.log("현재위치");
+            current_circle.setMap(null); // 일단 기존 현재위치 원 삭제함
+
+            current_circle.setPosition(position);
+            current_circle.setRadius(radius);
+            current_markers.forEach(function (c) {// 지도에서 현재위치 안에 있는 마커들 삭제함
+                c.setMap(null);
+            })
+            current_markers = []; // 현재위치안에 있는 마커들 삭제
+            current_circle.setMap(map);
+        }
+
+        else if (location == "deparature") {
+            deparature_circle.setMap(null); // 출발위치 원 삭제
+
+            deparature_circle.setPosition(position);
+            deparature_circle.setRadius(radius);
+
+            deparature_markers.forEach(function (c) {// 지도에서 출발지 안에 있는 마커들 삭제함
+                c.setMap(null);
+            })
+            deparature_markers = [];
+            deparature_circle.setMap(map);
+        }
+        else if (location == "destination") {
+            destination_circle.setMap(null); //도착위치 원 삭제
+
+            destination_circle.setPosition(position);
+            destination_circle.setRadius(radius);
+            destination_markers.forEach(function (c) {// 지도에서 도착지 안에 있는 마커들 삭제함
+                c.setMap(null);
+            })
+            destination_markers = [];
+            destination_circle.setMap(map);
+        }
+
+
+        let current_inner = document.getElementById('current_div');
+        let start_inner = document.getElementById('start_div');
+        let end_inner = document.getElementById('end_div');
+
+        //어차피 원은 3개니깐....원을 3개 만들어주고 할까?
+        //current_markers[] , deparature_markers[], destination_markers[]
+        var current_position = current_circle.getPosition(); //현재반경 원의 좌표
+        var deparature_position = deparature_circle.getPosition(); //출발반경 원의 좌표
+        var destination_position = destination_circle.getPosition(); //도착반경 원의 좌표
+
+
+        console.log(current_position);
+        console.log(deparature_position);
+        console.log(destination_position);
+        var line1 = new kakao.maps.Polyline(); //출발마크와 
+    }
+
+
+    // 클릭으로 그려진 선을 지도에서 제거하는 함수입니다
+    function deletepolyLine() {
+        if (polyLine) {
+            polyLine.setMap(null);
+            polyLine = null;
+        }
+    }
+
+    // 그려지고 있는 선의 총거리 정보와 선 그리가 종료됐을 때 선의 정보를 표시하는 커스텀 오버레이를 삭제하는 함수입니다
+    function deleteDistance() {
+        if (distanceOverlay) {
+            distanceOverlay.setMap(null);
+            distanceOverlay = null;
+        }
+    }
+
+    function deletePolyLines() {
+        polylines.forEach(function (polyline) {
+            polyline.setMap(null);
+            polyline = null;
+        })
+    }
+
+    function deleteSpelcialPolyLine() {
+        special_polyline.setMap(null);
+        special_polyline = null;
+    }
+
+    // 클릭 지점에 대한 정보 (동그라미와 클릭 지점까지의 총거리)를 지도에서 모두 제거하는 함수입니다
+    function deleteCircleDot() {
+        var i;
+
+        for (i = 0; i < dots.length; i++) {
+            if (dots[i].circle) {
+                dots[i].circle.setMap(null);
+            }
+
+            if (dots[i].distance) {
+                dots[i].distance.setMap(null);
+            }
+        }
+
+        dots = [];
+    }
+    function deleteMarker() {
+        markers.forEach(function (
+            marker) { // 모든 마커 삭제
+            marker.setMap(null);
+        });
+    }
+
+    function deleteSpecialMarker() {
+        special_marker.forEach(function (marker) {
+            marker.setMap(null);
+        })
+    }
+    function deleteInfoWindow() {
+        infowindows.forEach(function (
+            infowindow) {
+            infowindow.setMap(null);
+        });
+    }
+    function deleteCircles() {
+        circles.forEach(function (
+            circle) {
+            circle.setMap(null);
+        })
+    }
+    function deleteCircle(position, location) {
+        var ce;
+        var ra;
+        circles.forEach(function (circle) {
+            var cLat = circle.getPosition().getLat().toFixed(7); // 위치가 같은데 위도 경도가 소수점 1,2 자리로 달라서 고정시켜버림
+            var cLng = circle.getPosition().getLng().toFixed(7);
+            var pLat = position.getLat().toFixed(7);
+            var pLng = position.getLng().toFixed(7);
+            if (cLat == pLat && cLng == pLng) {
+                circle.setMap(null);
+                circles.splice(circles.indexOf(circle), 1); // circle 삭제
+                console.log(circles.length);
+                ce = circle.getPosition();
+                ra = circle.getRadius();
+                return;
+            }
+        });
+        var line = new kakao.maps.Polyline();
+        if (location == "current") {
+            document.getElementById('current_div').innerHTML = "";
+            current_markers.forEach(function (marker) { // 시작원의 반경과 원의중심점과 마커의 거리를 구함. 반경>마커 : 원의 내부 / 반경<마커 : 원의 외부
+                var path = [marker.getPosition(), ce];
+                line.setPath(path);
+                var dist = line.getLength();
+                if (dist < ra) {
+                    marker.setMap(null);
+                }
+            });
+        }
+        else if (location == "deparature") {
+            deparature_markers.forEach(function (marker) { // 시작원의 반경과 원의중심점과 마커의 거리를 구함. 반경>마커 : 원의 내부 / 반경<마커 : 원의 외부
+                var path = [marker.getPosition(), ce];
+                line.setPath(path);
+                var dist = line.getLength();
+                if (dist < ra) {
+                    marker.setMap(null);
+                }
+            });
+        }
+        else if (location == "destination") {
+            destination_markers.forEach(function (marker) { // 시작원의 반경과 원의중심점과 마커의 거리를 구함. 반경>마커 : 원의 내부 / 반경<마커 : 원의 외부
+                var path = [marker.getPosition(), ce];
+                line.setPath(path);
+                var dist = line.getLength();
+                if (dist < ra) {
+                    marker.setMap(null);
+                }
+            });
+        }
+
+    }
+
+    function current_location() {
+        if ($("input:checkbox[name=current_location]").is(":checked") == true) {//현재위치 
+            deletePolyLines();
+            map.setCenter(currentPosition);
+            setCircle(currentPosition, $('#select_radius').val(), "current");
+        }
+        else {
+            //            current_circle.setMap(null);
+            console.log(circles);
+        }
+    }
+
+</script>
+{% endblock content %}
