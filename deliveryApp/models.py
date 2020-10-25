@@ -7,6 +7,7 @@ class Delivery_my_stuff(models.Model):  # 내 물건 배송
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     my_departure_lat = models.FloatField()  # 출발 위도
     my_departure_long = models.FloatField()  # 출발 경도
+    my_departure_address = models.CharField(max_length=100)
     my_departure_addr = models.CharField(max_length=100)  # 출발 상세주소
     my_departure_phone = models.IntegerField()  # 보내는 이 폰번호
     my_destination_lat = models.FloatField()  # 도착 위도
@@ -34,7 +35,9 @@ class Delivery_market(models.Model):  # 가게물건 배송
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     mar_departure_lat = models.FloatField()  # 첫번째 가게 위도
     mar_departure_long = models.FloatField()  # 첫번째 가게 경도
-    mar_departure_addr = models.CharField(max_length=100)  # 출발지 상세주소
+    mar_departure_address = models.CharField(
+        max_length=100, blank=True, null=True)  # 주소 //주소
+    mar_departure_addr = models.CharField(max_length=100)  # 출발지 가게이름
     mar_departure_phone = models.IntegerField(
         blank=True, null=True)  # 출발지 전화번호 <=없는 경우도 존재하니
     mar_item = models.CharField(max_length=1000)
@@ -44,6 +47,8 @@ class Delivery_market(models.Model):  # 가게물건 배송
 
     mar1_departure_lat = models.FloatField(blank=True, null=True)  # 두번째 가게 위도
     mar1_departure_long = models.FloatField(blank=True, null=True)  # 두번째 가게 경도
+    mar1_departure_address = models.CharField(
+        max_length=100, blank=True, null=True)  # 주소
     mar1_departure_addr = models.CharField(
         max_length=100, blank=True, null=True)  # 두번째 가게 상세주소
     mar1_departure_phone = models.IntegerField(
@@ -55,6 +60,9 @@ class Delivery_market(models.Model):  # 가게물건 배송
 
     mar2_departure_lat = models.FloatField(blank=True, null=True)  # 세번째 가게 위도
     mar2_departure_long = models.FloatField(blank=True, null=True)  # 세번째 가게 경도
+    mar2_departure_address = models.CharField(
+        max_length=100, blank=True, null=True)  # 주소
+
     mar2_departure_addr = models.CharField(
         max_length=100, blank=True, null=True)  # 세번째 가게 상세주소
     mar2_departure_phone = models.IntegerField(
@@ -66,6 +74,9 @@ class Delivery_market(models.Model):  # 가게물건 배송
 
     mar3_departure_lat = models.FloatField(blank=True, null=True)  # 네 번째 가게 위도
     mar3_departure_long = models.FloatField(blank=True, null=True)  # 네번째 가게 경도
+    mar3_departure_address = models.CharField(
+        max_length=100, blank=True, null=True)  # 주소
+
     mar3_departure_addr = models.CharField(
         max_length=100, blank=True, null=True)  # 네번째 가게 상세주소
     mar3_departure_phone = models.IntegerField(
@@ -77,6 +88,8 @@ class Delivery_market(models.Model):  # 가게물건 배송
 
     mar_destination_lat = models.FloatField()  # 도착지 위도
     mar_destination_long = models.FloatField()  # 도착지 경도
+    mar_destination_address = models.CharField(
+        max_length=100, blank=True, null=True)  # 주소
     mar_destination_addr = models.CharField(max_length=100)  # 도착지 상세주소
     mar_destination_phone = models.IntegerField(
         blank=True, null=True)  # 도착지 전화번호

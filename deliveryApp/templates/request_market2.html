@@ -105,7 +105,7 @@
             </div>
         </div>
         <input name="order_total" id="order_total">
-        <button type="button" onclick="Order()">O</button>
+        <!-- <button type="button" onclick="Order()">O</button> -->
         <input type="submit" onclick="Order()" value="제출">
     </form>
 
@@ -312,9 +312,16 @@
                 selected_marketStuffCount_list.push(market + '-' + stuff + '-' + all_count)
                 console.log(selected_marketStuffCount_list[i])
             }
-
-            order_total.value = selected_marketStuffCount_list
-            alert(order_total.value)
+            console.log(market_limit)
+            let only_market = market_limit.filter((item, index) => market_limit.indexOf(item) === index);
+            console.log(only_market)
+            if (only_market.length > 4) {
+                alert("마트 개수는 4개까지입니다.")
+            }
+            else {
+                order_total.value = selected_marketStuffCount_list
+                alert(order_total.value)
+            }
 
 
         }
