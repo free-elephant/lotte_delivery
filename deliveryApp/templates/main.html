@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 <div class="WrapBlackBox">
@@ -11,7 +12,9 @@
 <hr class="typo_2" />
 
 <div class="typo_9">PUBLIC DELIVERY PLATFORM</div>
-
+<div class="WrapPickImg">
+    <img width="340" height="345" src="{% static 'image/lovepik.png'%}" />
+</div>
 
 <div class="WrapPurpleBox">
     <div class="typo_6">
@@ -30,10 +33,46 @@
     </div>
 </div>
 <div class="MainPurpleTri"></div>
+<div class="WrapSpan">
+    <span class="span_1">퍼플, WHAT?</span>
+    <br>
+    <span class="span_2">퍼플의 공유택배 서비스는 무엇인가요?</span>
+    <br><br>
+    <span class="span_3">언제 어디서나 간편하게 <br>
+        물건을 보내고 받을 수 있는, <br>
+        일반인 택배 서비스 플랫폼입니다.</span>
+</div>
+<div class="typo_10">공유택배, HOW?</div>
 
+<div class="WrapTypoPik_1">
+    <img width: 605px height: 604px; src="{% static 'image/typo_pik_1.png'%}">
+</div>
+
+<div class="WrapTypoPik_2">
+    <img width: 718px height: 594px; src="{% static 'image/rectangle_1.png'%}">
+
+</div>
+
+<div class="WrapTypoPik_3">
+    <img width: 718px height: 594px; src="{% static 'image/rectangle_2.png'%}">
+</div>
+
+<div class="WrapTypoPik_4">
+    <img width: 605px height: 604px; src="{% static 'image/typo_pik_2.png'%}">
+</div>
+<img class="MainPick_2" src="{% static 'image/main_pick_2.png'%}" alt="">
+<img class="MainPick_1" src="{% static 'image/main_pick_1.png'%}" alt="">
 {% endblock content %}
 {% block style%}
 <style>
+    .WrapPickImg {
+        /* Lovepik_com-400245585-mobile-city-building 1 */
+        position: absolute;
+        right: 96px;
+        top: 612px;
+        z-index: 999;
+    }
+
     .WrapBlackBox {
         position: absolute;
         width: 90%;
@@ -209,6 +248,100 @@
         top: 186px;
         border-bottom: 559px solid #AE53FF;
         border-left: 150px solid transparent;
+    }
+
+    .WrapSpan {
+        position: absolute;
+        text-align: center;
+
+        left: 586px;
+        top: 861px;
+    }
+
+    .span_1 {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 32px;
+        line-height: 37px;
+        /* identical to box height */
+        color: #161616;
+    }
+
+    .span_2 {
+        /* 퍼플의 공유택배 서비스는 무엇인가요? */
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 24px;
+        line-height: 28px;
+        color: #3B3B3B;
+    }
+
+    .span_3 {
+        /* 언제 어디서나 간편하게 물건을 보내고 받을 수 있는, 일반인 택배 서비스 플랫폼입니다. */
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 21px;
+        line-height: 25px;
+
+        color: #000000;
+    }
+
+    .typo_10 {
+        /* 공유택배, HOW? */
+        position: absolute;
+        left: 174px;
+        top: 1176px;
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 30px;
+        line-height: 35px;
+        color: #161616;
+    }
+
+    .WrapTypoPik_1 {
+        position: absolute;
+        left: 155px;
+        top: 1232px;
+    }
+
+    .WrapTypoPik_2 {
+        position: absolute;
+        left: 645px;
+        top: 1232px;
+    }
+
+    .WrapTypoPik_3 {
+        position: absolute;
+        left: 155px;
+        top: 1844px;
+
+    }
+
+    .WrapTypoPik_4 {
+        position: absolute;
+        left: 759px;
+        top: 1836px;
+    }
+
+    .MainPick_1 {
+        position: absolute;
+        width: 535px;
+        height: 535px;
+        left: 145.5px;
+        top: 1979.55px;
+
+    }
+
+    .MainPick_2 {
+        position: absolute;
+        width: 477px;
+        height: 475px;
+        left: 857px;
+        top: 1422px;
     }
 </style>
 {% endblock style%}
