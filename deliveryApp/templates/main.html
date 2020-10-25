@@ -1,31 +1,214 @@
 {% extends 'base.html' %}
 
-<body>
-    <h1>index.html</h1>
-    {% block content %}
-    <!-- <a href="{% url 'deliver' %}" style="text-decoration: none;">deliver 화면</a>
-    <a href="{% url 'request_my' %}" style="text-decoration: none;">request 화면</a>
-    <a href="{% url 'request_market' %}" style="text-decoration: none;">request_market 화면</a>
-    <a href="{% url 'request_market2' %}" style="text-decoration: none;">request_market2 화면</a> -->
-    <!-- 
-    <div id="How_to_use">
-        <h1>이용안내</h1>
-        <p>퍼플이란?</p>
-        <p>신청인 이용방법</p>
-        <p>배송인 이용방법</p>
-        <p>FAQ</p>
-    </div> -->
+{% block content %}
+<div class="WrapBlackBox">
+    <div class="LineBlackBox"></div>
+    <div class="typo_1">기다릴 필요없는 택배</div>
+    <div class="typo_4">온라인으로 간편하게 언택트</div>
+    <div class="typo_3">언제 어디서나 배달</div>
+    <div class="typo_5">오프라인 매장으로 즐겁게 컨택트</div>
+</div>
+<hr class="typo_2" />
 
-    {% endblock content %}
-</body>
+<div class="typo_9">PUBLIC DELIVERY PLATFORM</div>
+
+
+<div class="WrapPurpleBox">
+    <div class="typo_6">
+        #언제오나<br>
+        #왜기다려<br>
+        #필요하면<br>
+        #어디서나<br>
+    </div>
+    <div class="typo_7">
+        퍼플
+    </div>
+    <div class="typo_8">
+        PEOPLE AND PURPLE
+        <br>
+        피플엔 퍼플!
+    </div>
+</div>
+<div class="MainPurpleTri"></div>
+
+{% endblock content %}
+{% block style%}
 <style>
-    #How_to_use {
-        color: blueviolet;
-        display: flex;
+    .WrapBlackBox {
+        position: absolute;
+        width: 90%;
+        height: 513px;
+        left: 95px;
+        top: 186px;
+        background: #3B3B3B;
     }
 
-    p {
-        flex: 2fr;
-        color: brown;
+    .typo_1 {
+        /*기다릴 필요없는 택배*/
+        position: absolute;
+        left: 61px;
+        top: 287px;
+
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 40px;
+        line-height: 47px;
+        color: #FFFFFF;
+    }
+
+
+    .typo_2 {
+        position: absolute;
+        width: 100px;
+        left: 550px;
+        top: 485px;
+        border: none;
+        border-top: 3px dashed #FFFFFF;
+    }
+
+    .typo_3 {
+        /* 언제 어디서나 배달 */
+        position: absolute;
+        left: 561px;
+        top: 287px;
+
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 40px;
+        line-height: 47px;
+        /* identical to box height */
+
+
+        color: #FFFFFF;
+
+    }
+
+    .typo_4 {
+        position: absolute;
+        left: 255px;
+        top: 268px;
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 15px;
+        line-height: 18px;
+        /* identical to box height */
+
+
+        color: #FFFFFF;
+    }
+
+    .typo_5 {
+        /* 오프라인 매장으로 즐겁게 컨택트 */
+        position: absolute;
+        left: 678px;
+        top: 334px;
+
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 15px;
+        line-height: 18px;
+        /* identical to box height */
+        color: #FFFFFF;
+    }
+
+    .typo_9 {
+        position: absolute;
+        left: 186px;
+        top: 332px;
+
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 36px;
+        line-height: 42px;
+
+        color: #FFFFFF;
+    }
+
+
+    .LineBlackBox {
+        position: absolute;
+        width: 800px;
+        height: 0px;
+        left: 80px;
+        top: 191px;
+
+        border: 0.5px solid #FFFFFF;
+        background-color: #FFFFFF;
+    }
+
+
+
+
+    .WrapPurpleBox {
+        position: absolute;
+        right: 0px;
+        top: 186px;
+        width: 400px;
+        height: 559px;
+
+        background: #AE53FF;
+    }
+
+    .typo_6 {
+        position: absolute;
+        right: 65px;
+        top: 101px;
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 30px;
+        line-height: 50px;
+        text-align: right;
+        color: #FFFFFF;
+    }
+
+    .typo_7 {
+        position: absolute;
+        right: 64px;
+        bottom: 179px;
+
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 70px;
+        line-height: 82px;
+        /* identical to box height */
+
+        text-align: right;
+
+        color: #FFFFFF;
+    }
+
+    .typo_8 {
+
+        position: absolute;
+        right: 64px;
+        bottom: 133px;
+
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 15px;
+        line-height: 18px;
+        text-align: right;
+
+        color: #FFFFFF;
+
+    }
+
+    .MainPurpleTri {
+        width: 0;
+        height: 0;
+        position: absolute;
+        right: 400px;
+        top: 186px;
+        border-bottom: 559px solid #AE53FF;
+        border-left: 150px solid transparent;
     }
 </style>
+{% endblock style%}
