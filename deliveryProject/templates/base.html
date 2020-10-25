@@ -1,20 +1,57 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="ko">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="css/style.css">
     {% block title %}{% endblock title %}
     {% block css %}
     {% endblock css %}
 
     {% block scripts %}
     {% endblock scripts %}
+
 </head>
 
 <body>
+    <a class="menu1" href="">물건보내기</a>
+    <a class="menu2" href="">물건운송하기</a>
+    <a class="menu3" href="">마이페이지</a>
+    <a class="menu4" href="">문의하기</a>
+    <a href="/" class="logo">
+        <img width=73 height=77 src="{% static 'image/logo.png'%}" />
+    </a>
 
-    {% if user.is_authenticated %}
+    <div class="side2">
+    </div>
+    <div class="side1">
+    </div>
+    <div class="tri"></div>
+    <div class="login_wrap">
+        <a class="login">LOGIN</a>
+    </div>
+    <a href="" class="search">
+        <img src="{% static 'image/search.png'%}" />
+    </a>
+    <a href="#" class="my_img">
+        <img src="{% static 'image/my.png'%}" />
+    </a>
+    <div class="tri2"></div>
+    <a href="" class="app">앱 <br> 다운로드</a>
+    <a href="" class="cart">
+        <img src="{% static 'image/cart.png'%}" />
+    </a>
+    <a href="" class="heart">
+        <img src="{% static 'image/heart.png'%}" />
+    </a>
+    <a href="" class="service">고객센터</a>
+    <a class="side3">
+    </a>
+
+    <!-- {% if user.is_authenticated %}
     {{user.username}}
     <form name="logout" method="POST" action="{% url 'logout' %}">
         {% csrf_token %}
@@ -25,11 +62,243 @@
         <a href="{% url 'signup' %}">회원가입</a>
         <a href="{% url 'login' %}">로그인</a>
     </div>
-    {% endif %}
+    {% endif %} -->
 
     {% block content %}
-    <!-- 들어갈 내용-->
     {% endblock content %}
+
+    <style>
+        a {
+            text-decoration: none;
+        }
+
+        .login_wrap {
+            position: absolute;
+            left: 20px;
+            top: 156px;
+            z-index: 998;
+        }
+
+        .login {
+
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 23px;
+
+            color: #FFFFFF;
+        }
+
+        .menu1 {
+            position: absolute;
+            height: 18px;
+            left: 18%;
+            top: 2.5%;
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 15px;
+            line-height: 18px;
+            /* identical to box height */
+
+            color: #3B3B3B;
+        }
+
+        .menu2 {
+            position: absolute;
+            height: 18px;
+            left: 27%;
+            top: 2.5%;
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 15px;
+            line-height: 18px;
+            /* identical to box height */
+            color: #3B3B3B;
+        }
+
+        .menu3 {
+            position: absolute;
+            height: 18px;
+            left: 37.5%;
+            top: 2.5%;
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 15px;
+            line-height: 18px;
+            /* identical to box height */
+
+
+            color: #3B3B3B;
+
+        }
+
+        .menu4 {
+            position: absolute;
+            height: 18px;
+            left: 47%;
+            top: 2.5%;
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 15px;
+            line-height: 18px;
+            /* identical to box height */
+            color: #3B3B3B;
+
+        }
+
+        .logo {
+            z-index: 998;
+            position: absolute;
+            left: 0.9%;
+            top: -1%;
+        }
+
+        .tri {
+            z-index: 999;
+            top: 91px;
+            width: 0;
+            height: 0;
+            border-bottom: 60px solid #AE53FF;
+            border-right: 95px solid transparent;
+            position: absolute;
+        }
+
+
+
+        .side1 {
+            z-index: 3;
+            position: absolute;
+            width: 95px;
+            height: 153px;
+            left: 0px;
+            top: -2px;
+            background: #FFFFFF;
+        }
+
+        .side2 {
+            position: absolute;
+            width: 95px;
+            height: 927px;
+            left: 0px;
+            top: -2px;
+            background: #AE53FF;
+        }
+
+        .side3 {
+            position: absolute;
+            width: 95px;
+            height: 115px;
+            left: 0px;
+            top: 920px;
+            background: #3B3B3B;
+        }
+
+        .tri2 {
+            z-index: 999;
+            top: 860px;
+            width: 0;
+            height: 0;
+            border-bottom: 60px solid #3B3B3B;
+            border-right: 95px solid transparent;
+            position: absolute;
+        }
+
+        .log {
+            position: absolute;
+            width: 58px;
+            height: 23px;
+            left: 20px;
+            top: 158px;
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 23px;
+
+            color: #FFFFFF;
+
+        }
+
+        .search {
+            position: absolute;
+            width: 15px;
+            height: 16px;
+            left: 40px;
+            top: 198px;
+            z-index: 998;
+        }
+
+        .my_img {
+            z-index: 998;
+            position: absolute;
+            left: 40px;
+            top: 834px;
+        }
+
+        .cart {
+            position: absolute;
+            width: 54px;
+            height: 48px;
+            left: 26px;
+            top: 1085px;
+
+            background-image: url(../img/cart.png);
+
+        }
+
+        .heart {
+            position: absolute;
+            width: 51px;
+            height: 56px;
+            left: 31px;
+            top: 1175px;
+
+            background-image: url(../img/hart.png);
+        }
+
+        .service {
+            position: absolute;
+            width: 42px;
+            height: 46px;
+            left: 32px;
+            top: 1291px;
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 20px;
+            line-height: 23px;
+
+            color: #3B3B3B;
+        }
+
+        .app {
+            position: absolute;
+            z-index: 998;
+            left: 8px;
+            top: 952px;
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 20px;
+            line-height: 23px;
+            text-align: center;
+
+            color: #FFFFFF;
+
+        }
+    </style>
+
 </body>
 
 </html>
