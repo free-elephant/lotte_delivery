@@ -2,7 +2,7 @@
 {% load static %}
 <html lang="ko">
 
-<head>
+<head>/
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
@@ -16,9 +16,9 @@
 </head>
 
 <body>
-    <a class="menu1" href="{% url 'request_my' %}">택배 보내기</a>
+    <a class="menu1" href="{% url 'request_market2' %}">택배 보내기</a>
     <a class="menu2" href="{% url 'deliver' %}">배달하기</a>
-    <a class="menu3" href="#">마이페이지</a>
+    <a class="menu3" href="{% url 'info' %}">마이페이지</a>
     <a class="menu4" href="#">문의하기</a>
     <a href="/" class="logo">
         <img width=73 height=77 src="{% static 'image/logo.png'%}" />
@@ -29,9 +29,15 @@
     <div class="side1">
     </div>
     <div class="tri"></div>
+    {% if user.is_authenticated %}
+    <div class="login_wrap">
+        <a href="{% url 'logout' %}" class="logout">LOGOUT</a>
+    </div>
+    {%else%}
     <div class="login_wrap">
         <a href="{% url 'login' %}" class="login">LOGIN</a>
     </div>
+    {%endif%}
     <a href="" class="search">
         <img src="{% static 'image/search.png'%}" />
     </a>
@@ -81,6 +87,18 @@
         }
 
         .login {
+
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 23px;
+
+            color: #FFFFFF;
+        }
+
+        .logout {
 
 
             font-family: Roboto;

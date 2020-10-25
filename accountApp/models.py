@@ -8,10 +8,17 @@ from django.dispatch import receiver
 class Player(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)  # 유저랑 1:1관계
     player_name = models.CharField(max_length=10)
+    player_nickname = models.CharField(max_length=10, blank=True, null=True)
+    player_security_number = models.IntegerField(blank=True, null=True)
+    player_email = models.CharField(max_length=30, blank=True, null=True)
     player_latitude = models.FloatField(blank=True, null=True)  # 위도
-    player_longtitude = models.FloatField(blank=True, null=True)  # 경도
-    player_address = models.CharField(max_length=15, blank=True)  # 상세 주소
-    player_phone = models.CharField(max_length=15, blank=True)  # 휴대폰번호
+    # 경도
+    player_longtitude = models.FloatField(blank=True, null=True)
+    player_address = models.CharField(max_length=30, blank=True, null=True)
+    player_detail_addr = models.CharField(
+        max_length=20, blank=True, null=True)  # 상세 주소
+    player_sale_coupon = models.CharField(max_length=30, blank=True, null=True)
+    player_phone = models.IntegerField(blank=True, null=True)  # 휴대폰번호
 
     def __str__(self):
         n_user = str(self.user)

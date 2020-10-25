@@ -55,30 +55,28 @@
             placeholder="영문+숫자 5~20자" />
 
         <input id="btn-id" type="button" value="중복체크">
-
-
         <input name="password1" type="password" value="" required placeholder="영문+숫자+특수문자 8~16자"><br>
 
         <input name="password2" type="password" value="" required><br>
 
-        <a class="go" href="#"></a>
-        <div class="img_go">
+        <!-- <a class="go" href="#"></a> -->
+        <!-- <div class="img_go">
             <img width="" height="" src="{% static 'image/go.png' %}">
+        </div> -->
+        <!-- </form> -->
+
+
+        <div class="graBox">
         </div>
-    </form>
-
-
-    <div class="graBox">
-    </div>
 
 
 
 
-    <form id="join-form" method="POST" action="{% url 'signup'%}" onsubmit="return checkAll();">
+        <!-- <form id="join-form" method="POST" action="{% url 'signup'%}" onsubmit="return checkAll();"> -->
         {% csrf_token %}
         <div class="block-label_font" for="email">이메일</div>
-        <input name="email1" type="email1" value="" required>
-        <input name="email2" type="email2" value="" required>
+        <!-- <input name="email1" type="email1" value="" required>
+        <input name="email2" type="email2" value="" required> -->
         <input name="email3" type="email1" value="" required>
 
 
@@ -96,10 +94,10 @@
 
 
 
-        <div class="phone_font" for="phone">휴대전화번호 인증</div>
-        <input name="phone1" type="text" value="" required>
-        <input name="phone2" type="text" value="" required>
-        <input name="phone3" type="text" value="" required>
+        <div class="phone_font" for="phone">휴대전화번호</div>
+        <!-- <input name="phone1" type="text" value="" required>-
+        <input name="phone2" type="text" value="" required>-
+        <input name="phone3" type="text" value="" required> -->
         <input name="phone4" type="text" value="" required>
 
         <div class="coupon_font" for="phone">할인쿠폰 등록</div>
