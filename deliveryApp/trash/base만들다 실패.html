@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- {% block title %}{% endblock title %}
+    {% block css %}
+    {% endblock css %}
+
+    {% block scripts %}
+    {% endblock scripts %} -->
+
+</head>
+
+<body>
+    <div class="navbar">
+        <a class="menu1" href="">물건보내기</a>
+        <a class="menu2" href="">물건운송하기</a>
+        <a class="menu3" href="">마이페이지</a>
+        <a class="menu4" href="">문의하기</a>
+    </div>
+
+    <div class="side2">
+
+        <div class="side1">
+            <a href="" class="logo"></a>
+            <div class="log">LOGIN</div>
+            <a href="" class="search"></a>
+            <a href="" class="my">
+                <span class="my_img"></span>
+                <span class="my_text">My</span>
+            </a>
+            <a href="" class="app">앱 다운로드</a>
+            <a href="" class="cart"></a>
+            <a href="" class="hart"></a>
+            <a href="" class="service">고객센터</a>
+            <a class="side3">
+            </a>
+        </div>
+    </div>
+
+    <!-- {% if user.is_authenticated %}
+    {{user.username}}
+    <form name="logout" method="POST" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <input type="submit" value="로그아웃">
+    </form>
+    {% else %}
+    <div>
+        <a href="{% url 'signup' %}">회원가입</a>
+        <a href="{% url 'login' %}">로그인</a>
+    </div>
+    {% endif %}
+
+    {% block content %}
+    <!-- 들어갈 내용-->
+    <!-- {% endblock content %} -->
+
+    <style>
+        .menu1 {
+            position: absolute;
+            width: 73px;
+            height: 18px;
+            left: 259px;
+            top: 27px;
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 15px;
+            line-height: 18px;
+            /* identical to box height */
+
+
+            color: #3B3B3B;
+
+        }
+
+        .menu2 {
+            position: absolute;
+            width: 87px;
+            height: 18px;
+            left: 390px;
+            top: 27px;
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 15px;
+            line-height: 18px;
+            /* identical to box height */
+
+
+            color: #3B3B3B;
+
+        }
+
+        .menu3 {
+            position: absolute;
+            width: 69px;
+            height: 18px;
+            left: 541px;
+            top: 27px;
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 15px;
+            line-height: 18px;
+            /* identical to box height */
+
+
+            color: #3B3B3B;
+
+        }
+
+        .menu4 {
+            position: absolute;
+            width: 56px;
+            height: 18px;
+            left: 677px;
+            top: 27px;
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 15px;
+            line-height: 18px;
+            /* identical to box height */
+
+
+            color: #3B3B3B;
+
+        }
+
+        .logo {
+            z-index: 10;
+            position: absolute;
+            width: 73px;
+            height: 77px;
+            left: 10px;
+            top: -9px;
+            background-image: url(../img/logo.png);
+        }
+
+        .side1 {
+            z-index: 10;
+            position: absolute;
+            width: 95px;
+            height: 153px;
+            left: 0px;
+            top: -2px;
+
+            background: #FFFFFF;
+        }
+
+        .side2 {
+            z-index: 3;
+            position: absolute;
+            width: 95px;
+            height: 927px;
+            left: 0px;
+            top: -2px;
+
+            background: #AE53FF;
+        }
+
+        .side3 {
+            position: absolute;
+            width: 95px;
+            height: 156px;
+            left: 0px;
+            top: 873px;
+
+            background: #3B3B3B;
+        }
+
+        .log {
+            position: absolute;
+            width: 58px;
+            height: 23px;
+            left: 20px;
+            top: 158px;
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 23px;
+
+            color: #FFFFFF;
+
+        }
+
+        .search {
+            position: absolute;
+            width: 15px;
+            height: 16px;
+            left: 43px;
+            top: 200px;
+
+            background-image: url(../img/search.png);
+        }
+
+        .my_img {
+            position: absolute;
+            width: 15px;
+            height: 18px;
+            left: 42px;
+            top: 836px;
+
+            background-image: url(../img/man.png);
+        }
+
+        .my_text {
+            position: absolute;
+            width: 20px;
+            height: 15px;
+            left: 40px;
+            top: 856px;
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 13px;
+            line-height: 15px;
+
+            color: #FFFFFF;
+
+        }
+
+        .cart {
+            position: absolute;
+            width: 54px;
+            height: 48px;
+            left: 26px;
+            top: 1085px;
+
+            background-image: url(../img/cart.png);
+
+        }
+
+        .hart {
+            position: absolute;
+            width: 51px;
+            height: 56px;
+            left: 31px;
+            top: 1175px;
+
+            background-image: url(../img/hart.png);
+        }
+
+        .service {
+            position: absolute;
+            width: 42px;
+            height: 46px;
+            left: 32px;
+            top: 1291px;
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 20px;
+            line-height: 23px;
+
+            color: #3B3B3B;
+        }
+
+        .app {
+            position: absolute;
+            width: 74px;
+            height: 51px;
+            left: 14px;
+            top: 952px;
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 20px;
+            line-height: 23px;
+            text-align: center;
+
+            color: #FFFFFF;
+
+        }
+    </style>
+
+
+
+
+
+</body>
+
+</html>
