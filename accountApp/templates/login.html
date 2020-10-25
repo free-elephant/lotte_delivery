@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
+
+{% load static %}
+{% block content %}
+
 {%block title %}
-<title>Login Page</title>
 {% endblock title%}
+
 
 {% block css %}
 {% endblock css %}
@@ -9,19 +13,900 @@
 {% block scripts %}
 {% endblock scripts %}
 
-{% block content %}
-<h1>Login</h1>
 
-<form method="POST" action="{% url 'login' %}">
-    {%csrf_token%}
-    ID:
-    <input name="id" type="text" value="">
-    Password:
-    <input name="password" type="password" value="">
-    <input type="submit" value="Login">
-</form>
-{% if error %}
-{{ error }}
-{% endif %}
 
-{% endblock content %}
+</head>
+
+
+<body>
+    <div class="BlackBox">
+        <img width="476.84" height="588" src="{% static 'image/box1.png' %}" />
+    </div>
+
+    <div class="font_1">로그인</div>
+    <div class="font_3">LONGIN</div>
+
+    <form method="POST" action="{% url 'login' %}">
+        {%csrf_token%}
+        ID:
+        <input name="id" type="text" value="로그인">
+        Password:
+        <input name="password" type="password" value="">
+        <input type="submit" value="확인">
+    </form>
+    {% if error %}
+    {{ error }}
+    {% endif %}
+
+
+
+
+
+    <div class="PurpleBox">
+        <img width="533.27" height="616" src="{% static 'image/box2.png' %}" />
+    </div>
+
+    <div class="font_2">회원가입</div>
+    <div class="font_4">SIGN UP</div>
+
+    <form id="join-form" method="POST" action="{% url 'signup'%}" onsubmit="return checkAll();">
+        {% csrf_token %}
+        <input name="id_1" id="id" class="id_input" type="text" checked_result="fail" required value=""
+            placeholder="영문+숫자 5~20자" />
+
+        <input id="btn-id" type="button" value="중복체크">
+        <input name="password1" type="password" value="" required placeholder="영문+숫자+특수문자 8~16자"><br>
+
+        <input name="password2" type="password" value="" required><br>
+
+        <!-- <a class="go" href="#"></a> -->
+        <!-- <div class="img_go">
+            <img width="" height="" src="{% static 'image/go.png' %}">
+        </div> -->
+        <!-- </form> -->
+
+
+        <div class="graBox">
+        </div>
+
+
+
+
+        <!-- <form id="join-form" method="POST" action="{% url 'signup'%}" onsubmit="return checkAll();"> -->
+        {% csrf_token %}
+        <div class="block-label_font" for="email">이메일</div>
+        <!-- <input name="email1" type="email1" value="" required>
+        <input name="email2" type="email2" value="" required> -->
+        <input name="email3" type="email1" value="" required>
+
+
+        <div class="name_font" for="name">이름</div>
+        <div class="name_star">*</div>
+        <input name="name" type="text" value="" required><br>
+
+        <div class="name_nic_font" for="name">닉네임</div>
+        <input name="nic" type="text" value="" required><br>
+
+        <div class="IN_font" for="phone">주민등록번호번호</div>
+        <div class="IN_star">*</div>
+        <input name="IN1" type="text" value="" required><br>
+        <input name="IN2" type="text" value="" required><br>
+
+
+
+        <div class="phone_font" for="phone">휴대전화번호</div>
+        <!-- <input name="phone1" type="text" value="" required>-
+        <input name="phone2" type="text" value="" required>-
+        <input name="phone3" type="text" value="" required> -->
+        <input name="phone4" type="text" value="" required>
+
+        <div class="coupon_font" for="phone">할인쿠폰 등록</div>
+        <input name="coupon" type="text" value="" required>
+
+        <div class="address_font" for="address">주소</div>
+        <input name="address1" type="text" value="" required>
+        <input name="address2" type="text" value="" required>
+        <input name="address3" type="text" value="" required>
+
+
+        <div class="public_font" for="public">공동현관 출입번호</div>
+        <input name="public" type="text" value="" required>
+
+        <hr class="line1">
+
+        <div class="agree_font"></div>
+        <hr class="line2">
+
+
+        <div class="agree1"></div>
+        <div class="agree2"></div>
+        <div class="agree3"></div>
+
+        <input type="submit" value="가입완료" id="join-submit" id_check_result="fail">
+    </form>
+
+
+
+
+    <script type="text/javascript">
+        // id = 5~20 영문+숫자
+        // pw = 8~16 영문+숫자+특문
+
+
+        var num_pattern = /[0-9]/; // 숫자
+        var en_pattern = /[a-zA-Z]/; // 영문자
+        var sp_pattern = /[~!@#$%^&*()_+|<>?:{}]/; // 특수문자
+
+        function checkAll() {
+            var userPw1 = document.getElementsByName('password1')[0].value;
+            var userPw2 = document.getElementsByName('password2')[0].value;
+
+            if (!num_pattern.test(userPw1) || !en_pattern.test(userPw1) || !sp_pattern.test(userPw1) || userPw1.length <
+                8 || userPw1.length > 16) {
+                alert("비밀번호는 8~16글자 영문 + 숫자 + 특수문자 조합이어야 합니다.");
+                return false;
+            } else if (userPw1 != userPw2) {
+                alert("두 비밀번호가 동일하지 않습니다.");
+                document.getElementsByName('password2')[0].value = "";
+                document.getElementsByName('password2')[0].focus();
+                return false;
+            }
+        }
+
+        //중복체크
+        $(function () {
+            $('#id').change(function () {
+                $('#img-id').hide();
+                $('#btn-id').show();
+            });
+
+            $('#btn-id').click(function () {
+                var id = $('#id').val()
+                if (id == '') {
+                    alert('아이디를 입력해주세요.')
+                    return;
+                }
+
+                if (!num_pattern.test(id) || !en_pattern.test(id) || id.length < 5 || id.length > 20) {
+                    alert("아이디는 5~20글자 영문 + 숫자 조합이어야 합니다.");
+                    return false;
+                }
+
+                $.ajax({
+                    url: "{%url 'idcheck' %}",
+                    data: {
+                        'id': id
+                    },
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.result != 'success') {
+                            console.error(response.data)
+                            return;
+                        }
+                        if (response.data == 'exist') {
+                            alert("존재하는 아이디 입니다.");
+                            $('#id').val('').focus();
+                            return;
+                        } else {
+                            $('#img-id').show();
+                            $('#btn-id').hide();
+                            $("#join-submit").attr("id_check_result", "success");
+                            return;
+                        }
+                    },
+                    error: function (xhr, error) {
+                        alert("서버와의 통신에서 문제가 발생했습니다.");
+                        console.error("error : " + error);
+                    }
+                })
+            });
+
+            $('#join-form').submit(function () {
+                if ($("#join-submit").attr("id_check_result") == "fail") {
+                    alert("id 중복체크를 해주시기 바랍니다.");
+                    $("#id").focus();
+                    return false;
+                }
+            });
+
+            $("#id").on("propertychange change keyup paste input", function () {
+                $('#img-id').hide();
+                $('#btn-id').show();
+                $('#join-submit').attr("id_check_result", "fail");
+            });
+        });
+    </script>
+
+
+    {% endblock content %}
+
+    {% block style%}
+    <style>
+        .BlackBox {
+            position: absolute;
+            left: 247px;
+            top: 165px;
+
+        }
+
+        .PurpleBox {
+            position: absolute;
+            left: 709px;
+            top: 167px;
+        }
+
+        .graBox {
+            position: absolute;
+            width: 987px;
+            height: 1078px;
+            left: 247px;
+            top: 825px;
+            background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%), radial-gradient(90.67% 90.67% at 63.93% 21.61%, #8657F9 38.02%, rgba(156, 152, 165, 0.0165774) 99.98%, rgba(133, 86, 249, 0.00840336) 99.99%, rgba(133, 86, 249, 0) 100%);
+        }
+
+        .font_1 {
+            position: absolute;
+            left: 280px;
+            top: 195px;
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 48px;
+            line-height: 56px;
+
+            color: #FFFFFF;
+
+        }
+
+        .font_2 {
+            /* 회원가입 */
+            position: absolute;
+            width: 175;
+            height: 67px;
+            left: 1017px;
+            top: 198px;
+
+            font-family: Red Hat Display;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 48px;
+            line-height: 64px;
+            /* identical to box height */
+
+
+            color: #FFFFFF;
+        }
+
+        .font_3 {
+            /* LOGIN */
+            position: absolute;
+            width: 31px;
+            height: 13px;
+            left: 287px;
+            top: 188px;
+
+            font-family: Red Hat Display;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 10px;
+            line-height: 13px;
+
+            color: #FFFFFF;
+
+            text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        }
+
+        .font_4 {
+            /* SING UP */
+
+
+            position: absolute;
+            left: 1165px;
+            top: 256px;
+
+            font-family: Red Hat Display;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 10px;
+            line-height: 13px;
+
+            color: #FFFFFF;
+
+            text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        }
+
+        input[name=id] {
+            /* Line 103 */
+
+            position: absolute;
+            width: 367px;
+            height: 35px;
+            left: 280px;
+            top: 345px;
+
+            border: 1px solid #FFFFFF;
+
+
+        }
+
+        input[name=password] {
+            /* Line 103 */
+
+            position: absolute;
+            width: 367px;
+            height: 35px;
+            left: 280px;
+            top: 446px;
+
+            border: 1px solid #FFFFFF;
+
+        }
+
+        input[type=submit] {
+            position: absolute;
+            width: 79px;
+            height: 35px;
+            left: 531px;
+            top: 611px;
+
+            background: #181818;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            border-radius: 20px;
+        }
+
+        input[name=id_1] {
+            position: absolute;
+            width: 380px;
+            height: 35px;
+            left: 817px;
+            top: 343px;
+
+            border: 1px solid #FFFFFF;
+        }
+
+        input[name=password1] {
+            position: absolute;
+            width: 380px;
+            height: 35px;
+            left: 817px;
+            top: 448px;
+
+            border: 1px solid #FFFFFF;
+        }
+
+        input[name=password2] {
+            position: absolute;
+            width: 380px;
+            height: 35px;
+            left: 817px;
+            top: 568px;
+
+            border: 1px solid #FFFFFF;
+        }
+
+        .go {
+
+            position: absolute;
+            width: 79px;
+            height: 35px;
+            left: 1120px;
+            top: 633px;
+
+            background: #7147D5;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            border-radius: 20px
+        }
+
+        .img_go {
+            position: absolute;
+            width: 45px;
+            height: 26.3px;
+            left: 1140px;
+            top: 638px;
+
+        }
+
+        input[name=name] {
+            position: absolute;
+            width: 414px;
+            height: 48px;
+            left: 292px;
+            top: 950px;
+
+            border: 3px solid #FFFFFF;
+            box-sizing: border-box;
+
+            background-color: transparent;
+        }
+
+        input[name=nic] {
+            position: absolute;
+            width: 414px;
+            height: 48px;
+            left: 292px;
+            top: 1064px;
+
+            border: 3px solid #FFFFFF;
+            box-sizing: border-box;
+
+            background-color: transparent;
+        }
+
+        input[name=IN1] {
+            position: absolute;
+            width: 195px;
+            height: 48px;
+            left: 292px;
+            top: 1195px;
+
+            border: 3px solid #FFFFFF;
+            box-sizing: border-box;
+            background-color: transparent;
+        }
+
+        input[name=IN2] {
+            position: absolute;
+            width: 195px;
+            height: 48px;
+            left: 511px;
+            top: 1195px;
+
+            border: 3px solid #FFFFFF;
+            box-sizing: border-box;
+
+            background-color: transparent;
+        }
+
+        .h2f {
+            position: absolute;
+            width: 7px;
+            height: 21px;
+            left: 496px;
+            top: 1208px;
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 18px;
+            line-height: 21px;
+            /* identical to box height */
+
+
+            color: #FFFFFF;
+
+        }
+
+        input[name=phone1] {
+            position: absolute;
+            width: 89px;
+            height: 48px;
+            left: 292px;
+            top: 1336px;
+
+            border: 3px solid #FFFFFF;
+            box-sizing: border-box;
+            background-color: transparent;
+        }
+
+        input[name=phone2] {
+            position: absolute;
+            width: 89px;
+            height: 48px;
+            left: 398px;
+            top: 1336px;
+
+            border: 3px solid #FFFFFF;
+            box-sizing: border-box;
+
+            background-color: transparent;
+        }
+
+        input[name=phone3] {
+            position: absolute;
+            width: 89px;
+            height: 48px;
+            left: 505px;
+            top: 1336px;
+
+            border: 3px solid #FFFFFF;
+            box-sizing: border-box;
+
+
+            background-color: transparent;
+        }
+
+        input[name=phone4] {
+            position: absolute;
+            width: 302px;
+            height: 48px;
+            left: 292px;
+            top: 1393px;
+
+            border: 3px solid #FFFFFF;
+            box-sizing: border-box;
+
+            background-color: transparent;
+        }
+
+        input[name=email1] {
+            position: absolute;
+            width: 179px;
+            height: 48px;
+            left: 292px;
+            top: 1534px;
+
+            border: 3px solid #FFFFFF;
+            box-sizing: border-box;
+
+            background-color: transparent;
+        }
+
+        input[name=email2] {
+            position: absolute;
+            width: 219px;
+            height: 48px;
+            left: 487px;
+            top: 1534px;
+
+            border: 3px solid #FFFFFF;
+            box-sizing: border-box;
+
+            background-color: transparent;
+        }
+
+        input[name=email3] {
+            position: absolute;
+            width: 302px;
+            height: 48px;
+            left: 292px;
+            top: 1590px;
+
+            border: 3px solid #FFFFFF;
+            box-sizing: border-box;
+
+            background-color: transparent;
+        }
+
+        input[name=coupon] {
+            position: absolute;
+            width: 415px;
+            height: 46px;
+            left: 292px;
+            top: 1726px;
+
+            border: 3px solid #FFFFFF;
+            box-sizing: border-box;
+
+            background-color: transparent;
+        }
+
+        input[name=address1] {
+            position: absolute;
+            width: 308px;
+            height: 48px;
+            left: 766px;
+            top: 950px;
+
+            background: rgba(255, 255, 255, 0.74);
+            border: 3px solid #FFFFFF;
+            box-sizing: border-box;
+            border-radius: 5px;
+        }
+
+        input[name=address2] {
+            position: absolute;
+            width: 416px;
+            height: 48px;
+            left: 766px;
+            top: 1007px;
+
+            background: rgba(255, 255, 255, 0.74);
+            border: 3px solid #FFFFFF;
+            box-sizing: border-box;
+            border-radius: 5px;
+
+        }
+
+        input[name=address3] {
+            position: absolute;
+            width: 416px;
+            height: 48px;
+            left: 766px;
+            top: 1065px;
+
+            background: rgba(255, 255, 255, 0.74);
+            border: 3px solid #FFFFFF;
+            box-sizing: border-box;
+            border-radius: 5px;
+
+        }
+
+        input[name=public] {
+            position: absolute;
+            width: 416px;
+            height: 48px;
+            left: 766px;
+            top: 1174px;
+
+            background: rgba(255, 255, 255, 0.74);
+            border: 3px solid #FFFFFF;
+            box-sizing: border-box;
+            border-radius: 5px;
+        }
+
+        .line1 {
+            position: absolute;
+            width: 429px;
+            height: 0px;
+            left: 766px;
+            top: 1246px;
+
+            border: 1px solid #FFFFFF;
+
+        }
+
+        .line2 {
+            position: absolute;
+            width: 429px;
+            height: 0px;
+            left: 764px;
+            top: 1362px;
+
+            border: 1px solid #FFFFFF;
+        }
+
+        .agree1 {
+            position: absolute;
+            width: 420px;
+            height: 63px;
+            left: 771px;
+            top: 1425px;
+
+            opacity: 0.56;
+            border: 1px solid #FFFFFF;
+            box-sizing: border-box;
+
+
+            background-color: transparent;
+        }
+
+
+        .agree2 {
+            position: absolute;
+            width: 420px;
+            height: 63px;
+            left: 771px;
+            top: 1501px;
+
+            border: 1px solid #FFFFFF;
+            box-sizing: border-box;
+            ;
+        }
+
+
+        .agree3 {
+            position: absolute;
+            width: 420px;
+            height: 93px;
+            left: 771px;
+            top: 1576px;
+
+            border: 1px solid #FFFFFF;
+            box-sizing: border-box;
+        }
+
+        input[id=join-submit] {
+            position: absolute;
+            width: 420px;
+            height: 53px;
+            left: 771px;
+            top: 1722px;
+
+            background: #7147D5;
+            border-radius: 5px;
+        }
+
+        .name_font {
+            /* 이름 */
+
+
+            position: absolute;
+            height: 23px;
+            left: 292px;
+            top: 923px;
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 20px;
+            line-height: 23px;
+
+            color: rgba(59, 59, 59, 0.81);
+        }
+
+        .name_nic_font {
+            position: absolute;
+            height: 23px;
+            left: 292px;
+            top: 1035px;
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 20px;
+            line-height: 23px;
+
+            color: rgba(59, 59, 59, 0.81);
+        }
+
+        .IN_font {
+            position: absolute;
+            height: 23px;
+            left: 292px;
+            top: 1161px;
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 20px;
+            line-height: 23px;
+
+            color: rgba(59, 59, 59, 0.81);
+        }
+
+        .IN_star {
+            position: absolute;
+            width: 10px;
+            height: 23px;
+            left: 405px;
+            top: 1152px;
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 20px;
+            line-height: 23px;
+
+            color: #883ACE;
+        }
+
+        .phone_font {
+            position: absolute;
+            height: 23px;
+            left: 292px;
+            top: 1302px;
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 20px;
+            line-height: 23px;
+
+            color: rgba(59, 59, 59, 0.81);
+        }
+
+        .email_font {
+            position: absolute;
+            width: 56px;
+            height: 23px;
+            left: 292px;
+            top: 1505px;
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 20px;
+            line-height: 23px;
+
+            color: rgba(59, 59, 59, 0.81);
+        }
+
+        .coupon_font {
+            position: absolute;
+            height: 23px;
+            left: 292px;
+            top: 1696px;
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 20px;
+            line-height: 23px;
+
+            color: rgba(59, 59, 59, 0.81);
+        }
+
+        .address_font {
+            /* 주소 */
+
+
+            position: absolute;
+            height: 23px;
+            left: 765px;
+            top: 923px;
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 20px;
+            line-height: 23px;
+
+            color: rgba(59, 59, 59, 0.81);
+        }
+
+        .public_font {
+            /* 공동현관 출입번호 */
+
+
+            position: absolute;
+            height: 23px;
+            left: 765px;
+            top: 1143px;
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 20px;
+            line-height: 23px;
+
+            color: rgba(59, 59, 59, 0.81);
+        }
+
+        .agree_font {
+            /* 약관 동의 */
+            position: absolute;
+            width: 79px;
+            height: 23px;
+            left: 764px;
+            top: 1332px;
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 20px;
+            line-height: 23px;
+
+            color: rgba(59, 59, 59, 0.81);
+        }
+
+        .block-label_font {
+            position: absolute;
+            height: 23px;
+            left: 292px;
+            top: 1505px;
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 20px;
+            line-height: 23px;
+
+            color: rgba(59, 59, 59, 0.81);
+
+        }
+
+        .name_star {
+            position: absolute;
+            width: 10px;
+            height: 23px;
+            left: 331px;
+            top: 916px;
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 20px;
+            line-height: 23px;
+
+            color: #883ACE;
+        }
+    </style>
+
+
+
+
+
+</body>
+{% endblock style%}

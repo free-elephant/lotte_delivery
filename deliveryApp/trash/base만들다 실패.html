@@ -1,60 +1,46 @@
 <!DOCTYPE html>
-{% load static %}
 <html lang="ko">
 
-<head>/
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link rel="stylesheet" href="css/style.css">
-    {% block title %}{% endblock title %}
+    <!-- {% block title %}{% endblock title %}
     {% block css %}
     {% endblock css %}
 
     {% block scripts %}
-    {% endblock scripts %}
+    {% endblock scripts %} -->
+
 </head>
 
 <body>
-    <a class="menu1" href="{% url 'request_market2' %}">택배 보내기</a>
-    <a class="menu2" href="{% url 'deliver' %}">배달하기</a>
-    <a class="menu3" href="{% url 'info' %}">마이페이지</a>
-    <a class="menu4" href="#">문의하기</a>
-    <a href="/" class="logo">
-        <img width=73 height=77 src="{% static 'image/logo.png'%}" />
-    </a>
+    <div class="navbar">
+        <a class="menu1" href="">물건보내기</a>
+        <a class="menu2" href="">물건운송하기</a>
+        <a class="menu3" href="">마이페이지</a>
+        <a class="menu4" href="">문의하기</a>
+    </div>
 
     <div class="side2">
+
+        <div class="side1">
+            <a href="" class="logo"></a>
+            <div class="log">LOGIN</div>
+            <a href="" class="search"></a>
+            <a href="" class="my">
+                <span class="my_img"></span>
+                <span class="my_text">My</span>
+            </a>
+            <a href="" class="app">앱 다운로드</a>
+            <a href="" class="cart"></a>
+            <a href="" class="hart"></a>
+            <a href="" class="service">고객센터</a>
+            <a class="side3">
+            </a>
+        </div>
     </div>
-    <div class="side1">
-    </div>
-    <div class="tri"></div>
-    {% if user.is_authenticated %}
-    <div class="login_wrap">
-        <a href="{% url 'logout' %}" class="logout">LOGOUT</a>
-    </div>
-    {%else%}
-    <div class="login_wrap">
-        <a href="{% url 'login' %}" class="login">LOGIN</a>
-    </div>
-    {%endif%}
-    <a href="" class="search">
-        <img src="{% static 'image/search.png'%}" />
-    </a>
-    <a href="{% url 'info' %}" class="my_img">
-        <img src="{% static 'image/my.png'%}" />
-    </a>
-    <div class="tri2"></div>
-    <a href="" class="app">앱 <br> 다운로드</a>
-    <a href="" class="cart">
-        <img src="{% static 'image/cart.png'%}" />
-    </a>
-    <a href="" class="heart">
-        <img src="{% static 'image/heart.png'%}" />
-    </a>
-    <a href="" class="service">고객센터</a>
-    <a class="side3">
-    </a>
 
     <!-- {% if user.is_authenticated %}
     {{user.username}}
@@ -67,54 +53,20 @@
         <a href="{% url 'signup' %}">회원가입</a>
         <a href="{% url 'login' %}">로그인</a>
     </div>
-    {% endif %} -->
+    {% endif %}
 
     {% block content %}
-    {% endblock content %}
+    <!-- 들어갈 내용-->
+    <!-- {% endblock content %} -->
 
-    {% block style %}
-    {% endblock style %}
     <style>
-        a {
-            text-decoration: none;
-        }
-
-        .login_wrap {
-            position: absolute;
-            left: 20px;
-            top: 156px;
-            z-index: 998;
-        }
-
-        .login {
-
-
-            font-family: Roboto;
-            font-style: normal;
-            font-weight: 500;
-            font-size: 20px;
-            line-height: 23px;
-
-            color: #FFFFFF;
-        }
-
-        .logout {
-
-
-            font-family: Roboto;
-            font-style: normal;
-            font-weight: 500;
-            font-size: 20px;
-            line-height: 23px;
-
-            color: #FFFFFF;
-        }
-
         .menu1 {
             position: absolute;
+            width: 73px;
             height: 18px;
-            left: 123px;
+            left: 259px;
             top: 27px;
+
             font-family: Roboto;
             font-style: normal;
             font-weight: bold;
@@ -122,29 +74,36 @@
             line-height: 18px;
             /* identical to box height */
 
+
             color: #3B3B3B;
+
         }
 
         .menu2 {
             position: absolute;
+            width: 87px;
             height: 18px;
-            left: 256px;
+            left: 390px;
             top: 27px;
+
             font-family: Roboto;
             font-style: normal;
             font-weight: bold;
             font-size: 15px;
             line-height: 18px;
             /* identical to box height */
+
+
             color: #3B3B3B;
+
         }
 
         .menu3 {
             position: absolute;
+            width: 69px;
             height: 18px;
-            left: 386px;
+            left: 541px;
             top: 27px;
-
 
             font-family: Roboto;
             font-style: normal;
@@ -160,8 +119,9 @@
 
         .menu4 {
             position: absolute;
+            width: 56px;
             height: 18px;
-            left: 523px;
+            left: 677px;
             top: 27px;
 
             font-family: Roboto;
@@ -170,65 +130,52 @@
             font-size: 15px;
             line-height: 18px;
             /* identical to box height */
+
+
             color: #3B3B3B;
 
         }
 
         .logo {
-            z-index: 998;
+            z-index: 10;
             position: absolute;
-            left: 0.9%;
-            top: -1%;
+            width: 73px;
+            height: 77px;
+            left: 10px;
+            top: -9px;
+            background-image: url(../img/logo.png);
         }
-
-        .tri {
-            z-index: 999;
-            top: 91px;
-            width: 0;
-            height: 0;
-            border-bottom: 60px solid #AE53FF;
-            border-right: 95px solid transparent;
-            position: absolute;
-        }
-
-
 
         .side1 {
-            z-index: 3;
+            z-index: 10;
             position: absolute;
             width: 95px;
             height: 153px;
             left: 0px;
             top: -2px;
+
             background: #FFFFFF;
         }
 
         .side2 {
+            z-index: 3;
             position: absolute;
             width: 95px;
             height: 927px;
             left: 0px;
             top: -2px;
+
             background: #AE53FF;
         }
 
         .side3 {
             position: absolute;
             width: 95px;
-            height: 115px;
+            height: 156px;
             left: 0px;
-            top: 920px;
-            background: #3B3B3B;
-        }
+            top: 873px;
 
-        .tri2 {
-            z-index: 999;
-            top: 860px;
-            width: 0;
-            height: 0;
-            border-bottom: 60px solid #3B3B3B;
-            border-right: 95px solid transparent;
-            position: absolute;
+            background: #3B3B3B;
         }
 
         .log {
@@ -252,16 +199,37 @@
             position: absolute;
             width: 15px;
             height: 16px;
-            left: 40px;
-            top: 198px;
-            z-index: 998;
+            left: 43px;
+            top: 200px;
+
+            background-image: url(../img/search.png);
         }
 
         .my_img {
-            z-index: 998;
             position: absolute;
+            width: 15px;
+            height: 18px;
+            left: 42px;
+            top: 836px;
+
+            background-image: url(../img/man.png);
+        }
+
+        .my_text {
+            position: absolute;
+            width: 20px;
+            height: 15px;
             left: 40px;
-            top: 834px;
+            top: 856px;
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 13px;
+            line-height: 15px;
+
+            color: #FFFFFF;
+
         }
 
         .cart {
@@ -271,15 +239,18 @@
             left: 26px;
             top: 1085px;
 
+            background-image: url(../img/cart.png);
 
         }
 
-        .heart {
+        .hart {
             position: absolute;
             width: 51px;
             height: 56px;
             left: 31px;
             top: 1175px;
+
+            background-image: url(../img/hart.png);
         }
 
         .service {
@@ -300,9 +271,11 @@
 
         .app {
             position: absolute;
-            z-index: 998;
-            left: 8px;
+            width: 74px;
+            height: 51px;
+            left: 14px;
             top: 952px;
+
             font-family: Roboto;
             font-style: normal;
             font-weight: bold;
@@ -314,6 +287,10 @@
 
         }
     </style>
+
+
+
+
 
 </body>
 
