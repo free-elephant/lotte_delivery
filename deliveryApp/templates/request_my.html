@@ -56,6 +56,11 @@
     <br>
     <form action="{% url 'request_my' %}" method="POST">
         {%csrf_token%}
+        <div class="">
+            <div>택배 보내기</div>
+            <div>마켓 배송</div>
+        </div>
+
 
         <div>
             <p>신청인</p>
@@ -140,21 +145,15 @@
             <option value="24">23~24</option>
         </select>
         <br>
-        <!-- 제한시간
 
-        <select name="limited_time" id="limited_time" onclick="price_function()">
-            <option value="">시간 선택</option>
-            <option value="1">1시간 이내</option>
-            <option value="2">2시간 이내</option>
-            <option value="3">3시간이내</option>
-        </select> -->
 
         무게
         <select name="weight" id="weight" onclick="price_function()">
             <option value="">무게 선택</option>
-            <option value="1">1kg 이내</option>
-            <option value="2">1~2kg 이내</option>
-            <option value="3">2~3kg 이내</option>
+            <option value="1">10kg 이내</option>
+            <option value="2">10~20kg 이내</option>
+            <option value="3">20~30kg 이내</option>
+            <option value="4">30~40kg 이내</option>
         </select>
         <br>
         가격<input type="text" name="price" id="price_sum" value="">
@@ -264,7 +263,7 @@
                             if (id == "map_deparature") {
                                 // 해당 주소에 대한 좌표를 받아서
                                 coords['map_deparature'] = new daum.maps.LatLng(result.y, result.x);
-                                map.setCenter(coords['map_deparature']);
+                                // map.setCenter(coords['map_deparature']);
 
                                 document.getElementById("deparature_lat").value = coords['map_deparature'].getLat();
                                 document.getElementById("deparature_long").value = coords['map_deparature'].getLng();
@@ -274,7 +273,8 @@
                             if (id == "map_destination") {
                                 // 해당 주소에 대한 좌표를 받아서
                                 coords['map_destination'] = new daum.maps.LatLng(result.y, result.x);
-                                map.setCenter(coords['map_destination']);
+
+                                //map.setCenter(coords['map_destination']);
 
                                 document.getElementById("destination_lat").value = coords['map_destination'].getLat();
                                 document.getElementById("destination_long").value = coords['map_destination'].getLng();
@@ -298,7 +298,9 @@
                                         position: coords[i],
                                         content: "<div>시작점</div>"
                                     });
+                                    console.log("시닥!!" + coords[i])
                                     infowindow.open(map, marker);
+                                    map.setCenter(coords['map_deparature']);
 
                                 }
                                 else if (i == 'map_destination') {
@@ -313,7 +315,9 @@
                                         position: coords[i],
                                         content: "<div>도착점</div>"
                                     });
+                                    console.log("도착!!" + coords[i])
                                     infowindow.open(map, marker);
+                                    map.setCenter(coords['map_destination']);
                                 }
                             }
                             if (coords['map_deparature'] != null & coords['map_destination'] != null) {
@@ -344,12 +348,12 @@
         function price_function() {
             console.log("hi")
             weight = document.getElementById("weight").value;
-            time = document.getElementById("limited_time").value;
+            distance = document.getElementById("distance").value;
 
-            console.log(time)
+
             console.log(weight)
-            if (time != "" & weight != "") {
-                var sum = weight * time * 4000;
+            if (distance != "" & weight != "") {
+                var sum = weight * distance;
                 document.getElementById("price_sum").value = sum;
 
             }

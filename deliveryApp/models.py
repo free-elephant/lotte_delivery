@@ -1,8 +1,10 @@
 from django.db import models
-from storeApp.models import Goods
+# from storeApp.models import Goods
+from django.contrib.auth.models import User
 
 
 class Delivery_my_stuff(models.Model):  # 내 물건 배송
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     my_departure_lat = models.FloatField()  # 출발 위도
     my_departure_long = models.FloatField()  # 출발 경도
     my_departure_addr = models.CharField(max_length=100)  # 출발 상세주소
@@ -29,6 +31,7 @@ class Delivery_my_stuff(models.Model):  # 내 물건 배송
 
 
 class Delivery_market(models.Model):  # 가게물건 배송
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     mar_departure_lat = models.FloatField()  # 첫번째 가게 위도
     mar_departure_long = models.FloatField()  # 첫번째 가게 경도
     mar_departure_addr = models.CharField(max_length=100)  # 출발지 상세주소
@@ -88,4 +91,5 @@ class Delivery_market(models.Model):  # 가게물건 배송
     mar_distance = models.IntegerField(
         blank=True, null=True)  # 출발지-도착지 거리 <-빈값 되도록
     mar_price = models.IntegerField()  # 배송비
-    mar_content = models.CharField(max_length=30)  # 전달사항 <-빈 값 되도록
+    mar_content = models.CharField(
+        max_length=30, blank=True, null=True)  # 전달사항 <-빈 값 되도록
