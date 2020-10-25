@@ -12,6 +12,7 @@ class Delivery_my_stuff(models.Model):  # 내 물건 배송
     my_departure_phone = models.IntegerField()  # 보내는 이 폰번호
     my_destination_lat = models.FloatField()  # 도착 위도
     my_destination_long = models.FloatField()  # 도착 경도
+    my_destination_address = models.CharField(max_length=100)
     my_destination_addr = models.CharField(max_length=100)  # 도착 상세주소
     my_destination_phone = models.IntegerField()  # 받는 이 폰번호
 
