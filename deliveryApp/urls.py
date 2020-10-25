@@ -5,11 +5,11 @@ from . import views
 
 urlpatterns = [
     path('deliver/', views.deliver, name="deliver"),
+    path('deliverItem/', views.deliverItem, name="deliverItem"),
     path('request_my/', views.request_my, name="request_my"),
     path('request_market/', views.request_market, name="request_market"),
     path('request_market2/', views.request_market2, name="request_market2"),
-    path('request_market_stuff/', views.request_market_stuff,
-         name="request_market_stuff"),
+    path('request_market_stuff/', views.request_market_stuff,name="request_market_stuff"),
 
     path('request_market_purchase/', views.request_market_purchase,
          name="request_market_purchase"),

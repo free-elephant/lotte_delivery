@@ -10,7 +10,7 @@ from .models import Delivery_market
 from storeApp.models import Goods, Store
 from accountApp.models import Player
 
-import json
+import json, math
 
 
 def main(request):
@@ -31,7 +31,24 @@ def deliver(request):
     }
     return render(request, 'deliver.html', context)
 
-
+def deliverItem(request):
+    if request.method=="GET":
+        return render(request, 'deliver.html')
+    elif request.method=="POST":
+        position = request.POST['hiddenPosition'].split(',')
+        position[0]=position[0][0:9]
+        position[1]=position[1][0:10]
+        position[2]=position[2][0:9]
+        position[3]=position[3][0:10]
+        print(position[0])
+        print(position[1])
+        print(position[2])
+        print(position[3])
+        d_stuff = Delivery_my_stuff.objects.get(my_departure_lat = position[0])
+        d_stuff.deliver_stuff_user = request.user
+        d_stuff.save()
+        return redirect('/')
+        
 def request_my(request):
     if request.method == "GET":
         return render(request, 'request_my.html')
