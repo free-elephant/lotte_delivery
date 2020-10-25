@@ -86,39 +86,41 @@
 
 {% block content %}
 
+<div style="margin-left : 100px; margin-top:70px;">
 
-<input type="checkbox" onclick="current_location();" id="current_location" name="current_location" />현재위치
+    <input type="checkbox" onclick="current_location();" id="current_location" name="current_location" />현재위치
 
 
-<div id="navigator_container" name="navigator_container" class="navigator_container">
-    <div>
-        <fieldset>
-            <legend>출발지</legend>
-            <input type="text" id="deparature_addr" placeholder="주소" style="width:250px;" readonly>
-            <input type="button" onclick="my_Stuff_Map(this.id)" value="주소 검색" id="map_deparature"><br>
-            <input type="text" id="detail_deparature_addr" placeholder="상세주소">
-        </fieldset>
+    <div id="navigator_container" name="navigator_container" class="navigator_container">
+        <div>
+            <fieldset>
+                <legend>출발지</legend>
+                <input type="text" id="deparature_addr" placeholder="주소" style="width:250px;" readonly>
+                <input type="button" onclick="my_Stuff_Map(this.id)" value="주소 검색" id="map_deparature"><br>
+                <input type="text" id="detail_deparature_addr" placeholder="상세주소">
+            </fieldset>
+        </div>
+
+        <div>
+            <fieldset>
+                <legend>도착지</legend>
+                <input type="text" id="destination_addr" placeholder="주소" style="width:250px;" readonly>
+                <input type="button" onclick="my_Stuff_Map(this.id)" value="주소 검색" id="map_destination"><br>
+                <input type="text" id="detail_destination_addr" placeholder="상세주소">
+            </fieldset>
+        </div>
     </div>
-
-    <div>
-        <fieldset>
-            <legend>도착지</legend>
-            <input type="text" id="destination_addr" placeholder="주소" style="width:250px;" readonly>
-            <input type="button" onclick="my_Stuff_Map(this.id)" value="주소 검색" id="map_destination"><br>
-            <input type="text" id="detail_destination_addr" placeholder="상세주소">
-        </fieldset>
-    </div>
+    <div id="map" style="width:500px;height:400px;"></div>
+    <!--지도 띄우기-->
+    <select name="select_radius" id="select_radius">
+        <option value="0">반경 선택</option>
+        <option value="1000">1km</option>
+        <option value="2000">2km</option>
+        <option value="3000">3km</option>
+        <option value="4000">4km</option>
+        <option value="5000">5km</option>
+    </select>
 </div>
-<div id="map" style="width:500px;height:400px;"></div>
-<!--지도 띄우기-->
-<select name="select_radius" id="select_radius">
-    <option value="0">반경 선택</option>
-    <option value="1000">1km</option>
-    <option value="2000">2km</option>
-    <option value="3000">3km</option>
-    <option value="4000">4km</option>
-    <option value="5000">5km</option>
-</select>
 
 <div id="stuff_dep_lat" style="display:none;">
     {% for stuff in stuffs.all %}
@@ -138,6 +140,12 @@
     {% endfor %}
 </div>
 
+<div id="stuff_dep_address">
+    {% for stuff in stuffs.all %}
+    {{stuff.my_departure_address}},
+    {% endfor %}
+</div>
+
 <div id="stuff_des_lat" style="display:none;">
     {% for stuff in stuffs.all %}
     {{stuff.my_destination_lat}},
@@ -153,6 +161,12 @@
 <div id="stuff_des_addr">
     {% for stuff in stuffs.all %}
     {{stuff.my_destination_addr}},
+    {% endfor %}
+</div>
+
+<div id="stuff_des_address">
+    {% for stuff in stuffs.all %}
+    {{stuff.my_destination_address}},
     {% endfor %}
 </div>
 
@@ -182,10 +196,12 @@
     {% endfor %}
 </div>
 <br>
-내용이 들어갈 div 티그
-<div id="current_div"></div>
-<div id="start_div"></div>
-<div id="end_div"></div>
+<div style="margin-left:200px;">
+    내용이 들어갈 div 티그
+    <div id="current_div"></div>
+    <div id="start_div"></div>
+    <div id="end_div"></div>
+</div>
 -----------------------------------------------------------
 <!----------------------------------------------------------- 지도 script ----------------------------------------------------------------------->
 
@@ -215,6 +231,7 @@
 
     let special_marker = [];
     let special_polyline;
+    let one_polyline = [];
 
     var r;
     var currentPosition; // 현재 위치를 담을 변수
@@ -229,6 +246,9 @@
     var current_circle = new kakao.maps.Circle();
     var deparature_circle = new kakao.maps.Circle();
     var destination_circle = new kakao.maps.Circle();
+
+    var sm;
+    var em;
 
     // ----------------------------------------------------------gps----------------------------------------------------------
     if (navigator.geolocation) {
@@ -253,10 +273,12 @@
     var list_dep_lat = document.getElementById("stuff_dep_lat").innerText.split(',');
     var list_dep_lng = document.getElementById("stuff_dep_lng").innerText.split(',');
     var list_dep_addr = document.getElementById("stuff_dep_addr").innerText.split(',');
+    var list_dep_address = document.getElementById("stuff_dep_address").innerText.split(',');
 
     var list_des_lat = document.getElementById("stuff_des_lat").innerText.split(',');
     var list_des_lng = document.getElementById("stuff_des_lng").innerText.split(',');
     var list_des_addr = document.getElementById("stuff_des_addr").innerText.split(',');
+    var list_des_address = document.getElementById("stuff_des_address").innerText.split(',');
 
     var list_goods = document.getElementById("stuff_goods").innerText.split(',');
     var list_date = document.getElementById("stuff_date").innerText.split(',');
@@ -268,10 +290,12 @@
         var data_lat1 = list_dep_lat[idx];
         var data_lng1 = list_dep_lng[idx];
         var data_addr1 = list_dep_addr[idx];
+        var data_address1 = list_dep_address[idx];
 
         var data_lat2 = list_des_lat[idx];
         var data_lng2 = list_des_lng[idx];
         var data_addr2 = list_des_addr[idx];
+        var data_address2 = list_des_address[idx];
 
         var data_goods = list_goods[idx];
         var data_date = list_date[idx];
@@ -281,8 +305,8 @@
 
         var start = new kakao.maps.LatLng(data_lat1, data_lng1);
         var end = new kakao.maps.LatLng(data_lat2, data_lng2);
-        addMarker(start, data_addr1, data_goods, data_date, data_time, data_weigth, data_price); //위도경도 ㅡ 
-        addMarker(end, data_addr2, data_goods, data_date, data_time, data_weigth, data_price);
+        addMarker(start, data_address1, data_addr1, data_goods, data_date, data_time, data_weigth, data_price); //위도경도 ㅡ 
+        addMarker(end, data_address2, data_addr2, data_goods, data_date, data_time, data_weigth, data_price);
         start_markers.push(start);
         end_markers.push(end);
     }
@@ -379,6 +403,23 @@
         //showDistance(content, path[path.length - 1]);
     }
 
+    function drawOnePolyLine(deparature, destination) {
+        polyLine = new kakao.maps.Polyline({
+            map: map,
+            path: [deparature, destination],
+            strokeWeight: 3, // 선의 두께입니다 
+            strokeColor: '#db4040', // 선의 색깔입니다
+            strokeOpacity: 1, // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
+            strokeStyle: 'solid' // 선의 스타일입니다
+        });
+        var distance = Math.round(polyLine.getLength())
+        var distance = Math.round(polyLine.getLength()),
+            content = getTimeHTML(distance);
+        var path = polyLine.getPath();
+        one_polyline.push(polyLine);
+        //showDistance(content, path[path.length - 1]);
+    }
+
 
     //###################################반경 변경###################################
     $('#select_radius').click(function () {
@@ -397,6 +438,8 @@
                     return false;
                 }
                 deletePolyLines();
+                deleteMarker();
+                deleteOnePolyLine();
                 if (coords['map_deparature']) { //출발지 반경 변경
                     console.log("출발지 반경 변경");
                     setCircle(coords['map_deparature'], response.radius, "deparature");
@@ -590,14 +633,14 @@
                 if (dist1 < ra && dist2 < ra) {
                     s = new kakao.maps.Marker({ position: start_markers[i] })
                     e = new kakao.maps.Marker({ position: end_markers[i] })
-                    s.setMap(map);
-                    e.setMap(map);
-                    drawPolyLine(start_markers[i], end_markers[i]);
+                    //s.setMap(map);
+                    //e.setMap(map);
+                    //drawPolyLine(start_markers[i], end_markers[i]);
                     current_markers.push(s);
                     current_markers.push(e);
                     var s_title;
                     var e_title;
-                    console.log(markers.length);
+
                     markers.forEach(function (marker) {
                         if (marker.getPosition().getLat() == s.getPosition().getLat() && marker.getPosition().getLng() == s.getPosition().getLng()) {
                             s_title = marker.getTitle();
@@ -606,42 +649,26 @@
                             e_title = marker.getTitle();
                         }
                     });
+
                     var start_list = s_title.split(',')
                     var end_list = e_title.split(',')
 
-                    function fetchItems(result) {
-                        return new Promise(function (resolve, reject) {
-                            var items = result[0].address.address_name;
-                            resolve(items)
-                        });
+                    var sm = s;
+                    var em = e;
+                    current_inner.innerHTML = current_inner.innerHTML + "출발지 : <a href='#' onclick='getValue(this)' value='" + s.getPosition() + '),(' + e.getPosition() + "'>" + start_list[0] + "</a>";
+                    for (var j = 1; j < start_list.length; j++) {
+                        current_inner.innerHTML = current_inner.innerHTML + start_list[j] + " / ";
                     }
+                    current_inner.innerHTML = current_inner.innerHTML + "<br>";
 
-                    var callback1 = async function (result, status) {
-                        if (status === kakao.maps.services.Status.OK) {
-                            var startAddr = await fetchItems(result)
-                            current_inner.innerHTML = current_inner.innerHTML + " " + startAddr + " ";
+                    current_inner.innerHTML = current_inner.innerHTML + "도착지 : <a href='#' onclick='getValue(this)' value='" + s.getPosition() + '),(' + e.getPosition() + "'>" + end_list[0] + "</a>";
 
-                            start_list.forEach(function (start) {
-                                current_inner.innerHTML = current_inner.innerHTML + start + " / ";
-                            });
-                            current_inner.innerHTML = current_inner.innerHTML + "<br>" + "(" + s.getPosition().getLat() + ", " + s.getPosition().getLng() + ")" + "<br>";
-                        }
-                    };
+                    for (var j = 1; j < end_list.length; j++) {
+                        current_inner.innerHTML = current_inner.innerHTML + end_list[j] + " / ";
+                    }
+                    current_inner.innerHTML = current_inner.innerHTML + "<br>";
 
-                    var callback2 = async function (result, status) {
-                        if (status === kakao.maps.services.Status.OK) {
-                            var endAddr = await fetchItems(result)
-                            current_inner.innerHTML = current_inner.innerHTML + " " + endAddr + " ";
 
-                            end_list.forEach(function (end) {
-                                current_inner.innerHTML = current_inner.innerHTML + end + " / ";
-                            });
-                            current_inner.innerHTML = current_inner.innerHTML + "<br>" + "(" + e.getPosition().getLat() + ", " + e.getPosition().getLng() + ")" + "<br>";
-                        }
-                    };
-
-                    geocoder.coord2Address(s.getPosition().getLng(), s.getPosition().getLat(), callback1);
-                    geocoder.coord2Address(e.getPosition().getLng(), e.getPosition().getLat(), callback2);
                 }
             }
         }
@@ -661,9 +688,9 @@
                 if (dist1 < ra && dist2 < ra) {
                     s = new kakao.maps.Marker({ position: start_markers[i] })
                     e = new kakao.maps.Marker({ position: end_markers[i] })
-                    s.setMap(map);
-                    e.setMap(map);
-                    drawPolyLine(start_markers[i], end_markers[i]);
+                    //s.setMap(map);
+                    //e.setMap(map);
+                    //drawPolyLine(start_markers[i], end_markers[i]);
                     deparature_markers.push(s);
                     deparature_markers.push(e);
                     var s_title;
@@ -681,39 +708,21 @@
                     var start_list = s_title.split(',')
                     var end_list = e_title.split(',')
 
-                    function fetchItems(result) {
-                        return new Promise(function (resolve, reject) {
-                            var items = result[0].address.address_name;
-                            resolve(items)
-                        });
+                    var sm = s;
+                    var em = e;
+                    start_inner.innerHTML = start_inner.innerHTML + "출발지 : <a href='#' onclick='getValue(this)' value='" + s.getPosition() + '),(' + e.getPosition() + "'>" + start_list[0] + "</a>";
+                    for (var j = 1; j < start_list.length; j++) {
+                        start_inner.innerHTML = start_inner.innerHTML + start_list[j] + " / ";
                     }
+                    start_inner.innerHTML = start_inner.innerHTML + "<br>";
 
-                    var callback1 = async function (result, status) {
-                        if (status === kakao.maps.services.Status.OK) {
-                            var startAddr = await fetchItems(result)
-                            start_inner.innerHTML = start_inner.innerHTML + " " + startAddr + " ";
+                    start_inner.innerHTML = start_inner.innerHTML + "도착지 : <a href='#' onclick='getValue(this)' value='" + s.getPosition() + '),(' + e.getPosition() + "'>" + end_list[0] + "</a>";
+                    console.log("1")
+                    for (var j = 1; j < end_list.length; j++) {
+                        start_inner.innerHTML = start_inner.innerHTML + end_list[j] + " / ";
+                    }
+                    start_inner.innerHTML = start_inner.innerHTML + "<br>";
 
-                            start_list.forEach(function (start) {
-                                start_inner.innerHTML = start_inner.innerHTML + start + " / ";
-                            });
-                            start_inner.innerHTML = start_inner.innerHTML + "<br>" + "(" + s.getPosition().getLat() + ", " + s.getPosition().getLng() + ")" + "<br>";
-                        }
-                    };
-
-                    var callback2 = async function (result, status) {
-                        if (status === kakao.maps.services.Status.OK) {
-                            var endAddr = await fetchItems(result)
-                            start_inner.innerHTML = start_inner.innerHTML + " " + endAddr + " ";
-
-                            end_list.forEach(function (end) {
-                                start_inner.innerHTML = start_inner.innerHTML + end + " / ";
-                            });
-                            start_inner.innerHTML = start_inner.innerHTML + "<br>" + "(" + e.getPosition().getLat() + ", " + e.getPosition().getLng() + ")" + "<br>";
-                        }
-                    };
-
-                    geocoder.coord2Address(s.getPosition().getLng(), s.getPosition().getLat(), callback1);
-                    geocoder.coord2Address(e.getPosition().getLng(), e.getPosition().getLat(), callback2);
                 }
             }
         }
@@ -733,9 +742,9 @@
                 if (dist1 < ra && dist2 < ra) {
                     s = new kakao.maps.Marker({ position: start_markers[i] })
                     e = new kakao.maps.Marker({ position: end_markers[i] })
-                    s.setMap(map);
-                    e.setMap(map);
-                    drawPolyLine(start_markers[i], end_markers[i]);
+                    //s.setMap(map);
+                    //e.setMap(map);
+                    //drawPolyLine(start_markers[i], end_markers[i]);
                     destination_markers.push(s);
                     destination_markers.push(e);
                     var s_title;
@@ -755,39 +764,20 @@
                     var start_list = s_title.split(',')
                     var end_list = e_title.split(',')
 
-                    function fetchItems(result) {
-                        return new Promise(function (resolve, reject) {
-                            var items = result[0].address.address_name;
-                            resolve(items)
-                        });
+                    var sm = s;
+                    var em = e;
+                    end_inner.innerHTML = end_inner.innerHTML + "출발지 : <a href='#' onclick='getValue(this)' value='" + s.getPosition() + '),(' + e.getPosition() + "'>" + start_list[0] + "</a>";
+                    for (var j = 1; j < start_list.length; j++) {
+                        end_inner.innerHTML = end_inner.innerHTML + start_list[j] + " / ";
                     }
+                    end_inner.innerHTML = end_inner.innerHTML + "<br>";
 
-                    var callback1 = async function (result, status) {
-                        if (status === kakao.maps.services.Status.OK) {
-                            var startAddr = await fetchItems(result)
-                            end_inner.innerHTML = end_inner.innerHTML + " " + startAddr + " ";
+                    end_inner.innerHTML = end_inner.innerHTML + "도착지 : <a href='#' onclick='getValue(this)' value='" + s.getPosition() + '),(' + e.getPosition() + "'>" + end_list[0] + "</a>";
 
-                            start_list.forEach(function (start) {
-                                end_inner.innerHTML = end_inner.innerHTML + start + " / ";
-                            });
-                            end_inner.innerHTML = end_inner.innerHTML + "<br>" + "(" + s.getPosition().getLat() + ", " + s.getPosition().getLng() + ")" + "<br>";
-                        }
-                    };
-
-                    var callback2 = async function (result, status) {
-                        if (status === kakao.maps.services.Status.OK) {
-                            var endAddr = await fetchItems(result)
-                            end_inner.innerHTML = end_inner.innerHTML + " " + endAddr + " ";
-
-                            end_list.forEach(function (end) {
-                                end_inner.innerHTML = end_inner.innerHTML + end + " / ";
-                            });
-                            end_inner.innerHTML = end_inner.innerHTML + "<br>" + "(" + e.getPosition().getLat() + ", " + e.getPosition().getLng() + ")" + "<br>";
-                        }
-                    };
-
-                    geocoder.coord2Address(s.getPosition().getLng(), s.getPosition().getLat(), callback1);
-                    geocoder.coord2Address(e.getPosition().getLng(), e.getPosition().getLat(), callback2);
+                    for (var j = 1; j < end_list.length; j++) {
+                        end_inner.innerHTML = end_inner.innerHTML + end_list[j] + " / ";
+                    }
+                    end_inner.innerHTML = end_inner.innerHTML + "<br>";
                 }
             }
         }
@@ -990,11 +980,47 @@
             }
         }
     }
-
+    function deleteOnePolyLine() {
+        one_polyline.forEach(function (
+            polyline) {
+            polyline.setMap(null);
+        })
+        one_polyline = [];
+    }
     function deleteSpecialPolyLine() { //출발지-도착지 이어주는거
         if (special_polyline) {
             special_polyline.setMap(null);
         }
+    }
+
+    function getValue(it) {
+        deleteMarker();
+        deleteOnePolyLine();
+        var pos = it.getAttribute('value').split('),(');
+        var pos2 = pos[0].split(',');
+        var pos3 = pos[1].split(',');
+        var lat1 = pos2[0].slice(1, pos2[0].length);
+        var lng1 = pos2[1].slice(1, pos2[1].length - 1);
+        var lat2 = pos3[0].slice(1, pos3[0].length);
+        var lng2 = pos3[1].slice(1, pos3[1].length - 1);
+
+
+        var mark1_pos = new kakao.maps.LatLng(lat1, lng1);
+        var mark2_pos = new kakao.maps.LatLng(lat2, lng2);
+
+        var marker1 = new kakao.maps.Marker({
+            position: mark1_pos
+        });
+
+        var marker2 = new kakao.maps.Marker({
+            position: mark2_pos
+        });
+
+        marker1.setMap(map);
+        marker2.setMap(map);
+        markers.push(marker1);
+        markers.push(marker2);
+        drawOnePolyLine(mark1_pos, mark2_pos);
     }
 </script>
 {% endblock content %}
