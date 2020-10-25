@@ -154,6 +154,7 @@ def request_market_purchase(request):
         print(total_weigth)
 
         context = {
+            'order_total': order_total,
             'order_lst': order_lst,
             'total_price': total_price,
             'total_weigth': total_weigth
@@ -164,12 +165,88 @@ def request_market_purchase(request):
 
 
 def request_market_complete(request):
-    # purchase = []
-    # if request.method == "POST":
-    #     purchase_total = request.POST['purchase_total']
-        # for i in range(0, len(purchase_total)):
-        #     print(purchase_total[i][0])
-        # purchase_things = purchase_total.split(',')
+    purchase = []
+    purchase_total = []
+    if request.method == "POST":
+        delivery = Delivery_market()  # db 생성
+        purchase_total = request.POST['purchase_total']
+
+        purchase = purchase_total.split(',')
+        print(purchase)
+        market_overlap_check = []  # 똑같은 마켓일 경우 알기 위함- 이미 안에 있다면, 아이템 추가
+        for thing in purchase:
+            market, stuff, count = thing.split('-')
+            market_query = Store.objects.filter(
+                store_name=market)
+            if(market not in market_overlap_check):
+                for m in market_query:
+                    if(len(market_overlap_check) == 0):
+
+                        delivery.mar_departure_lat = m.store_lat
+                        delivery.mar_departure_long = m.store_lng
+                        delivery.mar_departure_addr = market
+                        delivery.mar_departure_phone = 123123
+                        delivery.mar_item = stuff
+                        delivery.mar_count = count
+
+                        market_overlap_check.append(market)
+                    elif(len(market_overlap_check) == 1):
+                        delivery.mar1_departure_lat = m.store_lat
+                        delivery.mar1_departure_long = m.store_lng
+                        delivery.mar1_departure_addr = market
+                        delivery.mar1_departure_phone = 123123
+                        delivery.mar1_item = stuff
+                        delivery.mar1_count = count
+
+                        market_overlap_check.append(market)
+                    elif(len(market_overlap_check) == 2):
+                        delivery.mar2_departure_lat = m.store_lat
+                        delivery.mar2_departure_long = m.store_lng
+                        delivery.mar2_departure_addr = market
+                        delivery.mar2_departure_phone = 123123
+
+                        market_overlap_check.append(market)
+                    elif(len(market_overlap_check) == 3):
+                        delivery.mar3_departure_lat = m.store_lat
+                        delivery.mar3_departure_long = m.store_lng
+                        delivery.mar3_departure_addr = market
+                        delivery.mar3_departure_phone = 123123
+
+                        market_overlap_check.append(market)
+            else:  # 이미 이름이 있는 경우
+                print('1')
+                if(market_overlap_check.index(market) == 0):
+                    print('2')
+                    delivery.mar_item = delivery.mar_item+','+stuff
+                    delivery.mar_count = delivery.mar_count + ','+count
+                elif(market_overlap_check.index(market) == 1):
+                    print('3')
+                    delivery.mar1_item = delivery.mar_item+','+stuff
+                    delivery.mar1_count = delivery.mar_count + ','+count
+                elif(market_overlap_check.index(market) == 2):
+                    print('4')
+                    delivery.mar2_item = delivery.mar_item+','+stuff
+                    delivery.mar2_count = delivery.mar_count + ','+count
+                elif(market_overlap_check.index(market) == 3):
+                    print('5')
+                    delivery.ma3_item = delivery.mar_item+','+stuff
+                    delivery.mar3_count = delivery.mar_count + ','+count
+
+            delivery.mar_destination_lat = request.POST['destination_lat']
+            # destination_detail/destination_phone/mar_time
+            delivery.mar_destination_long = request.POST['destination_long']
+            delivery.mar_destination_addr = request.POST['destination_detail']
+            delivery.mar_destination_phone = request.POST['destination_phone']
+            delivery.mar_time = request.POST['want_time']  # 시간 설정ㅇ
+            delivery.mar_weight = request.POST['total_weight']
+            delivery.mar_price = request.POST['total_price']
+            delivery.mar_distance = 123
+            delivery.mar_content = request.POST['content']
+            delivery.save()
+
+    # for i in range(0, len(purchase_total)):
+    #     print(purchase_total[i][0])
+    # purchase_things = purchase_total.split(',')
     # print(purchase_total)
     # for thing in purchase_things:
     #     market, stuff, count = thing.split('-')
@@ -177,7 +254,7 @@ def request_market_complete(request):
     #     purchase.append(temp_list)
     #     print
 
-    return redirect('/')
+        return redirect('/')
 
 
 def request_market(request):

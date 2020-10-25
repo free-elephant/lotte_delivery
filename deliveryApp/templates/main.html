@@ -1,24 +1,32 @@
-{% extends 'base.html' %}
-{%block title %}
-<title>Index.html</title>
-{% endblock title%}
+<head>
+    <style>
+        #How_to_use {
+            color: blueviolet;
+            display: flex;
+        }
 
-{% block css %}
-{% endblock css %}
+        p {
+            flex: 2fr;
+            color: brown;
+        }
+    </style>
+</head>
 
-{% block scripts %}
-{% endblock scripts %}
+<body>
+    <!-- {% block content %} -->
+    <h1>index.html</h1>
+    <a href="{% url 'deliver' %}" style="text-decoration: none;">deliver 화면</a>
+    <a href="{% url 'request_my' %}" style="text-decoration: none;">request 화면</a>
+    <a href="{% url 'request_market' %}" style="text-decoration: none;">request_market 화면</a>
+    <a href="{% url 'request_market2' %}" style="text-decoration: none;">request_market2 화면</a>
 
-{% block content %}
-<h1>index.html</h1>
-<a href="{% url 'deliver' %}" style="text-decoration: none;">deliver 화면</a>
-<a href="{% url 'request_my' %}" style="text-decoration: none;">request 화면</a>
-<a href="{% url 'request_market' %}" style="text-decoration: none;">request_market 화면</a>
-<a href="{% url 'request_market2' %}" style="text-decoration: none;">request_market2 화면</a>
+    <div id="How_to_use">
+        <h1>이용안내</h1>
+        <p>퍼플이란?</p>
+        <p>신청인 이용방법</p>
+        <p>배송인 이용방법</p>
+        <p>FAQ</p>
+    </div>
 
-
-
-{%for s in specific_store.store_goods%}
-{{s.goods_name}}
-{%endfor%}
-{% endblock content %}
+    <!-- {% endblock content %} -->
+</body>

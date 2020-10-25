@@ -32,9 +32,12 @@ class Delivery_market(models.Model):  # 가게물건 배송
     mar_departure_lat = models.FloatField()  # 첫번째 가게 위도
     mar_departure_long = models.FloatField()  # 첫번째 가게 경도
     mar_departure_addr = models.CharField(max_length=100)  # 출발지 상세주소
-    mar_departure_phone = models.IntegerField()  # 출발지 전화번호
-    mar_item = models.ManyToManyField(
-        'storeApp.Goods', related_name='first_goods')
+    mar_departure_phone = models.IntegerField(
+        blank=True, null=True)  # 출발지 전화번호 <=없는 경우도 존재하니
+    mar_item = models.CharField(max_length=1000)
+    mar_count = models.CharField(max_length=1000)
+    # models.ManyToManyField(
+    #     'storeApp.Goods', related_name='first_goods')
 
     mar1_departure_lat = models.FloatField(blank=True, null=True)  # 두번째 가게 위도
     mar1_departure_long = models.FloatField(blank=True, null=True)  # 두번째 가게 경도
@@ -42,8 +45,10 @@ class Delivery_market(models.Model):  # 가게물건 배송
         max_length=100, blank=True, null=True)  # 두번째 가게 상세주소
     mar1_departure_phone = models.IntegerField(
         blank=True, null=True)  # 출발지 전화번호
-    mar1_item = models.ManyToManyField(
-        'storeApp.Goods', related_name='seconde_goods', blank=True)  # 아이템
+    mar1_item = models.CharField(max_length=1000, blank=True, null=True)
+    mar1_count = models.CharField(max_length=1000, blank=True, null=True)
+    # mar1_item = models.ManyToManyField(
+    #     'storeApp.Goods', related_name='seconde_goods', blank=True)  # 아이템
 
     mar2_departure_lat = models.FloatField(blank=True, null=True)  # 세번째 가게 위도
     mar2_departure_long = models.FloatField(blank=True, null=True)  # 세번째 가게 경도
@@ -51,8 +56,10 @@ class Delivery_market(models.Model):  # 가게물건 배송
         max_length=100, blank=True, null=True)  # 세번째 가게 상세주소
     mar2_departure_phone = models.IntegerField(
         blank=True, null=True)  # 출발지 전화번호
-    mar2_item = models.ManyToManyField(
-        'storeApp.Goods', related_name='third_goods', blank=True)  # 아이템
+    mar2_item = models.CharField(max_length=1000, blank=True, null=True)
+    mar2_count = models.CharField(max_length=1000, blank=True, null=True)
+    # mar2_item = models.ManyToManyField(
+    #     'storeApp.Goods', related_name='third_goods', blank=True)  # 아이템
 
     mar3_departure_lat = models.FloatField(blank=True, null=True)  # 네 번째 가게 위도
     mar3_departure_long = models.FloatField(blank=True, null=True)  # 네번째 가게 경도
@@ -60,21 +67,25 @@ class Delivery_market(models.Model):  # 가게물건 배송
         max_length=100, blank=True, null=True)  # 네번째 가게 상세주소
     mar3_departure_phone = models.IntegerField(
         blank=True, null=True)  # 네번째 가게 전화번호
-    mar3_item = models.ManyToManyField(
-        'storeApp.Goods', related_name='fourth_goods', blank=True)
+    mar3_item = models.CharField(max_length=1000, blank=True, null=True)
+    mar3_count = models.CharField(max_length=1000, blank=True, null=True)
+    # mar3_item = models.ManyToManyField(
+    #     'storeApp.Goods', related_name='fourth_goods', blank=True)
 
     mar_destination_lat = models.FloatField()  # 도착지 위도
     mar_destination_long = models.FloatField()  # 도착지 경도
     mar_destination_addr = models.CharField(max_length=100)  # 도착지 상세주소
-    mar_destination_phone = models.IntegerField()  # 도착지 전화번호
+    mar_destination_phone = models.IntegerField(
+        blank=True, null=True)  # 도착지 전화번호
 
     mar_date = models.DateField(blank=True, null=True)  # 날짜 설정
-    mar_time = models.CharField(max_length=20)  # 시간 설정
+    mar_time = models.CharField(max_length=20)  # 시간 설정ㅇ
 
     mar_created = models.DateTimeField(
         auto_now_add=True, blank=True, null=True)  # 현재 시간
 
     mar_weight = models.FloatField()  # 물건 무게
-    mar_distance = models.IntegerField()  # 출발지-도착지 거리
+    mar_distance = models.IntegerField(
+        blank=True, null=True)  # 출발지-도착지 거리 <-빈값 되도록
     mar_price = models.IntegerField()  # 배송비
-    mar_content = models.CharField(max_length=30)  # 전달사항
+    mar_content = models.CharField(max_length=30)  # 전달사항 <-빈 값 되도록
