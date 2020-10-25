@@ -297,12 +297,14 @@
             var order_total = document.getElementById("order_total"); // 주문 넘어가기
             var select_total = document.getElementById("select_total");// 전체 선택된 것
             var selected_marketStuffCount_list = [];
+            var market_limit = [] //마켓 개수에 제한을 주기 위함
             //console.log(select_total)
             console.log(select_total.childElementCount)
             for (var i = 0; i < select_total.childElementCount; i++) {
                 var ul_select = document.getElementsByClassName("ul_select_total")[i];
                 console.log(ul_select);
                 var market = ul_select.childNodes[0].innerHTML;
+                market_limit.push(market)
                 var stuff = ul_select.childNodes[1].innerHTML;
                 var all_count = ul_select.childNodes[3].innerHTML;
                 console.log(all_count)

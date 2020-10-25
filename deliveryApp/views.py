@@ -2,11 +2,13 @@ from django.shortcuts import render, redirect, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.contrib import auth
 
+from django.contrib.auth.models import User
 from django.utils import timezone
 from .models import Delivery_my_stuff
 from .models import Delivery_market
 
 from storeApp.models import Goods, Store
+from accountApp.models import Player
 
 import json
 
@@ -35,6 +37,7 @@ def request_my(request):
         return render(request, 'request_my.html')
     elif request.method == "POST":
         d_stuff = Delivery_my_stuff()
+        d_stuff.user = request.user
         d_stuff.my_departure_lat = request.POST['deparature_lat']  # 위도
         d_stuff.my_departure_long = request.POST['deparature_long']
         d_stuff.my_departure_addr = request.POST['deparature_detail']
@@ -169,6 +172,7 @@ def request_market_complete(request):
     purchase_total = []
     if request.method == "POST":
         delivery = Delivery_market()  # db 생성
+        delivery.user = request.user
         purchase_total = request.POST['purchase_total']
 
         purchase = purchase_total.split(',')
