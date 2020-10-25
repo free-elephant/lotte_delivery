@@ -96,12 +96,13 @@
 
 #people_content{
     display:flex;
-    flex-direction: row;
+   
 }
 
 #start, #end{
-    flex:1;
-    padding:2%
+    flex:1 1 auto;
+    padding:1%;
+    width:100%;
 }
 /* #end{
     flex:1;
@@ -114,7 +115,9 @@
 .address{
 margin:2px;
 height: 30px;
-width:100%;
+}
+.address_input{
+    width:100%;
 }
 
 .address_btn{
@@ -122,7 +125,7 @@ width:100%;
 }
 
 .detail_address{
-    width:100%;
+    width:97%;
     height: 30px;
     margin:2px;
 }

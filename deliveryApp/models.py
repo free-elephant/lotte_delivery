@@ -13,14 +13,19 @@ class Delivery_my_stuff(models.Model):  # 내 물건 배송
     my_departure_address = models.CharField(max_length=100)
     my_departure_addr = models.CharField(max_length=100)  # 출발 상세주소
     my_departure_phone = models.IntegerField()  # 보내는 이 폰번호
+    my_departure_name = models.CharField(
+        max_length=10, blank=True, null=True)  # 신청인 name
+
     my_destination_lat = models.FloatField()  # 도착 위도
     my_destination_long = models.FloatField()  # 도착 경도
     my_destination_address = models.CharField(max_length=100)
     my_destination_addr = models.CharField(max_length=100)  # 도착 상세주소
+    my_destination_name = models.CharField(
+        max_length=10, blank=True, null=True)  # 도착지 name
     my_destination_phone = models.IntegerField()  # 받는 이 폰번호
 
-    my_date = models.DateField()  # 날짜 설정
-    my_time = models.CharField(max_length=20)  # 시간 설정
+    my_date = models.DateField(blank=True, null=True)  # 날짜 설정
+    my_time = models.CharField(max_length=20, blank=True, null=True)  # 시간 설정
 
     my_created = models.DateTimeField(
         auto_now_add=True, blank=True, null=True)  # 현재시간
@@ -33,6 +38,10 @@ class Delivery_my_stuff(models.Model):  # 내 물건 배송
     my_price = models.IntegerField()  # 상품 가격
 
     my_content = models.CharField(max_length=30)  # 상품
+
+    my_complete_img = models.ImageField(blank=True, null=True)  # 배송완료 db
+    my_message = models.CharField(
+        max_length=40, blank=True, null=True)  # 배송완료 후 전달사항
 
 
 class Delivery_market(models.Model):  # 가게물건 배송
@@ -99,6 +108,8 @@ class Delivery_market(models.Model):  # 가게물건 배송
     mar_destination_address = models.CharField(
         max_length=100, blank=True, null=True)  # 주소
     mar_destination_addr = models.CharField(max_length=100)  # 도착지 상세주소
+    mar_destination_name = models.CharField(
+        max_length=10, blank=True, null=True)  # 도착지 name
     mar_destination_phone = models.IntegerField(
         blank=True, null=True)  # 도착지 전화번호
 
@@ -114,3 +125,7 @@ class Delivery_market(models.Model):  # 가게물건 배송
     mar_price = models.IntegerField()  # 배송비
     mar_content = models.CharField(
         max_length=30, blank=True, null=True)  # 전달사항 <-빈 값 되도록
+
+    mar_complete_img = models.ImageField(blank=True, null=True)  # 배송완료 db
+    mar_message = models.CharField(
+        max_length=40, blank=True, null=True)  # 배송완료 후 전달사항

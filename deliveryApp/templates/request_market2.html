@@ -99,8 +99,9 @@
                                 {%else%}
                                 <div style="text-align:center;">*로그인을 하시면</div>
                                 <div style="text-align:center;">결제버튼이 나타납니다.*</div>
+                                {%endif%}
                             </div>
-                            {%endif%}
+
                         </div>
                         <input name="order_total" id="order_total" style="display: none;">
                         <!-- <button type="button" onclick="Order()">O</button> -->
@@ -326,7 +327,7 @@
             console.log(selected_marketStuffCount_list[i])
         }
         console.log(market_limit)
-        let only_market = market_limit.filter((item, index) => market_limit.indexOf(item) === index);
+        let only_market = market_limit.filter((item, index) => market_limit.indexOf(item) === index); //중복제거
         console.log(only_market)
         if (only_market.length > 4) {
             alert("마트 개수는 4개까지입니다.")
