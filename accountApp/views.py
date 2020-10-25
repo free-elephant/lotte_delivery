@@ -52,3 +52,6 @@ def idcheck(request):
         'data': "not exist" if user is None else "exist"
     }
     return JsonResponse(result)
+
+def info(request): 
+    return render(request, 'info.html')

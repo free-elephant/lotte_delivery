@@ -13,7 +13,6 @@
 
     {% block scripts %}
     {% endblock scripts %}
-
 </head>
 
 <body>
@@ -36,7 +35,7 @@
     <a href="" class="search">
         <img src="{% static 'image/search.png'%}" />
     </a>
-    <a href="#" class="my_img">
+    <a href="{% url 'info' %}" class="my_img">
         <img src="{% static 'image/my.png'%}" />
     </a>
     <div class="tri2"></div>
@@ -254,7 +253,6 @@
             left: 26px;
             top: 1085px;
 
-            background-image: url(../img/cart.png);
 
         }
 
@@ -264,8 +262,6 @@
             height: 56px;
             left: 31px;
             top: 1175px;
-
-            background-image: url(../img/hart.png);
         }
 
         .service {

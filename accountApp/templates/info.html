@@ -1,0 +1,385 @@
+{% extends 'base.html' %}
+{% load static %}
+{%block title %}
+<title>INFO Page</title>
+{% endblock title%}
+
+{% block css %}
+{% endblock css %}
+
+{% block scripts %}
+{% endblock scripts %}
+
+{% block content %}
+<div class="Wrapinfo">
+    <div class="Typecontact">연락처</div>
+    <div class="Typenumber">+82 010-1234-8282</div>
+    <div class="Typeintroduce1">자기소개</div>
+    <div class="Typeintroduce2">언제나 안전하게 배송해드립니다 :)</div>
+</div>
+<div class="Wrapname">
+    <div class="Imgprofile"></div>
+    <div class="Typename">이름</div>
+</div>
+<div class="WrapOrderDelivery">
+
+</div>
+<div class="TypeOrderTitle">
+    #<span style="color : #FFBE22">피플</span>_ 신청인 주문내역
+</div>
+<div class="WrapOrder">
+    <div class="TypeMyOrder">내가 신청한 배송건 </div>
+    <hr class="LineOrder" style="left: 36px;top: 50px;">
+    <div class="TypePriorOrder">이전 주문 내역 </div>
+    <hr class="LineOrder" style="left: 36px;top: 100px;">
+</div>
+
+<div class="TypeDeliveryTitle">
+    #<span style="color : #883ACE">퍼플</span>_ 배송인 운송내역
+</div>
+<div class="WrapDelivery">
+    <div class="TypeMyDeliveryr">내가 운송한 배송건 </div>
+    <hr class="LineOrder" style="left: 23px;top: 50px;">
+    <div class="TypePriorDeliveryr">이전 주문 내역 </div>
+    <hr class="LineOrder" style="left: 23px;top: 100px;">
+</div>
+<div class="WrapList">
+    <div class="TypeMyList">#피플_나의 마켓 배송 내역</div>
+    <div class="TypeRecommandList">추천 리스트</div>
+</div>
+{% endblock content %}
+
+{% block style%}
+<style>
+    .TypeRecommandList {
+        /* 추천 리스트 */
+        position: absolute;
+        height: 18px;
+        left: 365px;
+        top: 15px;
+
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 15px;
+        line-height: 18px;
+        /* identical to box height, or 120% */
+
+
+        color: #554A2D;
+    }
+
+    .TypeMyList {
+        /* #피플_나의 마켓 배송 내역 */
+        position: absolute;
+        height: 18px;
+        left: 24px;
+        top: 15px;
+
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 15px;
+        line-height: 18px;
+        /* identical to box height, or 120% */
+
+
+        color: #554A2D;
+    }
+
+    .WrapList {
+        /* Rectangle 113 */
+
+
+        position: absolute;
+        width: 583px;
+        height: 296px;
+        left: 185px;
+        top: 639px;
+
+        background: #FFFFFF;
+        border: 1px solid #C4C4C4;
+        box-sizing: border-box;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 15px;
+    }
+
+    .WrapOrderDelivery {
+        /* Rectangle 114 */
+        position: absolute;
+        width: 498px;
+        height: 706px;
+        left: 859px;
+        top: 229px;
+
+        background: #FFFFFF;
+        border: 1px solid #C4C4C4;
+        box-sizing: border-box;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 15px;
+    }
+
+    .LineOrder {
+        /* Line 60 */
+        position: absolute;
+        width: 216px;
+        height: 0px;
+
+        border: none;
+        border-top: 1px solid #C4C4C4;
+    }
+
+    .TypePriorDeliveryr {
+        /* 이전 주문 내역 */
+
+        position: absolute;
+        height: 18px;
+        left: 30px;
+        top: 83px;
+
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 15px;
+        line-height: 18px;
+        /* identical to box height, or 120% */
+
+
+        color: #554A2D;
+    }
+
+    .TypeMyDeliveryr {
+        /* 내가 운송한 배송건 */
+        position: absolute;
+        height: 18px;
+        left: 28px;
+        top: 34px;
+
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 15px;
+        line-height: 18px;
+        /* identical to box height, or 120% */
+        color: #554A2D;
+    }
+
+    .TypePriorOrder {
+        /* 이전 주문 내역 */
+        position: absolute;
+        height: 18px;
+        left: 43px;
+        top: 82px;
+
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 15px;
+        line-height: 18px;
+        /* identical to box height, or 120% */
+        color: #554A2D;
+    }
+
+    .TypeMyOrder {
+        /* 내가 신청한 배송건 */
+        position: absolute;
+        height: 18px;
+        left: 41px;
+        top: 33px;
+
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 15px;
+        line-height: 18px;
+        /* identical to box height, or 120% */
+
+
+        color: #554A2D;
+    }
+
+    .WrapDelivery {
+        /* Rectangle 112 */
+        position: absolute;
+        width: 284px;
+        height: 149px;
+        left: 479px;
+        top: 457px;
+
+        background: #FFFFFF;
+        border: 1px solid #C4C4C4;
+        box-sizing: border-box;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 15px;
+    }
+
+    .TypeDeliveryTitle {
+        /* #퍼플_ 배송인 운송내역 */
+        position: absolute;
+        left: 493px;
+        top: 431px;
+
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 15px;
+        line-height: 18px;
+        /* identical to box height, or 120% */
+        color: #000000;
+    }
+
+    .WrapOrder {
+        /* Rectangle 111 */
+        position: absolute;
+        width: 284px;
+        height: 149px;
+        left: 185px;
+        top: 457px;
+
+        background: #FFFFFF;
+        border: 1px solid #C4C4C4;
+        box-sizing: border-box;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 15px;
+    }
+
+    .TypeOrderTitle {
+        /* #피플_ 신청인 주문내역 */
+        position: absolute;
+        height: 18px;
+        left: 200px;
+        top: 432px;
+
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 15px;
+        line-height: 18px;
+        /* identical to box height, or 120% */
+
+
+        color: #000000;
+    }
+
+    .Wrapinfo {
+        /* Rectangle 109 */
+        position: absolute;
+        width: 580px;
+        height: 174px;
+        left: 183px;
+        top: 229px;
+
+        background: #FFFFFF;
+        border: 1px solid #C4C4C4;
+        box-sizing: border-box;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 15px;
+    }
+
+    .Wrapname {
+        /* Rectangle 127 */
+        position: absolute;
+        width: 121px;
+        height: 127px;
+        left: 219px;
+        top: 252px;
+
+        background: #F7F4EE;
+        border-radius: 10px;
+    }
+
+    .Typename {
+        /* 프로필 */
+        position: absolute;
+        top: 99px;
+        width: 100%;
+        text-align: center;
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 15px;
+        line-height: 18px;
+        /* identical to box height */
+
+        color: #554A2D;
+    }
+
+    .Imgprofile {
+        position: absolute;
+        width: 80px;
+        height: 80px;
+        left: 20px;
+        top: 10px;
+        filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+        background-repeat: no-repeat;
+        background-size: cover;
+        background: url("{% static "image/profile.png" %}");
+    }
+
+    .Typecontact {
+        position: absolute;
+        left: 187px;
+        top: 23px;
+        width: 100%;
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 18px;
+        /* identical to box height, or 100% */
+        color: #554A2D;
+    }
+
+    .Typenumber {
+        position: absolute;
+        left: 184px;
+        top: 46px;
+        width: 148px;
+        height: 22px;
+        background: #F7F4EE;
+        border-radius: 5px;
+
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 15px;
+        line-height: 18px;
+        color: #556080;
+    }
+
+    .Typeintroduce1 {
+        /* 자기소개 */
+        position: absolute;
+        height: 18px;
+        left: 187px;
+        top: 98px;
+
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 18px;
+        color: #554A2D;
+    }
+
+    .Typeintroduce2 {
+        /* 언제나 안전하게 배송해드립니다 :) */
+        position: absolute;
+        width: 243px;
+        height: 22px;
+        left: 187px;
+        top: 123px;
+
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 15px;
+        line-height: 18px;
+        /* identical to box height, or 120% */
+        color: #556080;
+        background: #F7F4EE;
+        border-radius: 5px;
+
+    }
+</style>
+{% endblock style%}
