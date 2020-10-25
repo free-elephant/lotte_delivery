@@ -4,7 +4,7 @@ from django.db import models
 class Store(models.Model):
     store_name = models.CharField(max_length=30)
     store_lat = models.FloatField()
-    store_image = models.ImageField(blank=True)
+    store_image = models.ImageField(blank=True, null=True)
     store_lng = models.FloatField()
     store_addr = models.CharField(max_length=100)
     store_phone = models.IntegerField(blank=True, null=True)
@@ -17,6 +17,7 @@ class Store(models.Model):
 
 class Goods(models.Model):
     goods_name = models.CharField(max_length=30, null=True)
+    goods_image = models.ImageField(blank=True, null=True)
     goods_category = models.CharField(max_length=30, null=True)
     goods_price = models.IntegerField()
     goods_weight = models.FloatField()

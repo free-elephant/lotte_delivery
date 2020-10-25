@@ -37,7 +37,7 @@ def request_my(request):
         return render(request, 'request_my.html')
     elif request.method == "POST":
         d_stuff = Delivery_my_stuff()
-        d_stuff.user = request.user
+        d_stuff.stuff_user = request.user
         d_stuff.my_departure_lat = request.POST['deparature_lat']  # 위도
         d_stuff.my_departure_long = request.POST['deparature_long']
         d_stuff.my_departure_address = request.POST['deparature']
@@ -174,7 +174,7 @@ def request_market_complete(request):
     purchase_total = []
     if request.method == "POST":
         delivery = Delivery_market()  # db 생성
-        delivery.user = request.user
+        delivery.mar_user = request.user
         purchase_total = request.POST['purchase_total']
 
         purchase = purchase_total.split(',')

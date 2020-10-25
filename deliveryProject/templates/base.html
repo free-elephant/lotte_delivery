@@ -16,10 +16,10 @@
 </head>
 
 <body>
-    <a class="menu1" href="">택배 보내기</a>
-    <a class="menu2" href="">배달하기</a>
-    <a class="menu3" href="">마이페이지</a>
-    <a class="menu4" href="">문의하기</a>
+    <a class="menu1" href="{% url 'request_my' %}">택배 보내기</a>
+    <a class="menu2" href="{% url 'deliver' %}">배달하기</a>
+    <a class="menu3" href="#">마이페이지</a>
+    <a class="menu4" href="#">문의하기</a>
     <a href="/" class="logo">
         <img width=73 height=77 src="{% static 'image/logo.png'%}" />
     </a>
@@ -30,7 +30,7 @@
     </div>
     <div class="tri"></div>
     <div class="login_wrap">
-        <a class="login">LOGIN</a>
+        <a href="{% url 'login' %}" class="login">LOGIN</a>
     </div>
     <a href="" class="search">
         <img src="{% static 'image/search.png'%}" />

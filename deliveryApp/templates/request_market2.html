@@ -8,92 +8,121 @@
 <div id="total_padding">
 
     <div id="market_title_box">
-        <p id="market_title">롯데 온 & 퍼플</p>
+        <!-- <p id="market_title"></p> -->
+        <img src="{%static 'image/lotteLogo.png' %}" class="logo_size">
+        <img src="{%static 'image/purpleLogo.png' %}" class="logo_size">
     </div>
     <div id="market_information_box">
         <form action="{% url 'request_market_purchase' %}" method="POST">
             {%csrf_token%}
 
-            <div id="store_lat">
+            <div id="store_lat" style="display: none;">
                 {% for store in stores %}
                 {{store.store_lat}},
                 {%endfor%}
             </div>
 
-            <div id="store_lng">
+            <div id="store_lng" style="display: none;">
                 {% for store in stores %}
                 {{store.store_lng}},
                 {%endfor%}
             </div>
 
-            <div>
+            <div id="market_border">
+                <!-- <p>*주소를</p> -->
                 <div id="address_search">
                     <input type="text" class="address_input" id="selected_mart_address" placeholder="주소">
-                    <input type="button" class="address_input" onclick="mart_radius()" value="주소 검색"><br>
+                    <input type="button" class="address_input_btn" onclick="mart_radius()" value="주소 검색"><br>
                 </div>
                 <div id="map" style="width:100%;height:300px;margin-top:10px;"></div>
-
-                <p>받아오기</p>
-
-                <div id="store_all">
-                    <span id="store0" class="store" onclick="specific_mart(this.value)"></span>
-                    <span id="store1" class="store" onclick="specific_mart(this.value)"></span>
-                    <span id="store2" class="store" onclick="specific_mart(this.value)"></span>
-                    <span id="store3"></span>
-                </div>
                 <br>
-                <br>
-                <div id="layout_of_marketStuff">
-                    <div id="stuff_all">
 
-                        <div onclick="selected_stuff(this.id)" id="0">
-                            <div id="stuff0" class="stuff"></div>
-                            <div id="stuff_price0" class="stuff"></div>
-                        </div>
-                        <div onclick="selected_stuff(this.id)" id="1">
-                            <div id="stuff1" class="stuff"></div>
-                            <div id="stuff_price1" class="stuff"></div>
-                        </div>
+                <div id="market_stuff_box">
+                    <p class="middle_font" style="padding:0 20px">마트선택</p>
 
-                        <div id="stuff2" class="stuff"></div>
-                        <div id="stuff_price2" class="stuff"></div>
+                    <div id="store_all">
+                        <span id="store0" class="store" onclick="specific_mart(this.value)">
+                        </span>
+                        <span id="store1" class="store" onclick="specific_mart(this.value)"></span>
+                        <span id="store2" class="store" onclick="specific_mart(this.value)"></span>
+                        <span id="store3" class="store" onclick="specific_mart(this.value)"></span>
+                        <span id="store4" class="store" onclick="specific_mart(this.value)"></span>
+                        <span id="store5" class="store" onclick="specific_mart(this.value)"></span>
+                        <span id="store6" class="store" onclick="specific_mart(this.value)"></span>
+                        <span id="store7" class="store" onclick="specific_mart(this.value)"></span>
+                        <span id="store8" class="store" onclick="specific_mart(this.value)"></span>
 
-                        <div id="stuff3"></div>
-                        <div id="stuff_price3"></div>
-
-                        <div id="stuff4"></div>
-                        <div id="stuff_price4"></div>
-
-                        <div id="stuff5"></div>
-                        <div id="stuff_price5"></div>
                     </div>
                     <br>
-                    <div id="category_all">
+                    <br>
+
+                    <div id="layout_of_marketStuff">
+
+                        <div id="stuff_all">
+                            <p class="middle_font">제품선택</p>
+                            <div id="layout_of_stuff">
+                                <div onclick="selected_stuff(this.id)" id="0" class="stuff_box">
+                                    <div id="stuff0" class="stuff"></div>
+                                    <div id="stuff_price0" class="stuff"></div>
+                                </div>
+                                <div onclick="selected_stuff(this.id)" id="1" class="stuff_box">
+                                    <div id="stuff1" class="stuff"></div>
+                                    <div id="stuff_price1" class="stuff"></div>
+                                </div>
+                                <div onclick="selected_stuff(this.id)" id="2" class="stuff_box">
+                                    <div id="stuff2" class="stuff"></div>
+                                    <div id="stuff_price2" class="stuff"></div>
+                                </div>
+                                <div onclick="selected_stuff(this.id)" id="3" class="stuff_box">
+                                    <div id="stuff3" class="stuff"></div>
+                                    <div id="stuff_price3" class="stuff"></div>
+                                </div>
+                                <div onclick="selected_stuff(this.id)" id="4" class="stuff_box">
+                                    <div id="stuff4" class="stuff"></div>
+                                    <div id="stuff_price4" class="stuff"></div>
+                                </div>
+                                <div onclick="selected_stuff(this.id)" id="5" class="stuff_box">
+                                    <div id="stuff5" class="stuff"></div>
+                                    <div id="stuff_price5" class="stuff"></div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div id="select_all">
+                            <p class="middle_font">선택목록</p>
+                            <div id="select_box">
+                                <div id="select_total">
+                                </div>
+                                {% if user.is_authenticated %}
+                                <div><input type="submit" onclick="Order()" value="결제하기" id="submitbutton"></div>
+                                {%else%}
+                                <div style="text-align:center;">*로그인을 하시면</div>
+                                <div style="text-align:center;">결제버튼이 나타납니다.*</div>
+                            </div>
+                            {%endif%}
+                        </div>
+                        <input name="order_total" id="order_total" style="display: none;">
+                        <!-- <button type="button" onclick="Order()">O</button> -->
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- <br> -->
+            <!-- <div id="category_all">
                         <div id="category0" class="category"></div>
                         <div id="category1" class="category"></div>
                         <div id="category2" class="category"></div>
                         <div id="category3" class="category"></div>
                         <div id="category4" class="category"></div>
                         <div id="category5" class="category"></div>
-                    </div>
+                    </div> -->
 
 
-
-                </div>
-
-                <div>
-                    선택된 물건
-                    <div id="select_total">
-
-
-                    </div>
-                </div>
-                <input name="order_total" id="order_total">
-                <!-- <button type="button" onclick="Order()">O</button> -->
-                <input type="submit" onclick="Order()" value="제출">
-            </div>
-        </form>
     </div>
+    </form>
+</div>
 </div>
 <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -153,8 +182,8 @@
             dataType: 'json',
             success: function (response) { //ajax써서 값을 변경함
                 for (var i = 0; i < response.specific_good.length; i++) {
-                    $('#stuff' + i).html(response.specific_good[i]);
-                    $('#stuff_price' + i).html(response.specific_price[i]);
+                    $('#stuff' + i).html("제품명: " + response.specific_good[i]);
+                    $('#stuff_price' + i).html("가격: " + response.specific_price[i]);
 
                     var store_stuff_val = document.getElementById('stuff' + i);
                     store_stuff_val.value = response.specific_good[i] + ',' + response.specific_store_one;
@@ -163,10 +192,7 @@
 
 
                 }
-                for (var n = 0; n < response.specific_category.length; n++) {
-                    $('#category' + n).html(response.specific_category[n]);
 
-                }
 
             }
 
@@ -208,17 +234,18 @@
             var select_total = document.getElementById('select_total');
 
             ul.className = "ul_select_total"; // 향후 css를 위함
-            li_stuff.innerHTML = stuff;
+            li_stuff.innerHTML = "선택 제품: " + stuff;
 
-            li_price.innerHTML = selected_stuffOfMarket_price;
-            li_market.innerHTML = market;
+            li_price.innerHTML = "가격: " + selected_stuffOfMarket_price;
+            li_market.innerHTML = "마켓: " + market;
             li_delete.innerHTML = "X";
+            li_delete.className = "delete_icon";
 
             span_plus.innerHTML = "-"
             span_plus.onclick = function () { count_minus(this); };
             span_minus.innerHTML = "+"
             span_minus.onclick = function () { count_plus(this); };
-            li_count.innerHTML = 1;
+            li_count.innerHTML = "개수: " + 1;
             li_count.id = selected_stuffOfMarket;
             li_delete.onclick = function () { delete_selected_stuff(this); };
 
@@ -383,7 +410,7 @@
                             line.setPath(path);
                             var dist = line.getLength();
                             if (dist < ra) { // 반경 안의 값
-                                markers.setMap(map);
+                                //markers.setMap(map);
                                 console.log("현재위치 반경 안의 마크 : (" + markers.getPosition().getLat() + ", " + markers.getPosition().getLng() + ")");
                                 var markers_lat = markers.getPosition().getLat()
                                 markers_lat = Math.round(markers_lat * 1000000) / 1000000

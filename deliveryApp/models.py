@@ -4,7 +4,10 @@ from django.contrib.auth.models import User
 
 
 class Delivery_my_stuff(models.Model):  # 내 물건 배송
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    stuff_user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="stuff_user")
+    deliver_stuff_user = models.ForeignKey(
+        User, on_delete=models.CASCADE, blank=True, null=True, related_name="deliver_stuff_user")
     my_departure_lat = models.FloatField()  # 출발 위도
     my_departure_long = models.FloatField()  # 출발 경도
     my_departure_address = models.CharField(max_length=100)
@@ -33,7 +36,11 @@ class Delivery_my_stuff(models.Model):  # 내 물건 배송
 
 
 class Delivery_market(models.Model):  # 가게물건 배송
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    mar_user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="mar_user")
+    deliver_mar_user = models.ForeignKey(
+        User, on_delete=models.CASCADE, blank=True, null=True, related_name="deliver_mar_user")
+
     mar_departure_lat = models.FloatField()  # 첫번째 가게 위도
     mar_departure_long = models.FloatField()  # 첫번째 가게 경도
     mar_departure_address = models.CharField(
