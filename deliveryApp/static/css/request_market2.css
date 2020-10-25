@@ -1,0 +1,51 @@
+    /* 전체 margin */
+    #total_padding{
+        margin-left: 95px;
+        margin-top:115px;
+    
+
+    }
+
+/*  */
+#market_title{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    
+    border-bottom: 2px solid black;
+    
+}
+#market_information_box{
+    margin:5%
+}
+#selected_mart_address{
+    width:100%;
+}
+.address_input{
+    margin:2px;
+}
+
+#address_search{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+
+
+    #layout_of_marketStuff {
+    display: flex;
+    width: 100%;
+    
+    }
+    
+    #category_all {
+    
+    flex: 30%;
+    }
+    
+    #stuff_all {
+    flex: 70%;
+    }
+
+    

@@ -40,11 +40,13 @@ def request_my(request):
         d_stuff.user = request.user
         d_stuff.my_departure_lat = request.POST['deparature_lat']  # 위도
         d_stuff.my_departure_long = request.POST['deparature_long']
+        d_stuff.my_departure_address = request.POST['deparature']
         d_stuff.my_departure_addr = request.POST['deparature_detail']
         d_stuff.my_departure_phone = request.POST['deparature_phone']
 
         d_stuff.my_destination_lat = request.POST['destination_lat']
         d_stuff.my_destination_long = request.POST['destination_long']
+        d_stuff.my_departure_address = request.POST['destination']
         d_stuff.my_destination_addr = request.POST['destination_detail']
         d_stuff.my_destination_phone = request.POST['destination_phone']
 

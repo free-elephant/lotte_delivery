@@ -1,0 +1,72 @@
+.modal_wrap {
+    border: 10px soild rgb(255, 38, 38);
+    display: none;
+    width: 400px;
+    height: 400px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -250px 0 0 -250px;
+    background: rgb(249, 244, 244);
+
+    z-index: 2;
+}
+
+.modal_close {
+    display: none;
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    background-color: rgba(252, 252, 252, 0.5);
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.modal_close {
+    width: 26px;
+    height: 26px;
+    position: absolute;
+    top: -30px;
+    right: 0;
+}
+
+.modal_close>a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: url(https://img.icons8.com/metro/26/000000/close-window.png);
+    text-indent: -9999px;
+}
+
+/* 전체 margin */
+#total_padding{
+    margin-left: 95px;
+    margin-top:115px;
+   
+
+}
+
+/* 메뉴 */
+#stuff_send_menu{
+    border-bottom:1px solid rgb(49, 46, 49);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    
+
+
+}
+.menu{
+    margin:10px;
+}
+
+#menu_line{
+    width:40%;
+
+}
+
+#box{
+    border: 1px;
+}
