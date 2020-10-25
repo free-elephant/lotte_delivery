@@ -197,10 +197,14 @@
 </div>
 <br>
 <div style="margin-left:200px;">
-    내용이 들어갈 div 티그
-    <div id="current_div"></div>
-    <div id="start_div"></div>
-    <div id="end_div"></div>
+    내용이 들어갈 div 태그
+    <form action="{% url 'deliverItem' %}" method='POST' id='deliver'>
+        {% csrf_token %}
+        <input type='hidden' id='hiddenPosition' name='hiddenPosition' value='nothing' />
+        <div id="current_div"></div>
+        <div id="start_div"></div>
+        <div id="end_div"></div>
+    </form>
 </div>
 -----------------------------------------------------------
 <!----------------------------------------------------------- 지도 script ----------------------------------------------------------------------->
@@ -257,6 +261,7 @@
                 lng = position.coords.longitude; // 경도
 
             currentPosition = new kakao.maps.LatLng(lat, lng);
+            //currentPosition = new kakao.maps.LatLng(35.8304916312343, 128.75218013148); 영대
             map.setCenter(currentPosition);
             console.log("현재위치 : " + currentPosition);
         });
@@ -615,9 +620,11 @@
         let start_inner = document.getElementById('start_div');
         let end_inner = document.getElementById('end_div');
 
-        ////////
+        ////////zzzz
         if (location == "current") {
             current_inner.innerHTML = "<br>" + "===========현재위치 반경 안의 마크============ " + "<br>";
+            //          current_inner.innerHTML = current_inner.innerHTML + "<form action = {% url 'deliverItem' %} method='POST' id='deliver'>" + '{% csrf_token %}';
+            //        current_inner.innerHTML = current_inner.innerHTML + "<input type='text' id='hiddenPosition' name='hiddenPosition' value='nothing'/>";
             var line1 = new kakao.maps.Polyline();
             var line2 = new kakao.maps.Polyline();
             for (var i = 0; i < end_markers.length - 1; i++) {
@@ -655,6 +662,8 @@
 
                     var sm = s;
                     var em = e;
+
+
                     current_inner.innerHTML = current_inner.innerHTML + "출발지 : <a href='#' onclick='getValue(this)' value='" + s.getPosition() + '),(' + e.getPosition() + "'>" + start_list[0] + "</a>";
                     for (var j = 1; j < start_list.length; j++) {
                         current_inner.innerHTML = current_inner.innerHTML + start_list[j] + " / ";
@@ -666,11 +675,13 @@
                     for (var j = 1; j < end_list.length; j++) {
                         current_inner.innerHTML = current_inner.innerHTML + end_list[j] + " / ";
                     }
+                    current_inner.innerHTML = current_inner.innerHTML + "<button onclick='deliverItem(this)' value='" + s.getPosition() + '),(' + e.getPosition() + "'>배달하기</button>";
                     current_inner.innerHTML = current_inner.innerHTML + "<br>";
 
 
                 }
             }
+            //            current_inner.innerHTML = current_inner.innerHTML + "</form>";
         }
         else if (location == "deparature") {
             start_inner.innerHTML = "<br>" + "============출발지 반경 안의 마크==========" + "<br>";
@@ -721,6 +732,7 @@
                     for (var j = 1; j < end_list.length; j++) {
                         start_inner.innerHTML = start_inner.innerHTML + end_list[j] + " / ";
                     }
+                    start_inner.innerHTML = start_inner.innerHTML + "<button value='" + s.getPosition() + '),(' + e.getPosition() + "'>배달하기</button>";
                     start_inner.innerHTML = start_inner.innerHTML + "<br>";
 
                 }
@@ -971,7 +983,6 @@
             deletePolyLines();
             current_circle.setMap(null);
             deleteCircle(currentPosition, "current");
-
             if (coords['map_deparature']) {
                 setCircle(coords['map_deparature'], $('#select_radius').val(), "deparature");
             }
@@ -999,11 +1010,12 @@
         var pos = it.getAttribute('value').split('),(');
         var pos2 = pos[0].split(',');
         var pos3 = pos[1].split(',');
-        var lat1 = pos2[0].slice(1, pos2[0].length);
-        var lng1 = pos2[1].slice(1, pos2[1].length - 1);
-        var lat2 = pos3[0].slice(1, pos3[0].length);
-        var lng2 = pos3[1].slice(1, pos3[1].length - 1);
-
+        var lat1 = pos2[0].slice(1, pos2[0].length).toFixed(7);
+        var lng1 = pos2[1].slice(1, pos2[1].length - 1).toFixed(7);
+        var lat2 = pos3[0].slice(1, pos3[0].length).toFixed(7);
+        var lng2 = pos3[1].slice(1, pos3[1].length - 1).toFixed(7);
+        var data = lat1 + "," + lng1 + "," + lat2 + "," + lng2;
+        var list = [lat1, lng1, lat2, lng2];
 
         var mark1_pos = new kakao.maps.LatLng(lat1, lng1);
         var mark2_pos = new kakao.maps.LatLng(lat2, lng2);
@@ -1021,6 +1033,32 @@
         markers.push(marker1);
         markers.push(marker2);
         drawOnePolyLine(mark1_pos, mark2_pos);
+        $("input[type=hidden][name=hiddenPosition]").val(list);
+    }
+
+    function deliverItem(it) {
+        console.log("deliverItem 실행");
+        var pos = it.getAttribute('value').split('),(');
+        var pos2 = pos[0].split(',');
+        var pos3 = pos[1].split(',');
+        var lat1 = pos2[0].slice(1, pos2[0].length);
+        var lng1 = pos2[1].slice(1, pos2[1].length - 1);
+        var lat2 = pos3[0].slice(1, pos3[0].length);
+        var lng2 = pos3[1].slice(1, pos3[1].length - 1);
+        var data = lat1 + "," + lng1 + "," + lat2 + "," + lng2;
+        var list = [lat1, lng1, lat2, lng2];
+
+        var result = confirm("배달하시겠습니까?");
+        if (result) {
+            alert("배달할게");
+            $("input[type=hidden][name=hiddenPosition]").val(list);
+
+            alert("hiddenPosition 값 : " + $("input[type=hidden][name=hiddenPosition]").val());
+            $("#deliver").submit();
+        }
+        else {
+            alert("취소하셨습니다.");
+        }
     }
 </script>
 {% endblock content %}
