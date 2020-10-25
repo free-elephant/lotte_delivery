@@ -46,7 +46,7 @@ def request_my(request):
 
         d_stuff.my_destination_lat = request.POST['destination_lat']
         d_stuff.my_destination_long = request.POST['destination_long']
-        d_stuff.my_departure_address = request.POST['destination']
+        d_stuff.my_destination_address = request.POST['destination']
         d_stuff.my_destination_addr = request.POST['destination_detail']
         d_stuff.my_destination_phone = request.POST['destination_phone']
 
