@@ -89,9 +89,9 @@
 /* 박스 */
 #write_box{
     margin:5%;
-    padding:2%;
-    border: 1px solid rgb(68, 66, 66);
-    border-radius: 15px;
+    /* padding:2%; */
+    /* border: 1px solid rgb(68, 66, 66); */
+    /* border-radius: 15px; */
 }
 
 #people_content{
@@ -103,6 +103,8 @@
     flex:1 1 auto;
     padding:1%;
     width:100%;
+    border:1px solid black;
+    border-radius: 15px;
 }
 /* #end{
     flex:1;
@@ -139,8 +141,18 @@ height: 30px;
     height: 30px;
     margin:2px;
 }
+
+/*  */
+#write_result_box{
+    border:1px solid black;
+    border-radius: 15px;
+    padding: 3%;
+
+}
+
 /* 폰트관련 */
 .middle_font{
 
 }
+
 
