@@ -1,3 +1,6 @@
+th,td{
+    padding: 3px;
+}
 #total_layout{
     margin-left: 95px;
     margin-top:115px;
@@ -20,11 +23,119 @@
 
 /* 메뉴 */
 #stuff_send_menu{
-    border-bottom:1px solid rgb(49, 46, 49);
+  
     display: flex;
     flex-direction: row;
     justify-content: center;
 }
 .menu{
-    margin:10px;
+    padding:0 10px;
+    padding-bottom: 10px;
+    
 }
+.menu_bold{
+    border-bottom: 5px solid black;
+}
+.menu_thin{
+    border-bottom: 1px solid black;
+}
+
+
+#market_information_box{
+    margin:5%
+}
+.address_input{
+    margin:10px 2px;
+    height:43px;
+    width:98%;
+  
+}
+.two_layout{
+    display: grid;
+    grid-template-columns:50% 50%;
+}
+.table_border{
+    border: 1px solid rgb(78, 74, 74);
+    border-radius: 10px;
+    width: 100%;
+    /* padding-bottom: 10%; */
+    /* height: 300px; */
+    
+}
+.order_table_box{
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+}
+
+.middle_font{
+    font-weight: bold;
+    font-size: 20px;
+    margin-top: 20px;
+    text-align: left;
+}
+.middle_thin_font{
+    font-size: 16px;
+}
+.small_font{
+    font-size:10px;
+    
+}
+/* 도착지 버튼 */
+.address_layout{
+    display:flex;
+    
+}
+.address{
+    margin:2px;
+    height: 30px;
+    }
+    .address_input{
+        width:100%;
+    }
+    
+    .address_btn{
+        height: 35px;
+    }
+    .detail_address{
+        width:97%;
+        height: 30px;
+        margin:2px;
+    }
+
+
+    .phone, .name{
+     
+        height: 30px;
+        margin:2px;
+        
+    }
+    .person_info_input{
+        display:grid;
+        grid-template-columns:50% 50%;
+        width:100%;
+        
+    }
+
+    /* 제출 버튼 */
+    .submit_btn{
+        width: 200px;
+        height: 40px;
+        text-align: center;
+        margin-bottom: 200px;
+        display: flex;
+    flex-direction: row;
+    justify-content: center;
+    /* width:100% */
+       
+    }
+    .btn_position{
+        height: 40px;
+    }
+        
+    .input{
+        width:100%;
+        height: 30px;
+        margin:2px;
+        flex:1 1 auto;
+    }

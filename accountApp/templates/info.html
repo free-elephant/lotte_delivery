@@ -24,7 +24,7 @@
 <div class="WrapOrderDelivery">
 
 </div>
-<div class="TypeOrderTitle">
+<div class="TypeOrderTitle" onclick="send_order()">
     #<span style="color : #FFBE22">피플</span>_ 신청인 주문내역
 </div>
 <div class="WrapOrder">
@@ -47,6 +47,24 @@
     <div class="TypeMyList">#피플_나의 마켓 배송 내역</div>
     <div class="TypeRecommandList">추천 리스트</div>
 </div>
+
+<script>
+    function send_order() {
+
+        $.ajax({
+            url: "{% url 'send_order' %}",
+
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+
+
+
+            }
+
+        });
+    }
+</script>
 {% endblock content %}
 
 {% block style%}

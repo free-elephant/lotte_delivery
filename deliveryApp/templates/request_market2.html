@@ -32,10 +32,11 @@
             <div id="market_border">
                 <!-- <p>*주소를</p> -->
                 <div id="address_search">
-                    <input type="text" class="address_input" id="selected_mart_address"
-                        placeholder="위치를 설정해주시면, 해당하는 지역의 롯데온 마켓들을 만나보실 수 있습니다:).">
+                    <input type="text" class="address_input" id="selected_mart_address" name="selected_mart_address"
+                        placeholder="위치를 설정해주시면, 해당하는 지역의 롯데온 마켓들을 만나보실 수 있습니다:)." readonly>
                     <input type="button" class="address_input_btn" onclick="mart_radius()" value="주소 검색"><br>
                 </div>
+                <p class="small_font right_position">*현재 서울권 마켓만 만나보실 수 있습니다:)*</p>
 
                 <div id="map" style="width:100%;height:300px;margin-top:10px;"></div>
                 <br>
@@ -92,12 +93,15 @@
 
                             </div>
                         </div>
+
                         <div id="select_all">
                             <p class="middle_font">선택목록</p>
                             <div id="select_box">
                                 <div id="select_total">
+
                                 </div>
                                 {% if user.is_authenticated %}
+
                                 <div><input type="submit" onclick="Order()" value="결제하기" id="submitbutton"></div>
                                 {%else%}
                                 <div style="text-align:center;">*로그인을 하시면</div>
@@ -225,6 +229,7 @@
             var selected_stuff_of_market = selected_stuffOfMarket.split(',');
             var stuff = selected_stuff_of_market[0];
             var market = selected_stuff_of_market[1];
+            console.log("마켓들어오나?!!" + market)
 
 
             var ul = document.createElement('ul');
@@ -258,7 +263,7 @@
             li_price.appendChild(span_price)
 
             li_market.innerHTML = "마켓: ";
-            span_market.inntertext = market;
+            span_market.innerHTML = market;
             li_market.appendChild(span_market)
             li_market.style = "font-weight: bold;";
             span_market.style = "font-weight: lighter;";
@@ -353,7 +358,10 @@
     //-------------------주문하기-----------------
     function Order() {
         var order_total = document.getElementById("order_total"); // 주문 넘어가기
+        console.log("DDDDDDDDDDDDDD")
+        console.log(order_total)
         var select_total = document.getElementById("select_total");// 전체 선택된 것
+        console.log(select_total)
         var selected_marketStuffCount_list = [];
         var market_limit = [] //마켓 개수에 제한을 주기 위함
         //console.log(select_total)
@@ -361,10 +369,13 @@
         for (var i = 0; i < select_total.childElementCount; i++) {
             var ul_select = document.getElementsByClassName("ul_select_total")[i];
             console.log(ul_select);
-            var market = ul_select.childNodes[0].innerHTML;
+            market = ul_select.childNodes[0].innerHTML;
+            console.log(market)
+            var market = ul_select.childNodes[0].childNodes[1].innerHTML;
+            console.log(market)
             market_limit.push(market)
-            var stuff = ul_select.childNodes[1].innerHTML;
-            var all_count = ul_select.childNodes[3].innerHTML;
+            var stuff = ul_select.childNodes[1].childNodes[1].innerHTML;
+            var all_count = ul_select.childNodes[3].childNodes[1].innerHTML;
             console.log(all_count)
 
             selected_marketStuffCount_list.push(market + '-' + stuff + '-' + all_count)
@@ -378,7 +389,7 @@
         }
         else {
             order_total.value = selected_marketStuffCount_list
-            alert(order_total.value)
+
         }
 
 
@@ -405,9 +416,18 @@
 
 
     function mart_radius() {
+        var select_total = document.getElementById("select_total");
+        console.log(select_total.childElementCount)
+        if (select_total.childElementCount = !'0') {
+            alert("새로운 주소 검색 시, 기존에 담아두었던 물품은 사라집니다!")
+            while (select_total.hasChildNodes()) {
+                select_total.removeChild(select_total.firstChild);
+            }
+            select_total.remove();
+        } //마트 안불릴 경우
         new daum.Postcode({
-
             oncomplete: function (data) {
+
                 console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1")
                 var addr = data.address; // 최종 주소 변수
                 console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1")

@@ -89,6 +89,9 @@ ul{
     font-size:10px;
     text-align: center;
 }
+.right_position{
+    text-align: right;
+}
 
 #market_stuff_box{
     border: 1px solid #C4C4C4;

@@ -7,79 +7,112 @@
 {% block content %}
 <div id="total_layout">
     <div id="stuff_send_menu">
-        <a class="menu thin_font" href="{%url 'request_my' %}">택배 보내기</a>
-        <a class="menu middle_font" href="{%url 'request_market2' %}">마켓 픽업 배송</a>
+        <a class="menu middle_font menu_thin" href="{%url 'request_my' %}">택배 보내기</a>
+        <a class="menu thin_font menu_bold" href="{%url 'request_market2' %}">마켓 픽업 배송</a>
     </div>
     <!-- <p class="middle_font">구매내역</p> -->
 
+    <div id="market_information_box">
+        <form action="{%url 'request_market_complete' %}" method="POST">
+            {%csrf_token%}
+            <!-- <input type="text" class="address_input" id="selected_mart_address" value="{{selected_market}}" readonly> -->
 
-    <form action="{%url 'request_market_complete' %}" method="POST">
-        {%csrf_token%}
-        {%for order in order_lst%}
-        {%for o in order%}
-        <p class="purchase_thing">{{o}}</p>
-        {%endfor%}
-        {%endfor%}
+            <div class="two_layout">
+                <div style="padding: 20px;">
+                    <div class="middle_font">도착지</div>
+                    <span>
+                        <div class="address_layout">
+                            <input type="text" class="address address_input" name="destination" id="destination"
+                                placeholder="주소" readonly>
+                            <input type="button" class="address address_btn" onclick="market_destination_Map()"
+                                value="주소 검색" id="map_destination">
+                        </div>
+                        <input type="hidden" name="destination_lat" id="destination_lat" value="">
+                        <input type="hidden" name="destination_long" id="destination_long" value="">
 
-        상품무게<input type="text" name="total_weight" value="{{total_weigth}}">
+                    </span>
 
-        총 결제가격
-        총 상품 금액<input type="text" name="total_price" value="{{total_price}}">
-
-
-        <div>
-            <p>도착지</p>
-            <span>
-                <input type="text" name="destination" id="destination" placeholder="주소" readonly>
-                <input type="hidden" name="destination_lat" id="destination_lat" value="">
-                <input type="hidden" name="destination_long" id="destination_long" value="">
-                <input type="button" onclick="market_destination_Map()" value="주소 검색" id="map_destination">
-            </span>
-            <br>
-            <input type="text" name="destination_detail" placeholder="상세주소">
-            <br>
-            <input type="text" name="destination_phone" placeholder="수취인 전화번호">
-        </div>
-        <div id="map" style="width:300px;height:300px;margin-top:10px;"></div>
+                    <input type="text" class="detail_address" name="destination_detail" placeholder="상세주소">
 
 
+                    <div class="person_info_input">
+                        <input type="text" class="name" name="destination_name" placeholder="받는이 이름">
+                        <input type="text" class="phone" name="destination_phone" placeholder="받는이 전화번호">
+                    </div>
+                    <div id="map" style="width:100%;height:300px;margin-top:10px;"></div>
+                </div>
 
-        원하는 배송시간
-        <select id="want_time" name="want_time">
-            <option value="">시간 선택</option>
-            <option value="1">00~01</option>
-            <option value="2">01~02</option>
-            <option value="3">02~03</option>
-            <option value="4">03~04</option>
-            <option value="5">04~05</option>
-            <option value="6">05~06</option>
-            <option value="7">06~07</option>
-            <option value="8">07~08</option>
-            <option value="9">08~09</option>
-            <option value="10">09~10</option>
-            <option value="11">10~11</option>
-            <option value="12">11~12</option>
-            <option value="13">12~13</option>
-            <option value="14">13~14</option>
-            <option value="15">14~15</option>
-            <option value="16">15~16</option>
-            <option value="17">16~17</option>
-            <option value="18">17~18</option>
-            <option value="19">18~19</option>
-            <option value="20">19~20</option>
-            <option value="21">20~21</option>
-            <option value="22">21~22</option>
-            <option value="23">22~23</option>
-            <option value="24">23~24</option>
-        </select>
+                <div style="padding: 20px;">
+                    <div class="middle_font">주문 내역 확인</div>
+                    <div class="table_border">
+                        <table class="order_table_box">
+                            <th>마켓</th>
+                            <th>물품</th>
+                            <th>수량</th>
+                            <th>가격</th>
+                            {%for mart,stuff,num,price in order_lst%}
+                            <tr>
+                                <td>{{mart}}</td>
+                                <td>{{stuff}}</td>
+                                <td>{{num}}</td>
+                                <td>{{price}}</td>
+                            </tr>
+                            {%endfor%}
+                        </table>
+                    </div>
 
-        전달사항
-        <input type="text" name="content">
+                    <div class="middle_font">상품무게</div>
+                    <input type="text" class="input" name="total_weight" value="{{total_weigth}}">
 
-        <button type="button" onclick="a()">a</button>
-        <input name="purchase_total" id="purchase_total" value="{{order_total}}" display="hidden">
-        <input type="submit" value="제출">
-    </form>
+                    <div class="middle_font">총 결제가격</div>
+                    <span class="middle_thin_font">총 상품 금액</span><input type="text" class="input" name="total_price"
+                        value="{{total_price}}">
+                    <div class="middle_font">원하는 배송시간</div>
+                    <select id="want_time" name="want_time" class="input">
+                        <option value="">시간 선택</option>
+                        <option value="1">00~01</option>
+                        <option value="2">01~02</option>
+                        <option value="3">02~03</option>
+                        <option value="4">03~04</option>
+                        <option value="5">04~05</option>
+                        <option value="6">05~06</option>
+                        <option value="7">06~07</option>
+                        <option value="8">07~08</option>
+                        <option value="9">08~09</option>
+                        <option value="10">09~10</option>
+                        <option value="11">10~11</option>
+                        <option value="12">11~12</option>
+                        <option value="13">12~13</option>
+                        <option value="14">13~14</option>
+                        <option value="15">14~15</option>
+                        <option value="16">15~16</option>
+                        <option value="17">16~17</option>
+                        <option value="18">17~18</option>
+                        <option value="19">18~19</option>
+                        <option value="20">19~20</option>
+                        <option value="21">20~21</option>
+                        <option value="22">21~22</option>
+                        <option value="23">22~23</option>
+                        <option value="24">23~24</option>
+                    </select>
+
+                    <div class="middle_font">전달사항</div>
+                    <input type="text" class="input" name="content">
+                </div>
+            </div>
+
+
+
+
+
+
+            <!-- <button type="button" onclick="a()">a</button> -->
+            <input name="purchase_total" id="purchase_total" value="{{order_total}}" style="display:none">
+            <div style="display:flex">
+                <input type="submit" value="제출" class="submit_btn btn_position">
+            </div>
+        </form>
+    </div>
 </div>
 <!-- 
 <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
