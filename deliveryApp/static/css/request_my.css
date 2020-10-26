@@ -149,7 +149,15 @@ height: 30px;
     padding: 3%;
 
 }
-
+.input{
+    width:50%;
+    height: 30px;
+    margin:2px;
+    
+}
+.write{
+    width:50px;
+}
 /* 폰트관련 */
 .middle_font{
 

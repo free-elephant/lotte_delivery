@@ -70,10 +70,11 @@
                     <div id="write_result_box">
                         <div id="map" style="width:100%;height:300px;margin-top:10px;"></div>
                         <br>
-                        거리<input type="text" name="distance" id="distance">m
+                        <span class="write">거리</span>
+                        <input type="text" class="input" name="distance" id="distance">
                         <br>
                         물건 카테고리
-                        <input type="button" onclick="goods_category()" value="카테고리">
+                        <input type="button" class="input" onclick="goods_category()" value="카테고리">
                         <div class="modal_wrap">
                             <div class="modal_close" onclick="close_goods_category()"><a href="#">close</a></div>
                             <div id="goods_radio">
@@ -87,15 +88,16 @@
                             <!-- <input type="button" onclick="goods_confirm()" value="확인"> -->
 
                         </div>
-                        <input type="text" name="goods_category_one" id="goods_category_one" value="" readonly>
+                        <input type="text" class="input" name="goods_category_one" id="goods_category_one" value=""
+                            readonly>
                         <br>
                         물건 상세정보
-                        <input type="text" name="goods_detail">
+                        <input type="text" class="input" name="goods_detail">
                         <br>
-                        원하는 배송 날짜<input type="date" name="want_date">
+                        원하는 배송 날짜<input type="date" class="input" name="want_date">
                         <br>
                         원하는 배송 시간
-                        <select id="want_time" name="want_time">
+                        <select id="want_time" class="input" name="want_time">
                             <option value="">시간 선택</option>
                             <option value="1">00~01</option>
                             <option value="2">01~02</option>
@@ -126,7 +128,7 @@
 
 
                         무게
-                        <select name="weight" id="weight" onclick="price_function()">
+                        <select name="weight" class="input" id="weight" onclick="price_function()">
                             <option value="">무게 선택</option>
                             <option value="1">10kg 이내</option>
                             <option value="2">10~20kg 이내</option>
@@ -134,9 +136,9 @@
                             <option value="4">30~40kg 이내</option>
                         </select>
                         <br>
-                        가격<input type="text" name="price" id="price_sum" value="">
+                        가격<input type="text" class="input" name="price" id="price_sum" value="">
                         <br>
-                        전달사항<input type="text" name="comment">
+                        전달사항<input type="text" class="input" name="comment">
                         {% if user.is_authenticated %}
                         <input type="submit" value="확인">
                         {%else%}
@@ -342,7 +344,7 @@
                                         strokeStyle: 'solid' // 선의 스타일입니다
                                     });
                                     var distance = Math.round(polyline.getLength()),
-                                        content = '<div>' + distance + '</div>'
+                                        content = '<div>' + distance + 'm' + '</div>'
 
                                     //거리정보
                                     var dis = document.getElementById("distance");
