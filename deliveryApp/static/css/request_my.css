@@ -72,7 +72,7 @@
     text-align: center;
     color: black;
 }
-.menu{
+.menu{ 
     padding:0 10px;
     padding-bottom: 10px;
     
@@ -161,7 +161,7 @@ height: 30px;
 .two_column_layout{
     display:grid;
     grid-template-columns:50% 50%;
-
+   
 }
 .one_column_layout{
     /* flex: 1 auto; */

@@ -155,12 +155,11 @@ def request_market_purchase(request):
     total_weigth = 0  # 전체 무게
     if request.method == "POST":
         order_total = request.POST['order_total']
+        selected_market = request.POST['selected_mart_address']
         orders = order_total.split(',')
         print(orders)
         for order in orders:
             market, stuff, count = order.split('-')
-            temp_lst = [market, stuff, count]
-            order_lst.append(temp_lst)
 
             # 마켓 위도 경도 구하기
             # order_market_one = Store.objects.filter(
@@ -177,19 +176,24 @@ def request_market_purchase(request):
                 i.goods_weight = i.goods_weight * int(count)
                 total_price += i.goods_price
                 total_weigth += i.goods_weight
+            temp_lst = [market, stuff, count, i.goods_price]
+            order_lst.append(temp_lst)
 
             # 무게 계산
         print(total_price)
         print(total_weigth)
 
-        context = {
-            'order_total': order_total,
-            'order_lst': order_lst,
-            'total_price': total_price,
-            'total_weigth': total_weigth
+    print(order_lst)
+    print(order_lst[0][0])
+    context = {
+        'order_total': order_total,
+        'order_lst': order_lst,
+        'total_price': total_price,
+        'total_weigth': total_weigth,
+        'selected_market': selected_market
 
-        }
-        return render(request, 'request_market_purchase.html', context)
+    }
+    return render(request, 'request_market_purchase.html', context)
     return render(request, 'request_market2.html')
 
 
