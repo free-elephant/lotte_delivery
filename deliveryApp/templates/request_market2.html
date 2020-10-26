@@ -229,19 +229,40 @@
 
             var ul = document.createElement('ul');
             var li_market = document.createElement('li');
+            var span_market = document.createElement('span');
             var li_stuff = document.createElement('li');
+            var span_stuff = document.createElement('span');
             var li_price = document.createElement('li');
-            var li_count = document.createElement('li');
+            var span_price = document.createElement('span');
+            var li_count = document.createElement('li')
+            var span_count = document.createElement('span');
             var span_plus = document.createElement('span');
             var span_minus = document.createElement('span');
             var li_delete = document.createElement('li');
             var select_total = document.getElementById('select_total');
 
-            ul.className = "ul_select_total"; // 향후 css를 위함
-            li_stuff.innerHTML = "선택 제품: " + stuff;
 
-            li_price.innerHTML = "가격: " + selected_stuffOfMarket_price;
-            li_market.innerHTML = "마켓: " + market;
+
+
+            ul.className = "ul_select_total"; // 향후 css를 위함
+            li_stuff.innerHTML = "선택 제품: ";
+            li_stuff.style = "font-weight: bold;";
+            span_stuff.innerHTML = stuff;
+            span_stuff.style = "font-weight: lighter;";
+            li_stuff.appendChild(span_stuff)
+
+            li_price.innerHTML = "가격: ";
+            li_price.style = "font-weight: bold;";
+            span_price.innerHTML = selected_stuffOfMarket_price;
+            span_price.style = "font-weight: lighter;";
+            li_price.appendChild(span_price)
+
+            li_market.innerHTML = "마켓: ";
+            span_market.inntertext = market;
+            li_market.appendChild(span_market)
+            li_market.style = "font-weight: bold;";
+            span_market.style = "font-weight: lighter;";
+
             li_delete.innerHTML = "X";
             li_delete.className = "delete_icon";
 
@@ -249,35 +270,55 @@
             span_plus.onclick = function () { count_minus(this); };
             span_minus.innerHTML = "+"
             span_minus.onclick = function () { count_plus(this); };
-            li_count.innerHTML = "개수: " + 1;
-            li_count.id = selected_stuffOfMarket;
+            li_count.innerHTML = "개수: ";
+            span_count.innerHTML = 1;
+            span_count.id = selected_stuffOfMarket;
+            li_count.appendChild(span_count)
+            li_count.style = "font-weight: bold;";
+            span_count.style = "font-weight: lighter;";
+
+            console.log(li_count.innerHTML)
+            console.log(li_count)
             li_delete.onclick = function () { delete_selected_stuff(this); };
 
             select_total.appendChild(ul);
             ul.appendChild(li_market);
             ul.appendChild(li_stuff);
             ul.appendChild(li_price);
+            console.log(li_count.innerHTML)
             ul.appendChild(li_count);
+            console.log(li_count.innerHTML)
+            console.log(ul)
+
             ul.appendChild(span_plus);
             ul.appendChild(span_minus);
             ul.appendChild(li_delete);
+            console.log(ul)
 
             exist_check.push(selected_stuffOfMarket)//stuff + ',' + market
         }
     }
 
     function count_plus(plus) {
+        console.log("@@@")
         var ul_node = plus.parentNode;
-        var li_count_change = ul_node.childNodes[3].innerHTML;
-
+        console.log(ul_node)
+        var li_count_change = ul_node.childNodes[3];
+        li_count_change = li_count_change.childNodes[1].innerHTML
+        console.log(li_count_change)
         li_count_change = Number(li_count_change);
+        console.log(li_count_change)
         li_count_change = li_count_change + 1;
-        ul_node.childNodes[3].innerHTML = li_count_change;
+        console.log(li_count_change)
+        ul_node.childNodes[3].childNodes[1].innerHTML = li_count_change;
+
     }
 
     function count_minus(minus) {
         var ul_node = minus.parentNode;
-        var count_change = ul_node.childNodes[3].innerHTML;
+        var count_change = ul_node.childNodes[3];
+        count_change = count_change.childNodes[1].innerHTML
+        console.log(count_change)
         var count_id = ul_node.childNodes[3].id;
 
         if (count_change == "1") { //0이 되면 삭제
@@ -293,7 +334,7 @@
         else {
             count_change = Number(count_change);
             count_change = count_change - 1;
-            ul_node.childNodes[3].innerHTML = count_change;
+            ul_node.childNodes[3].childNodes[1].innerHTML = count_change;
         }
     }
 

@@ -12,15 +12,17 @@
 
 {% block content %}
 <div class="Wrapinfo">
-    <div class="Typecontact">연락처</div>
-    <div class="Typenumber">+82 010-1234-8282</div>
-    <div class="Typeintroduce1">자기소개</div>
-    <div class="Typeintroduce2">언제나 안전하게 배송해드립니다 :)</div>
+    <!-- <div class="Typecontact">연락처</div>
+    <div class="Typenumber">+82 010-1234-8282</div> -->
+    <!-- <div class="Typeintroduce1">자기소개</div>
+    <div class="Typeintroduce2">언제나 안전하게 배송해드립니다 :)</div> -->
 </div>
+{%for u in user%}
 <div class="Wrapname">
     <div class="Imgprofile"></div>
-    <div class="Typename">이름</div>
+    <div class="Typename">{{u.username}}</div>
 </div>
+{%endfor%}
 <div class="WrapOrderDelivery">
 
 </div>

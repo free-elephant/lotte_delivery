@@ -55,4 +55,6 @@ def idcheck(request):
 
 
 def info(request):
-    return render(request, 'info.html')
+    user = User.objects.filter(
+        username=request.user.username)
+    return render(request, 'info.html', {'user': user})
