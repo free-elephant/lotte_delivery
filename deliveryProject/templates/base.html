@@ -18,8 +18,10 @@
 <body>
     <a class="menu1" href="{% url 'request_my' %}">택배 보내기</a>
     <a class="menu2" href="{% url 'deliver' %}">배달하기</a>
+    {% if user.is_authenticated %}
     <a class="menu3" href="{% url 'info' %}">마이페이지</a>
-    <a class="menu4" href="#">문의하기</a>
+    {%endif%}
+    <!-- <a class="menu4" href="#">문의하기</a> -->
     <a href="/" class="logo">
         <img width=73 height=77 src="{% static 'image/logo.png'%}" />
     </a>

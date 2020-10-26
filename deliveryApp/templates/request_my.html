@@ -10,12 +10,12 @@
     <div id="total_padding">
 
         <div id="stuff_send_menu">
-            <a class="menu middle_font" href="{%url 'request_my' %}">택배 보내기</a>
-            <a class="menu thin_font" href="{%url 'request_market2' %}">마켓 픽업 배송</a>
+            <a class="menu middle_font menu_bold" href="{%url 'request_my' %}">택배 보내기</a>
+            <a class="menu thin_font menu_thin" href="{%url 'request_market2' %}">마켓 픽업 배송</a>
         </div>
 
         <!-- <hr id="menu_line"> -->
-        <br>
+
         <div id="box">
             <form action="{% url 'request_my' %}" method="POST">
                 {%csrf_token%}
@@ -67,87 +67,106 @@
                         </div>
                     </div>
                     <br>
-                    <div id="write_result_box">
-                        <div id="map" style="width:100%;height:300px;margin-top:10px;"></div>
-                        <br>
-                        <span class="write">거리</span>
-                        <input type="text" class="input" name="distance" id="distance">
-                        <br>
-                        물건 카테고리
-                        <input type="button" class="input" onclick="goods_category()" value="카테고리">
-                        <div class="modal_wrap">
-                            <div class="modal_close" onclick="close_goods_category()"><a href="#">close</a></div>
-                            <div id="goods_radio">
-                                <input type="radio" name="goods" class="goods" value="문서" /> 문서
-                                <input type="radio" name="goods" class="goods" value="유리류" /> 유리류
-                                <input type="radio" name="goods" class="goods" value="식품(약)" /> 식품(약)
-                                <input type="radio" name="goods" class="goods" value="소박스" /> 소박스
-                                <input type="radio" name="goods" class="goods" value="대박스" /> 대박스
+                    <div id="write_result_box" class="two_column_layout">
+                        <div class="one_column_layout">
+                            <div id="map" style="width:100%;height:300px;margin-top:10px;"></div>
+                            <br>
+                            <div class="row_layout">
+                                <div class="write middle2_font">거리</div>
+                                <input type="text" class="input" name="distance" id="distance">
+
                             </div>
-                            <div onclick="goods_confirm()"><a href="#">확인</a></div>
+                        </div>
+                        <div class="one_column_layout">
+                            <p class="middle2_font"> 물건 분류</p>
+                            <!-- <input type="button" class="input" onclick="goods_category()" value="카테고리">
+                        <div class="modal_wrap">
+                            <div class="modal_close" onclick="close_goods_category()"><a href="#">close</a></div> -->
+                            <div id="goods_radio">
+                                <div class="goods_select">
+                                    <input type="radio" name="goods" class="goods" value="문서" /> 문서
+                                </div>
+                                <div class="goods_select">
+                                    <input type="radio" name="goods" class="goods" value="유리류" /> 유리류
+                                </div>
+                                <div class="goods_select">
+                                    <input type="radio" name="goods" class="goods" value="식품(약)" /> 식품(약)
+                                </div>
+                                <div class="goods_select">
+                                    <input type="radio" name="goods" class="goods" value="소박스" /> 소박스
+                                </div>
+                                <div class="goods_select">
+                                    <input type="radio" name="goods" class="goods" value="대박스" /> 대박스
+                                </div>
+                            </div>
+                            <!-- <div onclick="goods_confirm()"><a href="#">확인</a></div> -->
                             <!-- <input type="button" onclick="goods_confirm()" value="확인"> -->
 
+                            <!-- </div> -->
+                            <!-- <input type="text" class="input" name="goods_category_one" id="goods_category_one" value=""
+                            readonly> -->
+                            <br>
+                            <p class="middle2_font">물품 상세정보</p>
+                            <input type="text" class="input" name="goods_detail" placeholder="물건 상세정보">
+                            <p class="middle2_font">
+                                원하는 배송 날짜</p><input type="date" class="input" name="want_date">
+                            <br>
+                            <p class="middle2_font">원하는 배송 시간</p>
+                            <select id="want_time" class="input" name="want_time">
+                                <option value="">시간 선택</option>
+                                <option value="1">00~01</option>
+                                <option value="2">01~02</option>
+                                <option value="3">02~03</option>
+                                <option value="4">03~04</option>
+                                <option value="5">04~05</option>
+                                <option value="6">05~06</option>
+                                <option value="7">06~07</option>
+                                <option value="8">07~08</option>
+                                <option value="9">08~09</option>
+                                <option value="10">09~10</option>
+                                <option value="11">10~11</option>
+                                <option value="12">11~12</option>
+                                <option value="13">12~13</option>
+                                <option value="14">13~14</option>
+                                <option value="15">14~15</option>
+                                <option value="16">15~16</option>
+                                <option value="17">16~17</option>
+                                <option value="18">17~18</option>
+                                <option value="19">18~19</option>
+                                <option value="20">19~20</option>
+                                <option value="21">20~21</option>
+                                <option value="22">21~22</option>
+                                <option value="23">22~23</option>
+                                <option value="24">23~24</option>
+                            </select>
+                            <br>
+
+
+                            <p class="middle2_font">무게</p>
+                            <select name="weight" class="input" id="weight" onclick="price_function()">
+                                <option value="">무게 선택</option>
+                                <option value="1">10kg 이내</option>
+                                <option value="2">10~20kg 이내</option>
+                                <option value="3">20~30kg 이내</option>
+                                <option value="4">30~40kg 이내</option>
+                            </select>
+                            <br>
+                            <p class="middle2_font">가격</p><input type="text" class="input" name="price" id="price_sum"
+                                value="">
+                            <br>
+                            <p class="middle2_font">전달사항</p><input type="text" class="input" name="comment">
                         </div>
-                        <input type="text" class="input" name="goods_category_one" id="goods_category_one" value=""
-                            readonly>
-                        <br>
-                        물건 상세정보
-                        <input type="text" class="input" name="goods_detail">
-                        <br>
-                        원하는 배송 날짜<input type="date" class="input" name="want_date">
-                        <br>
-                        원하는 배송 시간
-                        <select id="want_time" class="input" name="want_time">
-                            <option value="">시간 선택</option>
-                            <option value="1">00~01</option>
-                            <option value="2">01~02</option>
-                            <option value="3">02~03</option>
-                            <option value="4">03~04</option>
-                            <option value="5">04~05</option>
-                            <option value="6">05~06</option>
-                            <option value="7">06~07</option>
-                            <option value="8">07~08</option>
-                            <option value="9">08~09</option>
-                            <option value="10">09~10</option>
-                            <option value="11">10~11</option>
-                            <option value="12">11~12</option>
-                            <option value="13">12~13</option>
-                            <option value="14">13~14</option>
-                            <option value="15">14~15</option>
-                            <option value="16">15~16</option>
-                            <option value="17">16~17</option>
-                            <option value="18">17~18</option>
-                            <option value="19">18~19</option>
-                            <option value="20">19~20</option>
-                            <option value="21">20~21</option>
-                            <option value="22">21~22</option>
-                            <option value="23">22~23</option>
-                            <option value="24">23~24</option>
-                        </select>
-                        <br>
 
-
-                        무게
-                        <select name="weight" class="input" id="weight" onclick="price_function()">
-                            <option value="">무게 선택</option>
-                            <option value="1">10kg 이내</option>
-                            <option value="2">10~20kg 이내</option>
-                            <option value="3">20~30kg 이내</option>
-                            <option value="4">30~40kg 이내</option>
-                        </select>
-                        <br>
-                        가격<input type="text" class="input" name="price" id="price_sum" value="">
-                        <br>
-                        전달사항<input type="text" class="input" name="comment">
-                        {% if user.is_authenticated %}
-                        <input type="submit" value="확인">
-                        {%else%}
-                        <div style="text-align:center;">*로그인을 하시면 신청버튼이 나타납니다.*</div>
-
-                        {%endif%}
                     </div>
                 </div>
+                {% if user.is_authenticated %}
+                <div style="display:flex;justify-content: center;">
+                    <input type="submit" class="submit_btn" value="확인">
+                </div>
+                {%else%}
+                <div style="text-align:center;">*로그인을 하시면 신청버튼이 나타납니다.*</div>
 
+                {%endif%}
             </form>
         </div>
         <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>

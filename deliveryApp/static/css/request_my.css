@@ -50,7 +50,7 @@
 
 /* 메뉴 */
 #stuff_send_menu{
-    border-bottom:1px solid rgb(49, 46, 49);
+    /* border-bottom:1px solid rgb(49, 46, 49); */
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -73,8 +73,17 @@
     color: black;
 }
 .menu{
-    margin:10px;
+    padding:0 10px;
+    padding-bottom: 10px;
+    
 }
+.menu_bold{
+    border-bottom: 5px solid black;
+}
+.menu_thin{
+    border-bottom: 1px solid black;
+}
+
 
 #menu_line{
     width:40%;
@@ -149,18 +158,49 @@ height: 30px;
     padding: 3%;
 
 }
+.two_column_layout{
+    display:grid;
+    grid-template-columns:50% 50%;
+
+}
+.one_column_layout{
+    /* flex: 1 auto; */
+    padding: 0 10px;
+}
 .input{
-    width:50%;
+    width:80%;
     height: 30px;
     margin:2px;
-    
+    flex:1 1 auto;
 }
 .write{
+    flex:1 1 auto;
     width:50px;
 }
+.row_layout{
+    display:flex;
+}
 /* 폰트관련 */
-.middle_font{
+.middle2_font{
+font-weight: bold;
+font-size: 20px;
+}
 
+/* 물건분류 */
+#goods_radio{
+    display:flex;
+}
+
+.goods_select{
+    flex:1 auto;
 }
 
 
+
+/* submit */
+.submit_btn{
+    width: 200px;
+    height: 40px;
+    text-align: center;
+    margin-bottom: 200px;
+}
