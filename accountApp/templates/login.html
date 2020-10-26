@@ -24,15 +24,19 @@
     </div>
 
     <div class="font_1">로그인</div>
+
     <div class="font_3">LONGIN</div>
+
+
 
     <form method="POST" action="{% url 'login' %}">
         {%csrf_token%}
-        ID:
-        <input name="id" type="text" placeholder="로그인">
-        Password:
-        <input name="password" type="password" placeholder="비밀번호">
-        <input type="submit" value="확인" style="color:cornsilk">
+
+        <input id="id_tag" type="text" value="아이디">
+        <a class="forgot_id" href="#">아이디를 잊으셨나요?</a>
+        <input id="password_tag" type="password" value="비밀번호">
+        <a class="forgot_pw" href="#">비밀번호를 잊으셨나요?</a>
+        <input class="complete" type="submit" value="완료">
     </form>
     {% if error %}
     <p class="login_error"> {{ error }}</p>
@@ -52,12 +56,12 @@
     <form id="join-form" method="POST" action="{% url 'signup'%}" onsubmit="return checkAll();">
         {% csrf_token %}
         <input name="id_1" id="id" class="id_input" type="text" checked_result="fail" required value=""
-            placeholder="영문+숫자 5~20자" />
-        <img src="data:image/png;base64,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"
-            id="img-id" style="display: none; width:17px; height:17px;">
-        <input id="btn-id" class="check_btn" type="button" value="중복체크">
-        <input name="password1" type="password" value="" required placeholder="영문+숫자+특수문자 8~16자"><br>
+            placeholder="아이디" />
+        <div class="ne_id">4-16자 이내</div>
 
+        <input id="btn-id" type="button" value="중복체크">
+        <input name="password1" type="password" value="" required placeholder="비밀번호"><br>
+        <div class="ne_pw">영문자, 숫자, 특수문자 포함 6-16자 이내</div>
         <input name="password2" type="password" value="" required placeholder="비밀번호 확인"><br>
 
         <!-- <a class="go" href="#"></a> -->
@@ -88,7 +92,7 @@
         <div class="name_nic_font" for="name">닉네임</div>
         <input name="nic" type="text" value="" required><br>
 
-        <div class="IN_font" for="phone">주민등록번호번호</div>
+        <div class="IN_font" for="phone">주민등록번호</div>
         <div class="IN_star">*</div>
         <input name="IN1" type="text" value="" required><br>
         <input name="IN2" type="text" value="" required><br>
@@ -341,7 +345,7 @@
             text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         }
 
-        input[name=id] {
+        input[id=id_tag] {
             /* Line 103 */
 
             position: absolute;
@@ -350,12 +354,28 @@
             left: 280px;
             top: 345px;
 
-            border: 1px solid #FFFFFF;
+            BORDER-BOTTOM: teal 1px solid;
+            BORDER-LEFT: medium none;
+            BORDER-RIGHT: medium none;
+            BORDER-TOP: medium none;
+            background-color: transparent;
+            FONT-SIZE: 9pt;
+
+            border-style: none;
+            border-bottom: solid 1px#FFFFFF;
+            border-collapse: collapse;
+
+            font-family: Red Hat Display;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 20px;
+            line-height: 26px;
+            color: #FFFFFF;
 
 
         }
 
-        input[name=password] {
+        input[id=password_tag] {
             /* Line 103 */
 
             position: absolute;
@@ -364,11 +384,27 @@
             left: 280px;
             top: 446px;
 
-            border: 1px solid #FFFFFF;
+            BORDER-BOTTOM: teal 1px solid;
+            BORDER-LEFT: medium none;
+            BORDER-RIGHT: medium none;
+            BORDER-TOP: medium none;
+            background-color: transparent;
+            FONT-SIZE: 9pt;
+
+            border-style: none;
+            border-bottom: solid 1px #FFFFFF;
+            border-collapse: collapse;
+
+            font-family: Red Hat Display;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 20px;
+            line-height: 26px;
+            color: #FFFFFF;
 
         }
 
-        input[type=submit] {
+        input[class="complete"] {
             position: absolute;
             width: 79px;
             height: 35px;
@@ -378,6 +414,16 @@
             background: #181818;
             box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
             border-radius: 20px;
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 18px;
+            line-height: 21px;
+            /* identical to box height */
+
+
+            color: #FFFFFF;
         }
 
         input[name=id_1] {
@@ -387,7 +433,26 @@
             left: 817px;
             top: 343px;
 
-            border: 1px solid #FFFFFF;
+            BORDER-BOTTOM: teal 1px solid;
+            BORDER-LEFT: medium none;
+            BORDER-RIGHT: medium none;
+            BORDER-TOP: medium none;
+            background-color: transparent;
+            FONT-SIZE: 9pt;
+
+            border-style: none;
+            border-bottom: solid 1px #FFFFFF;
+            border-collapse: collapse;
+
+            font-family: Red Hat Display;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 26px;
+
+            color: #FFFFFF;
+
+
         }
 
         input[name=password1] {
@@ -397,7 +462,24 @@
             left: 817px;
             top: 448px;
 
-            border: 1px solid #FFFFFF;
+            BORDER-BOTTOM: teal 1px solid;
+            BORDER-LEFT: medium none;
+            BORDER-RIGHT: medium none;
+            BORDER-TOP: medium none;
+            background-color: transparent;
+            FONT-SIZE: 9pt;
+
+            border-style: none;
+            border-bottom: solid 1px #FFFFFF;
+            border-collapse: collapse;
+
+            font-family: Red Hat Display;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 26px;
+
+            color: #FFFFFF;
         }
 
         input[name=password2] {
@@ -407,7 +489,25 @@
             left: 817px;
             top: 568px;
 
-            border: 1px solid #FFFFFF;
+            BORDER-BOTTOM: teal 1px solid;
+            BORDER-LEFT: medium none;
+            BORDER-RIGHT: medium none;
+            BORDER-TOP: medium none;
+            background-color: transparent;
+            FONT-SIZE: 9pt;
+
+            border-style: none;
+            border-bottom: solid 1px #FFFFFF;
+            border-collapse: collapse;
+
+            font-family: Red Hat Display;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 26px;
+
+            color: #FFFFFF;
+
         }
 
         .go {
@@ -784,7 +884,7 @@
             position: absolute;
             width: 10px;
             height: 23px;
-            left: 405px;
+            left: 411px;
             top: 1152px;
 
             font-family: Roboto;
@@ -925,6 +1025,72 @@
             line-height: 23px;
 
             color: #883ACE;
+        }
+
+        .forgot_id {
+            position: absolute;
+            width: 108px;
+            height: 14px;
+            left: 539px;
+            top: 390px;
+            font-size: 8pt;
+            text-decoration: underline;
+
+            color: rgba(255, 255, 255, 0.49);
+
+        }
+
+        .forgot_pw {
+            position: absolute;
+            width: 120px;
+            height: 14px;
+            left: 527px;
+            top: 490px;
+            font-size: 8pt;
+            text-decoration: underline;
+
+            color: rgba(255, 255, 255, 0.49);
+        }
+
+        .ne_id {
+            position: absolute;
+            width: 70px;
+            height: 14px;
+            left: 1135px;
+            top: 385px;
+
+
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 12px;
+            line-height: 14px;
+            /* identical to box height */
+
+
+            color: rgba(255, 255, 255, 0.71);
+
+        }
+
+        .ne_pw {
+            position: absolute;
+            width: 220px;
+            height: 14px;
+            left: 980px;
+            top: 490px;
+
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 12px;
+            line-height: 14px;
+            /* identical to box height */
+
+
+            color: rgba(255, 255, 255, 0.71);
+
         }
     </style>
 

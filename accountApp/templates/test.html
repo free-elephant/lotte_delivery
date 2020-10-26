@@ -1,0 +1,54 @@
+<html>
+
+<head>
+    <form method="POST" action="{% url 'login' %}">
+        {%csrf_token%}
+        <input id="id_tag" type="text" value="로그인">
+
+        <!-- <input name="password" type="password" value="">
+        <input type="submit" value="확인"> -->
+    </form>
+
+
+    <style>
+        INPUT {
+
+
+
+            position: absolute;
+            width: 367px;
+            height: 35px;
+            left: 280px;
+            top: 345px;
+
+            BORDER-BOTTOM: teal 1px solid;
+            BORDER-LEFT: medium none;
+            BORDER-RIGHT: medium none;
+            BORDER-TOP: medium none;
+            FONT-SIZE: 9pt
+        }
+
+        TEXTAREA {
+            BORDER-BOTTOM: teal 1px solid;
+            BORDER-LEFT: teal 1px solid;
+            BORDER-RIGHT: teal 1px solid;
+            BORDER-TOP: teal 1px solid;
+            FONT-SIZE: 9pt;
+            TEXT-DECORATION: none
+        }
+
+        input {
+            border-style: none;
+            border-bottom: solid 1px #cacaca;
+            border-collapse: collapse;
+
+            font-family: Red Hat Display;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 20px;
+            line-height: 26px;
+        }
+    </style>
+</head>
+
+</html>
