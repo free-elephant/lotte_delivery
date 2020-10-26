@@ -80,6 +80,10 @@ ul{
     font-size: 25px;
     margin: 20px 0;
 }
+.small_font{
+    font-size:10px;
+    text-align: center;
+}
 
 #market_stuff_box{
     border: 1px solid #C4C4C4;
