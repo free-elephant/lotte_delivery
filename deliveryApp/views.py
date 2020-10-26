@@ -105,14 +105,18 @@ def request_market2(request):
                 result_store_lat = list(result_store_lat.values())
                 store_name_list.append(result_store_lat[0]['store_name'])
             print(store_name_list)
-            if(len(store_name_list) == 0):
-                store_name_list = "등록된 가게가 없습니다."
-                context = {'store_name_list': store_name_list}
-            else:
-                context = {'store_name_list': store_name_list}
+            # if(len(store_name_list) == 0):
+            #     store_name_list = "등록된 가게가 없습니다."
+            #     context = {'store_name_list': store_name_list}
+            # else:
+
+            context = {'store_name_list': store_name_list, 'market_num': 1}
 
             return HttpResponse(json.dumps(context), content_type='application/json')
-
+        else:
+            context = {
+                'no_maet': "선택하신 반경 내에 등록된 마트가 없어요:(. ", 'market_num': 0}
+            return HttpResponse(json.dumps(context), content_type='application/json')
     return render(request, 'request_market2.html', {'stores': stores})
 
 

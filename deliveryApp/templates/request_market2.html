@@ -39,7 +39,7 @@
 
                 <div id="market_stuff_box">
                     <p class="middle_font" style="padding:0 20px">마트선택</p>
-
+                    <div id="no_mart"></div>
                     <div id="store_all">
                         <span id="store0" class="store" onclick="specific_mart(this.value)">
                         </span>
@@ -438,17 +438,25 @@
                             type: 'GET',
                             dataType: 'json',
                             success: function (response) { //ajax써서 값을 변경함
+                                console.log("in!!!!!!!!!!!!!!!!!!!")
+                                if (response.market_num == 0) {
+                                    console.log("@@@@@@@@@@@@@@")
+                                    $("#no_mart").html("선택하신 방경 내에 등록된 마트가 없어요:(. ")
+                                }
+                                else {
+                                    console.log(response.store_name_list.length)
+                                    for (var i = 0; i < response.store_name_list.length; i++) {
+                                        $('#store' + i).html(response.store_name_list[i]);
+                                        var store_val = document.getElementById('store' + i);
+                                        console.log("---")
+                                        store_val.value = response.store_name_list[i];
+                                        console.log(store_val)
+                                        console.log(store_val.value)
 
-                                console.log(response.store_name_list.length)
-                                for (var i = 0; i < response.store_name_list.length; i++) {
-                                    $('#store' + i).html(response.store_name_list[i]);
-                                    var store_val = document.getElementById('store' + i);
-                                    console.log("---")
-                                    store_val.value = response.store_name_list[i];
-                                    console.log(store_val)
-                                    console.log(store_val.value)
+                                    }
 
                                 }
+
 
                             }
 
