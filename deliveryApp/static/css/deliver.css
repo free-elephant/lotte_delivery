@@ -91,3 +91,58 @@ fieldset legend {
 .menu_bold{
     border-bottom: 5px solid black;
 }
+
+/* 박스 */
+#write_box{
+    margin:5%;
+    display: grid;
+    grid-template-columns:50% 50%;
+}
+
+#map{
+    width:100%;
+    height:400px;
+}
+
+#location_box{
+    padding:20px;
+    border: 1px solid rgb(88, 85, 85);
+    border-radius: 10px;
+}
+.middle2_font{
+    font-weight: bold;
+    font-size: 18px;
+    }
+    
+
+    .box_internal{
+        padding:20px;
+    }
+    .one_box{
+        margin:20px;
+        border: 1px solid black;
+        border-radius: 10px;
+    }
+
+    /* 신청지 도착지 */
+.address_layout{
+    display:flex;
+    
+}
+.address{
+margin:2px;
+height: 30px;
+}
+.address_input{
+    width:100%;
+}
+
+.address_btn{
+    height: 35px;
+}
+
+.detail_address{
+    width:97%;
+    height: 30px;
+    margin:2px;
+}
