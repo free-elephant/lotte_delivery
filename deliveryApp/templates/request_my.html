@@ -35,11 +35,12 @@
                             </span>
 
                             <input type="text" class="detail_address" name="deparature_detail" id="deparature_detail"
-                                placeholder="상세주소">
+                                placeholder="상세주소" required>
                             <br>
                             <div class="person_info_input">
-                                <input type="text" class="name" name="deparature_name" placeholder="신청인 이름">
-                                <input type="text" class="phone" name="deparature_phone" placeholder="신청인 전화번호">
+                                <input type="text" class="name" name="deparature_name" placeholder="신청인 이름" required>
+                                <input type="text" class="phone" name="deparature_phone" placeholder="신청인 전화번호"
+                                    required>
                             </div>
                         </div>
                         <div id="end">
@@ -48,7 +49,7 @@
                             <span>
                                 <div class="address_layout">
                                     <input type="text" class="address address_input" name="destination" id="destination"
-                                        placeholder="주소" readonly>
+                                        placeholder="주소" readonly required>
                                     <input type="button" class="address address_btn" onclick="my_Stuff_Map(this.id)"
                                         value="주소 검색" id="map_destination">
 
@@ -58,11 +59,12 @@
 
                             </span>
 
-                            <input type="text" class="detail_address" name="destination_detail" placeholder="상세주소">
+                            <input type="text" class="detail_address" name="destination_detail" placeholder="상세주소"
+                                required>
                             <br>
                             <div class="person_info_input">
-                                <input type="text" class="name" name="destination_name" placeholder="신청인 이름">
-                                <input type="text" name="destination_phone" placeholder="수취인 전화번호">
+                                <input type="text" class="name" name="destination_name" placeholder="신청인 이름" required>
+                                <input type="text" name="destination_phone" placeholder="수취인 전화번호" required>
                             </div>
                         </div>
                     </div>
@@ -73,46 +75,53 @@
                             <br>
                             <div class="row_layout">
                                 <div class="write middle2_font">거리</div>
-                                <input type="text" class="input" name="distance" id="distance">
-
+                                <input type="text" class="input" name="distance" id="distance" required>
                             </div>
+                            <div id="distance_message" style="color: rgb(168, 108, 225);padding:3px;"></div>
                         </div>
                         <div class="one_column_layout">
-                            <p class="middle2_font"> 물건 분류</p>
+                            <p class="middle2_font" id="stuff_category"> 물건 분류</p>
                             <!-- <input type="button" class="input" onclick="goods_category()" value="카테고리">
                         <div class="modal_wrap">
                             <div class="modal_close" onclick="close_goods_category()"><a href="#">close</a></div> -->
                             <div id="goods_radio">
                                 <div class="goods_select">
-                                    <input type="radio" name="goods" class="goods" value="문서" /> 문서
+                                    <input type="radio" name="goods" class="goods" value="문서"
+                                        onclick="goods_radios(this)" />
+                                    문서
                                 </div>
                                 <div class="goods_select">
-                                    <input type="radio" name="goods" class="goods" value="유리류" /> 유리류
+                                    <input type="radio" name="goods" class="goods" value="유리류"
+                                        onclick="goods_radios(this)" /> 유리류
                                 </div>
                                 <div class="goods_select">
-                                    <input type="radio" name="goods" class="goods" value="식품(약)" /> 식품(약)
+                                    <input type="radio" name="goods" class="goods" value="식품(약)"
+                                        onclick="goods_radios(this)" /> 식품(약)
                                 </div>
                                 <div class="goods_select">
-                                    <input type="radio" name="goods" class="goods" value="소박스" /> 소박스
+                                    <input type="radio" name="goods" class="goods" value="소박스"
+                                        onclick="goods_radios(this)" /> 소박스
                                 </div>
                                 <div class="goods_select">
-                                    <input type="radio" name="goods" class="goods" value="대박스" /> 대박스
+                                    <input type="radio" name="goods" class="goods" value="대박스"
+                                        onclick="goods_radios(this)" /> 대박스
                                 </div>
                             </div>
+                            <div id="radio_message" style="color: rgb(168, 108, 225);padding:3px;"></div>
                             <!-- <div onclick="goods_confirm()"><a href="#">확인</a></div> -->
                             <!-- <input type="button" onclick="goods_confirm()" value="확인"> -->
 
                             <!-- </div> -->
-                            <!-- <input type="text" class="input" name="goods_category_one" id="goods_category_one" value=""
-                            readonly> -->
+                            <input type="text" class="input" name="goods_category_one" id="goods_category_one" value=""
+                                style="display:none">
                             <br>
                             <p class="middle2_font">물품 상세정보</p>
-                            <input type="text" class="input" name="goods_detail" placeholder="물건 상세정보">
+                            <input type="text" class="input" name="goods_detail" placeholder="물건 상세정보" required>
                             <p class="middle2_font">
                                 원하는 배송 날짜</p><input type="date" class="input" name="want_date">
                             <br>
                             <p class="middle2_font">원하는 배송 시간</p>
-                            <select id="want_time" class="input" name="want_time">
+                            <select id="want_time" class="input" name="want_time" required>
                                 <option value="">시간 선택</option>
                                 <option value="1">00~01</option>
                                 <option value="2">01~02</option>
@@ -143,7 +152,7 @@
 
 
                             <p class="middle2_font">무게</p>
-                            <select name="weight" class="input" id="weight" onclick="price_function()">
+                            <select name="weight" class="input" id="weight" onclick="price_function()" required>
                                 <option value="">무게 선택</option>
                                 <option value="1">10kg 이내</option>
                                 <option value="2">10~20kg 이내</option>
@@ -152,16 +161,17 @@
                             </select>
                             <br>
                             <p class="middle2_font">가격</p><input type="text" class="input" name="price" id="price_sum"
-                                value="">
+                                value="" required>
                             <br>
-                            <p class="middle2_font">전달사항</p><input type="text" class="input" name="comment">
+                            <p class="middle2_font">전달사항</p><input type="text" class="input" name="comment" required>
                         </div>
 
                     </div>
                 </div>
                 {% if user.is_authenticated %}
                 <div style="display:flex;justify-content: center;">
-                    <input type="submit" class="submit_btn" value="확인">
+                    <button type="button" class="submit_btn" value="확인" onclick="error_check()"></button>
+                    <input type="submit" class="submit_btn" value="확인" onclick="error_check()">
                 </div>
                 {%else%}
                 <div style="text-align:center;">*로그인을 하시면 신청버튼이 나타납니다.*</div>
@@ -173,7 +183,34 @@
 
         {%endblock script_key%} -->
         <script>
-            function goods_confirm() {
+            function error_check() {
+                var num_pattern = /[0-9]/; // 숫자 
+                var deparature_phone = document.getElementsByName('deparature_phone')[0].value;
+                var destination_phone = document.getElementsByName('destination_phone')[0].value;
+
+                var goods_category_one = document.getElementById('goods_category_one').value
+
+                if (!num_pattern.test(deparature_phone) || !num_pattern.test(destination_phone)) {
+                    document.getElementById('radio_message').innerHTML = "번호는 숫자만 입력가능합니다."
+                }
+                if (goods_category_one == "") {
+                    var radio_location = document.getElementById('stuff_category').offsetTop;
+                    document.getElementById('radio_message').innerHTML = "* 카테고리를 선택해주세요."
+                    window.scrollTo({ top: radio_location, behavior: 'smooth' });
+                    return false;
+
+
+                }
+            }
+
+            function goods_radios(it) {
+                document.getElementById('radio_message').innerHTML = ""
+                document.getElementById('goods_category_one').value = it.value
+                console.log(document.getElementById('goods_category_one').value)
+
+            }
+
+            function goods_confirm() { //상품 확인
                 // goods_pick = $('.goods').val(); // 
                 goods_radio = document.getElementById('goods_radio');
                 goods_radio = goods_radio.children

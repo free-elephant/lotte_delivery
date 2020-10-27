@@ -438,6 +438,10 @@
                     // 정상적으로 검색이 완료됐으면
                     if (status === daum.maps.services.Status.OK) {
 
+                        //지도 다 지우기
+                        //marker.setMap(null);
+                        circle.setMap(null);
+
                         var result = results[0]; //첫번째 결과의 값을 활용
 
                         // 해당 주소에 대한 좌표를 받아서

@@ -32,10 +32,10 @@
     <form method="POST" action="{% url 'login' %}">
         {%csrf_token%}
 
-        <input id="id_tag" type="text" value="아이디">
-        <a class="forgot_id" href="#">아이디를 잊으셨나요?</a>
-        <input id="password_tag" type="password" value="비밀번호">
-        <a class="forgot_pw" href="#">비밀번호를 잊으셨나요?</a>
+        <input id="id_tag" name="id" type="text" placeholder="아이디">
+        <!-- <a class="forgot_id" href="#">아이디를 잊으셨나요?</a> -->
+        <input id="password_tag" name="password" type="password" placeholder="비밀번호">
+        <!-- <a class="forgot_pw" href="#">비밀번호를 잊으셨나요?</a> -->
         <input class="complete" type="submit" value="완료">
     </form>
     {% if error %}
@@ -58,17 +58,18 @@
         <input name="id_1" id="id" class="id_input" type="text" checked_result="fail" required value=""
             placeholder="아이디" />
         <div class="ne_id">4-16자 이내</div>
-
-        <input id="btn-id" type="button" value="중복체크">
+        <input id="btn-id" type="button" class="check_btn" value="중복체크">
         <input name="password1" type="password" value="" required placeholder="비밀번호"><br>
         <div class="ne_pw">영문자, 숫자, 특수문자 포함 6-16자 이내</div>
         <input name="password2" type="password" value="" required placeholder="비밀번호 확인"><br>
 
-        <!-- <a class="go" href="#"></a> -->
-        <!-- <div class="img_go">
+
+        <div class="img_go" style="cursor: pointer" onclick="cursor_move()">
             <img width="" height="" src="{% static 'image/go.png' %}">
-        </div> -->
+        </div>
+
         <!-- </form> -->
+
 
 
         <div class="graBox">
@@ -80,17 +81,18 @@
         <!-- <form id="join-form" method="POST" action="{% url 'signup'%}" onsubmit="return checkAll();"> -->
         {% csrf_token %}
         <div class="block-label_font" for="email">이메일</div>
-        <!-- <input name="email1" type="email1" value="" required>
-        <input name="email2" type="email2" value="" required> -->
-        <input name="email3" type="email1" value="" required>
+        <div class="email_star">*</div>
+        <input name="email1" type="email1" value="">
+        <input name="email2" type="email2" value="">
+        <!-- <input name="email3" type="email1" value=""> -->
 
 
-        <div class="name_font" for="name">이름</div>
+        <div class="name_font" for="name" id="name">이름</div>
         <div class="name_star">*</div>
         <input name="name" type="text" value="" required><br>
 
         <div class="name_nic_font" for="name">닉네임</div>
-        <input name="nic" type="text" value="" required><br>
+        <input name="nic" type="text" value=""><br>
 
         <div class="IN_font" for="phone">주민등록번호</div>
         <div class="IN_star">*</div>
@@ -100,14 +102,14 @@
 
 
         <div class="phone_font" for="phone">휴대전화번호</div>
-        <!-- <input name="phone1" type="text" value="" required>-
-        <input name="phone2" type="text" value="" required>-
-        <input name="phone3" type="text" value="" required> -->
-        <input name="phone4" type="text" value="" required>
+        <input name="phone1" type="text" value="">
+        <input name="phone2" type="text" value="">
+        <input name="phone3" type="text" value="">
+        <!-- <input name="phone4" type="text" value=""> -->
         <!-- 
         <div class="coupon_font" for="phone">할인쿠폰 등록</div>
         <input name="coupon" type="text" value="" required> -->
-
+        <!-- 
         <div class="address_font" for="address">주소</div>
         <input name="address1" type="text" value="" required>
         <input name="address2" type="text" value="" required>
@@ -115,9 +117,9 @@
 
 
         <div class="public_font" for="public">공동현관 출입번호</div>
-        <input name="public" type="text" value="" required>
+        <input name="public" type="text" value="" required> -->
 
-        <hr class="line1">
+        <!-- <hr class="line1">
 
         <div class="agree_font"></div>
         <hr class="line2">
@@ -125,7 +127,7 @@
 
         <div class="agree1"></div>
         <div class="agree2"></div>
-        <div class="agree3"></div>
+        <div class="agree3"></div> -->
 
         <input type="submit" value="가입완료" id="join-submit" id_check_result="fail">
     </form>
@@ -134,6 +136,13 @@
 
 
     <script type="text/javascript">
+
+        //화살표 클릭시 아래로 화면 내려가기
+        function cursor_move() {
+            var name_cursor = document.getElementById('name').offsetTop;
+            window.scrollTo({ top: name_cursor, behavior: 'smooth' });
+        }
+
         // id = 5~20 영문+숫자
         // pw = 8~16 영문+숫자+특문
 
@@ -245,8 +254,19 @@
             text-align: center;
             width: 100px;
             height: 35px;
-            top: 390px;
+            top: 400px;
             left: 1105px;
+            color: cornsilk;
+
+            background: #8552d1;
+            box-shadow: 0px 4px 4px #6730ba;
+            border-radius: 20px;
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 18px;
+            line-height: 21px;
 
 
         }
