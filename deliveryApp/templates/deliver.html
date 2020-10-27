@@ -586,7 +586,7 @@
 
             ////////zzzz
             if (location == "current") {
-                current_inner.innerHTML = "<br>" + "===========현재위치 반경 안의 마크============ " + "<br>";
+                current_inner.innerHTML = "<br>" + "============현재위치 반경 안의 택배 요청============" + "<br>";
                 //          current_inner.innerHTML = current_inner.innerHTML + "<form action = {% url 'deliverItem' %} method='POST' id='deliver'>" + '{% csrf_token %}';
                 //        current_inner.innerHTML = current_inner.innerHTML + "<input type='text' id='hiddenPosition' name='hiddenPosition' value='nothing'/>";
                 var line1 = new kakao.maps.Polyline();
@@ -648,7 +648,7 @@
                 //            current_inner.innerHTML = current_inner.innerHTML + "</form>";
             }
             else if (location == "deparature") {
-                start_inner.innerHTML = "<br>" + "============출발지 반경 안의 마크==========" + "<br>";
+                start_inner.innerHTML = "<br>" + "============출발지 반경 안의 택배 요청============" + "<br>";
                 var line1 = new kakao.maps.Polyline();
                 var line2 = new kakao.maps.Polyline();
                 for (var i = 0; i < start_markers.length - 1; i++) {
@@ -703,7 +703,7 @@
                 }
             }
             else if (location == "destination") {
-                end_inner.innerHTML = "<br>" + "========도착지 반경 안의 마크=============" + "<br>";
+                end_inner.innerHTML = "<br>" + "============도착지 반경 안의 택배 요청============" + "<br>";
                 var line1 = new kakao.maps.Polyline();
                 var line2 = new kakao.maps.Polyline();
                 for (var i = 0; i < end_markers.length - 1; i++) {
@@ -753,6 +753,7 @@
                         for (var j = 1; j < end_list.length; j++) {
                             end_inner.innerHTML = end_inner.innerHTML + end_list[j] + " / ";
                         }
+                        end_inner.innerHTML = end_inner.innerHTML + "<button value='" + s.getPosition() + '),(' + e.getPosition() + "'>배달하기</button>";
                         end_inner.innerHTML = end_inner.innerHTML + "<br>";
                     }
                 }
@@ -1015,9 +1016,6 @@
             var result = confirm("배달하시겠습니까?");
             if (result) {
                 alert("배달할게");
-                $("input[type=hidden][name=hiddenPosition]").val(list);
-
-                alert("hiddenPosition 값 : " + $("input[type=hidden][name=hiddenPosition]").val());
                 $("#deliver").submit();
             }
             else {

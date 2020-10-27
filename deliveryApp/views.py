@@ -24,8 +24,8 @@ def main(request):
 
 
 def deliver(request):
-    stuffs = Delivery_my_stuff.objects.all()
-    markets = Delivery_market.objects.all()
+    stuffs = Delivery_my_stuff.objects.filter(deliver_stuff_user = None)
+    markets = Delivery_market.objects.filter(mar_complete_img = None)
     context = {
         "stuffs": stuffs,
         "markets": markets
