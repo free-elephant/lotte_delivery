@@ -2,6 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib import auth
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+from deliveryApp.models import Delivery_my_stuff
 # Create your views here.
 
 
@@ -55,10 +59,15 @@ def idcheck(request):
 
 
 def info(request):
-    print(request.user)
-
     user = User.objects.filter(
         username=request.user.username)
+    deliver_list = Delivery_my_stuff.objects.filter(deliver_stuff_user__in = user) # 내가 배달한 경우
+    delivered_list = Delivery_my_stuff.objects.filter(stuff_user__in = user) # 내가 배달 요청한 경우
+    context={
+        'user':user,
+        'deliver_list':deliver_list,
+        'delivered_list' : delivered_list,
+    }
     # print(user[0].id)
     # print(user.stuff_user.all())
-    return render(request, 'info.html', {'user': user})
+    return render(request, 'info.html', context)

@@ -30,6 +30,11 @@
 </div>
 <div class="WrapOrder">
     <div class="TypeMyOrder">내가 신청한 배송건 </div>
+
+    {% for deliver in delivered_list.all %}
+    {{ deliver.my_departure_address }} -> {{ deliver.my_destination_address}}<br>
+    {% endfor %}
+
     <hr class="LineOrder" style="left: 36px;top: 50px;">
     <div class="TypePriorOrder">이전 주문 내역 </div>
     <hr class="LineOrder" style="left: 36px;top: 100px;">
@@ -40,12 +45,19 @@
 </div>
 <div class="WrapDelivery">
     <div class="TypeMyDeliveryr">내가 운송한 배송건 </div>
+
+    {% for deliver in deliver_list.all %}
+    {{ deliver.my_departure_address }} -> {{ deliver.my_destination_address}}<br>
+    {% endfor %}
+
     <hr class="LineOrder" style="left: 23px;top: 50px;">
     <div class="TypePriorDeliveryr">이전 주문 내역 </div>
     <hr class="LineOrder" style="left: 23px;top: 100px;">
 </div>
 <div class="WrapList">
     <div class="TypeMyList">#피플_나의 마켓 배송 내역</div>
+    <br><br><br>
+
     <div class="TypeRecommandList">추천 리스트</div>
 </div>
 
