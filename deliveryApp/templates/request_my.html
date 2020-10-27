@@ -75,7 +75,7 @@
                             <br>
                             <div class="row_layout">
                                 <div class="write middle2_font">거리</div>
-                                <input type="text" class="input" name="distance" id="distance" required>
+                                <input type="text" class="input" name="distance" id="distance" readonly>
                             </div>
                             <div id="distance_message" style="color: rgb(168, 108, 225);padding:3px;"></div>
                         </div>
@@ -118,7 +118,10 @@
                             <p class="middle2_font">물품 상세정보</p>
                             <input type="text" class="input" name="goods_detail" placeholder="물건 상세정보" required>
                             <p class="middle2_font">
-                                원하는 배송 날짜</p><input type="date" class="input" name="want_date">
+                                원하는 배송 날짜</p>
+                            <!-- <input type="text" id="datepicker" class="input" name="want_date"> -->
+                            <input type="date" class="input" name="want_date" id="datepicker" onclick="datepicker()"
+                                required>
                             <br>
                             <p class="middle2_font">원하는 배송 시간</p>
                             <select id="want_time" class="input" name="want_time" required>
@@ -183,13 +186,18 @@
 
         {%endblock script_key%} -->
         <script>
+
+            function datepicker() {
+                // $("#datepicker").datepicker({ minDate: 0 });
+                document.getElementById("datepicker").min = new Date();
+            }
             function error_check() {
                 var num_pattern = /[0-9]/; // 숫자 
                 var deparature_phone = document.getElementsByName('deparature_phone')[0].value;
                 var destination_phone = document.getElementsByName('destination_phone')[0].value;
 
                 var goods_category_one = document.getElementById('goods_category_one').value
-
+                var distance = document.getElementById('distance').value
                 if (!num_pattern.test(deparature_phone) || !num_pattern.test(destination_phone)) {
                     document.getElementById('radio_message').innerHTML = "번호는 숫자만 입력가능합니다."
                 }
@@ -200,6 +208,12 @@
                     return false;
 
 
+                }
+                if (distance == "") {
+                    var distance_location = document.getElementById('distance').offsetTop;
+                    document.getElementById('distance_message').innerHTML = "*출발, 도착지를 설정해주세요."
+                    window.scrollTo({ top: distance_location, behavior: 'smooth' });
+                    return false;
                 }
             }
 

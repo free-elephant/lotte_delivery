@@ -21,38 +21,49 @@
     <div class="Typename">{{u.username}}</div>
 </div>
 {%endfor%}
-<div class="WrapOrderDelivery">
+<div class="WrapOrderDelivery" id="WrapOrderDelivery_id">
+    <div id="delivered_list" style="display:none;">
 
+        {% for delivered in delivered_list.all %}
+        <div id="delivered_list_css">
+            {{ delivered.my_departure_address }} -> {{ delivered.my_destination_address}}<br>
+            <form action="{%url 'delete_delivered' delivered.id %}">
+                <input type="submit" value="신청 취소">
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+    <div id="deliver_list" style="display:none;">
+        {% for deliver in deliver_list.all %}
+        <div id="deliver_list_css">
+            {{ deliver.my_departure_address }} -> {{ deliver.my_destination_address}}<br>
+        </div>
+        {% endfor %}
+    </div>
 </div>
 <div class="TypeOrderTitle">
     <!-- onclick="send_order()" -->
     #<span style="color : #FFBE22">피플</span>_ 신청인 주문내역
+
 </div>
 <div class="WrapOrder">
-    <div class="TypeMyOrder">내가 신청한 배송건 </div>
-
-    {% for deliver in delivered_list.all %}
-    {{ deliver.my_departure_address }} -> {{ deliver.my_destination_address}}<br>
-    {% endfor %}
+    <div class="TypeMyOrder" onclick="myorder_delivered()" style="cursor: pointer">내가 신청한 배송건 </div>
 
     <hr class="LineOrder" style="left: 36px;top: 50px;">
-    <div class="TypePriorOrder">이전 주문 내역 </div>
-    <hr class="LineOrder" style="left: 36px;top: 100px;">
+    <!-- <div class="TypePriorOrder">이전 주문 내역 </div>
+    <hr class="LineOrder" style="left: 36px;top: 100px;"> -->
 </div>
 
 <div class="TypeDeliveryTitle">
     #<span style="color : #883ACE">퍼플</span>_ 배송인 운송내역
 </div>
 <div class="WrapDelivery">
-    <div class="TypeMyDeliveryr">내가 운송한 배송건 </div>
+    <div class="TypeMyDeliveryr" onclick="myorder_deliver()">내가 운송한 배송건 </div>
 
-    {% for deliver in deliver_list.all %}
-    {{ deliver.my_departure_address }} -> {{ deliver.my_destination_address}}<br>
-    {% endfor %}
 
     <hr class="LineOrder" style="left: 23px;top: 50px;">
-    <div class="TypePriorDeliveryr">이전 주문 내역 </div>
-    <hr class="LineOrder" style="left: 23px;top: 100px;">
+    <!-- <div class="TypePriorDeliveryr">이전 주문 내역 </div>
+    <hr class="LineOrder" style="left: 23px;top: 100px;"> -->
 </div>
 <div class="WrapList">
     <div class="TypeMyList">#피플_나의 마켓 배송 내역</div>
@@ -61,14 +72,50 @@
     <div class="TypeRecommandList">추천 리스트</div>
 </div>
 
-
 <script>
+    function myorder_deliver() {
+        $("#delivered_list").css("display", "none");
+        $("#deliver_list").css("display", "block");
+    }
+    function myorder_delivered() {
+        console.log("eee")
+        $("#delivered_list").css("display", "block");
+        $("#deliver_list").css("display", "none");
+    }
+    function myorder() {
+        console.log("Ddddddddddd")
+        $.ajax({
+            url: "{% url 'info' %}",
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) { //ajax써서 값을 변경함
+                for (deliver in delivered_list.all) {
+                    $('#WrapOrderDelivery_id').html = deliver.my_departure_address + '->' + deliver.my_destination_address;
+                    console.log("Ddddddddddd")
+                }
 
+
+            }
+
+        });
+    }
 </script>
+
 {% endblock content %}
 
 {% block style%}
 <style>
+    #delivered_list_css,
+    #deliver_list_css {
+        border: 1px solid #545252;
+        border-radius: 10px;
+        padding: 10px;
+    }
+
+    .WrapOrderDelivery {
+        padding: 20px;
+    }
+
     .TypeRecommandList {
         /* 추천 리스트 */
         position: absolute;
