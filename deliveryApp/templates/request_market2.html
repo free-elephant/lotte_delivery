@@ -14,7 +14,7 @@
     </div>
     <!-- <p class="small_font">위치를 설정해주시면, 해당하는 지역의 롯데온 마켓들을 만나보실 수 있습니다:).</p> -->
     <div id="market_information_box">
-        <form action="{% url 'request_market_purchase' %}" method="POST">
+        <form action="{% url 'request_market_purchase' %}" method="POST" onsubmit="return Order();">
             {%csrf_token%}
 
             <div id="store_lat" style="display: none;">
@@ -102,7 +102,8 @@
                                 </div>
                                 {% if user.is_authenticated %}
 
-                                <div><input type="submit" onclick="Order()" value="결제하기" id="submitbutton"></div>
+                                <div><input type="submit" onclick="Order()" value="결제하기" id="submitbutton">
+                                </div>
                                 {%else%}
                                 <div style="text-align:center;">*로그인을 하시면</div>
                                 <div style="text-align:center;">결제버튼이 나타납니다.*</div>
@@ -356,6 +357,7 @@
     }
 
     //-------------------주문하기-----------------
+
     function Order() {
         var order_total = document.getElementById("order_total"); // 주문 넘어가기
         console.log("DDDDDDDDDDDDDD")
@@ -365,6 +367,11 @@
         var selected_marketStuffCount_list = [];
         var market_limit = [] //마켓 개수에 제한을 주기 위함
         //console.log(select_total)
+        if (select_total.childElementCount == 0) {
+            alert("선택된 제품이 없습니다. 제품을 선택해주세요")
+            return false;
+        }
+
         console.log(select_total.childElementCount)
         for (var i = 0; i < select_total.childElementCount; i++) {
             var ul_select = document.getElementsByClassName("ul_select_total")[i];
@@ -386,11 +393,17 @@
         console.log(only_market)
         if (only_market.length > 4) {
             alert("마트 개수는 4개까지입니다.")
+            return false;
         }
         else {
-            order_total.value = selected_marketStuffCount_list
+            order_total.value = selected_marketStuffCount_list;
+            return true;
+
 
         }
+
+
+
 
 
     }
