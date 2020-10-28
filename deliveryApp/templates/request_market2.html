@@ -515,6 +515,7 @@
                                     console.log(response.store_name_list.length)
                                     for (var i = 0; i < response.store_name_list.length; i++) {
                                         $('#store' + i).html(response.store_name_list[i]);
+                                        $("#no_mart").html(" ");
                                         var store_val = document.getElementById('store' + i);
                                         console.log("---")
                                         store_val.value = response.store_name_list[i];

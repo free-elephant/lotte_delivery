@@ -24,8 +24,8 @@ def main(request):
 
 
 def deliver(request):
-    stuffs = Delivery_my_stuff.objects.filter(deliver_stuff_user = None)
-    markets = Delivery_market.objects.filter(mar_complete_img = None)
+    stuffs = Delivery_my_stuff.objects.filter(deliver_stuff_user=None)
+    markets = Delivery_market.objects.filter(mar_complete_img=None)
     context = {
         "stuffs": stuffs,
         "markets": markets
@@ -156,6 +156,7 @@ def request_market_purchase(request):
     if request.method == "POST":
         order_total = request.POST['order_total']
         selected_market = request.POST['selected_mart_address']
+
         orders = order_total.split(',')
         print(orders)
         for order in orders:
@@ -219,6 +220,7 @@ def request_market_complete(request):
                         delivery.mar_departure_lat = m.store_lat
                         delivery.mar_departure_long = m.store_lng
                         delivery.mar_departure_addr = market
+                        delivery.mar_departure_address = m.store_addr
                         delivery.mar_departure_phone = 123123
                         delivery.mar_item = stuff
                         delivery.mar_count = count
@@ -228,6 +230,7 @@ def request_market_complete(request):
                         delivery.mar1_departure_lat = m.store_lat
                         delivery.mar1_departure_long = m.store_lng
                         delivery.mar1_departure_addr = market
+                        delivery.mar1_departure_address = m.store_addr
                         delivery.mar1_departure_phone = 123123
                         delivery.mar1_item = stuff
                         delivery.mar1_count = count
@@ -237,6 +240,7 @@ def request_market_complete(request):
                         delivery.mar2_departure_lat = m.store_lat
                         delivery.mar2_departure_long = m.store_lng
                         delivery.mar2_departure_addr = market
+                        delivery.mar2_departure_address = m.store_addr
                         delivery.mar2_departure_phone = 123123
 
                         market_overlap_check.append(market)
@@ -244,6 +248,7 @@ def request_market_complete(request):
                         delivery.mar3_departure_lat = m.store_lat
                         delivery.mar3_departure_long = m.store_lng
                         delivery.mar3_departure_addr = market
+                        delivery.mar3_departure_address = m.store_addr
                         delivery.mar3_departure_phone = 123123
 
                         market_overlap_check.append(market)
@@ -267,6 +272,7 @@ def request_market_complete(request):
                     delivery.mar3_count = delivery.mar_count + ','+count
 
             delivery.mar_destination_lat = request.POST['destination_lat']
+            delivery.mar_destination_address = request.POST['destination']
             # destination_detail/destination_phone/mar_time
             delivery.mar_destination_long = request.POST['destination_long']
             delivery.mar_destination_addr = request.POST['destination_detail']

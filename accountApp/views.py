@@ -1,4 +1,4 @@
-from deliveryApp.models import Delivery_my_stuff
+from deliveryApp.models import Delivery_my_stuff, Delivery_market
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
@@ -67,10 +67,15 @@ def info(request):
     delivered_list = Delivery_my_stuff.objects.filter(
         stuff_user__in=user)  # 내가 배달 요청한 경우
 
+    delivered_market_list = Delivery_market.objects.filter(
+        mar_user__in=user
+    )
+
     context = {
         'user': user,
         'deliver_list': deliver_list,
         'delivered_list': delivered_list,
+        "delivered_market_list": delivered_market_list,
     }
 
     return render(request, 'info.html', context)
@@ -79,5 +84,12 @@ def info(request):
 def delete_delivered(request, delivered_id):
     delivered_d = get_object_or_404(
         Delivery_my_stuff, pk=delivered_id)  # 특정 객체 가져오기(없으면 404 에러)
+    delivered_d.delete()
+    return redirect("/")
+
+
+def delete_delivered_mar(request, delivered_m_id):
+    delivered_d = get_object_or_404(
+        Delivery_market, pk=delivered_m_id)  # 특정 객체 가져오기(없으면 404 에러)
     delivered_d.delete()
     return redirect("/")

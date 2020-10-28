@@ -25,9 +25,31 @@
     <div id="delivered_list" style="display:none;">
 
         {% for delivered in delivered_list.all %}
+        <p style="text-align: center;"> ==========내 물건 배송=========</p>
         <div id="delivered_list_css">
             {{ delivered.my_departure_address }} -> {{ delivered.my_destination_address}}<br>
             <form action="{%url 'delete_delivered' delivered.id %}">
+                <input type="submit" value="신청 취소">
+            </form>
+        </div>
+        {% endfor %}
+
+        {% for delivered_mar in delivered_market_list.all %}
+        <p style="text-align: center;"> ==========마켓 배송=========</p>
+        <div id="delivered_list_css">
+            {{ delivered_mar.mar_departure_address }}
+            {%if delivered_mar.mar1_departure_address%}
+            {{ delivered_mar.mar1_departure_address}}
+            {%elif delivered_mar.mar2_departure_address %}
+            {{ delivered_mar.mar2_departure_address}}
+            {%elif delivered_mar.mar3_departure_address %}
+            {{ delivered_mar.mar3_departure_address}}
+            {%elif delivered_mar.mar4_departure_address %}
+            {{ delivered_mar.mar4_departure_address}}
+            {%endif%}->
+            {{ delivered_mar.mar_destination_address}}
+            <br>
+            <form action="{%url 'delete_delivered_mar' delivered_mar.id %}">
                 <input type="submit" value="신청 취소">
             </form>
         </div>
