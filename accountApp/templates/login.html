@@ -83,7 +83,33 @@
         <div class="block-label_font" for="email">이메일</div>
         <div class="email_star">*</div>
         <input name="email1" type="email1" value="">
-        <input name="email2" type="email2" value="">
+        <labe for="email2">@email.com</labe>
+        <select name="email2" type="email2" value="">
+            <option value="1">직접입력</option>
+            <option value="naver.com" selected>naver.com</option>
+            <option value="hanmail.net">hanmail.net</option>
+            <option value="nate.com">nate.com</option>
+            <option value="gmail.com">gmail.com</option>
+            <option value="paran.com">daum.com</option>
+        </select>
+
+        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script type="text/javascript"> //이메일 입력방식 선택 
+            $('#selectEmail').change(function () {
+                $("#selectEmail option:selected").each(function () {
+                    if ($(this).val() == '1') { //직접입력일 경우 
+                        $("#str_email2").val(''); //값 초기화 
+                        $("#str_email2").attr("disabled", false); //활성화 
+                    } else { //직접입력이 아닐경우 
+                        $("#str_email2").val($(this).text()); //선택값 입력 
+                        $("#str_email2").attr("disabled", true); //비활성화 
+                    }
+                });
+            }); 
+        </script>
+
+
+
         <!-- <input name="email3" type="email1" value=""> -->
 
 
@@ -102,7 +128,14 @@
 
 
         <div class="phone_font" for="phone">휴대전화번호</div>
-        <input name="phone1" type="text" value="">
+        <label for="phone1">번호 선택</label>
+        <select name="phone1" type="text">
+            <option value="010" selected>010</option>
+            <option value="011">011</option>
+            <option value="016">017</option>
+            <option value="018">018</option>
+            <option value="019">019</option>
+        </select>
         <input name="phone2" type="text" value="">
         <input name="phone3" type="text" value="">
         <!-- <input name="phone4" type="text" value=""> -->
@@ -626,7 +659,7 @@
 
         }
 
-        input[name=phone1] {
+        select[name=phone1] {
             position: absolute;
             width: 89px;
             height: 48px;
@@ -636,6 +669,41 @@
             border: 3px solid #FFFFFF;
             box-sizing: border-box;
             background-color: transparent;
+
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 18px;
+            line-height: 21px;
+            /* identical to box height */
+
+
+            color: #FFFFFF;
+
+        }
+
+        .phone1 select {
+            width: 100%;
+            height: auto;
+            /* 높이 초기화 */
+            line-height: normal;
+            /* line-height 초기화 */
+            font-family: inherit;
+            /* 폰트 상속 */
+            padding: .8em .5em;
+            /* 여백과 높이 결정 */
+            border: 0;
+            opacity: 0;
+            /* 숨기기 */
+            filter: alpha(opacity=0);
+            /* IE8 숨기기 */
+            -webkit-appearance: none;
+            /* 네이티브 외형 감추기 */
+            -moz-appearance: none;
+            appearance: none;
+
+
         }
 
         input[name=phone2] {
@@ -691,7 +759,7 @@
             background-color: transparent;
         }
 
-        input[name=email2] {
+        select[name=email2] {
             position: absolute;
             width: 219px;
             height: 48px;
@@ -702,6 +770,12 @@
             box-sizing: border-box;
 
             background-color: transparent;
+
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 18px;
+            line-height: 21px;
         }
 
         input[name=email3] {
